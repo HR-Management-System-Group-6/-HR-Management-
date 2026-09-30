@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employees</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="employees-page">
+
+
+<div class="layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                HR
+            </div>
+
+            <div class="brand-text">
+                <h2>HR Management</h2>
+                <p>System</p>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-content">
+
+            <p class="sidebar-title">
+                HR WORKSPACE
+            </p>
+
+
+            <nav class="nav-menu">
+
+
+                <!-- Dashboard -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="4"
+                            y="4"
+                            width="6"
+                            height="6">
+                        </rect>
+
+                        <rect
+                            x="14"
+                            y="4"
+                            width="6"
+                            height="6">
+                        </rect>
+
+                        <rect
+                            x="4"
+                            y="14"
+                            width="6"
+                            height="6">
+                        </rect>
+
+                        <rect
+                            x="14"
+                            y="14"
+                            width="6"
+                            height="6">
+                        </rect>
+
+                    </svg>
+
+                    Dashboard
+
+                </a>
+
+
+                <!-- Employees -->
+
+                <a href="employees.html"
+                   class="nav-link active">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="9"
+                            cy="8"
+                            r="3">
+                        </circle>
+
+                        <path
+                            d="M4 19c0-3 2-5 5-5s5 2 5 5">
+                        </path>
+
+                        <circle
+                            cx="17"
+                            cy="9"
+                            r="2">
+                        </circle>
+
+                        <path
+                            d="M15 15c3 0 5 1.5 5 4">
+                        </path>
+
+                    </svg>
+
+                    Employees
+
+                </a>
+
+
+                <!-- Tasks -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="5"
+                            y="5"
+                            width="14"
+                            height="14">
+                        </rect>
+
+                        <path
+                            d="M8 12l3 3 5-6">
+                        </path>
+
+                    </svg>
+
+                    Tasks
+
+                </a>
+
+
+                <!-- Task Review -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="5"
+                            y="5"
+                            width="14"
+                            height="14">
+                        </rect>
+
+                        <path
+                            d="M9 9h6M9 12h6M9 15h4">
+                        </path>
+
+                    </svg>
+
+                    Task Review
+
+                </a>
+
+
+                <!-- Leave Requests -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="5"
+                            y="4"
+                            width="14"
+                            height="16">
+                        </rect>
+
+                        <path
+                            d="M8 8h8M8 12h8M8 16h6">
+                        </path>
+
+                    </svg>
+
+                    Leave Requests
+
+                </a>
+
+
+                <!-- Policies -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="5"
+                            y="5"
+                            width="14"
+                            height="14">
+                        </rect>
+
+                        <path
+                            d="M7 7l10 10M11 7l6 6">
+                        </path>
+
+                    </svg>
+
+                    Policies
+
+                </a>
+
+
+                <!-- Feedback -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="7"
+                            y="7"
+                            width="10"
+                            height="10">
+                        </rect>
+
+                    </svg>
+
+                    Feedback
+
+                </a>
+
+
+                <!-- Meetings -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="7"
+                            y="7"
+                            width="10"
+                            height="10">
+                        </rect>
+
+                    </svg>
+
+                    Meetings
+
+                </a>
+
+
+                <!-- Profile -->
+
+                <a href="#" class="nav-link">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="3">
+                        </circle>
+
+                        <path
+                            d="M7 19c0-3 2-5 5-5s5 2 5 5">
+                        </path>
+
+                    </svg>
+
+                    Profile
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-footer">
+
+            <a href="#">
+                About
+            </a>
+
+            <a href="#">
+                Contact Us
+            </a>
+
+            <a href="#">
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         RIGHT SIDE
+    ========================== -->
+
+    <div class="right-side">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+
+            <div class="breadcrumb">
+
+                <span>
+                    Workspace
+                </span>
+
+                <span>/</span>
+
+                <strong>
+                    Employees
+                </strong>
+
+            </div>
+
+
+            <div class="top-user">
+
+                <div class="manager-avatar">
+                    HM
+                </div>
+
+
+                <div class="manager-info">
+
+                    <strong>
+                        HR Manager
+                    </strong>
+
+                    <span>
+                        HR
+                    </span>
+
+                </div>
+
+
+                <span class="chevron">
+                   ⌄
+                </span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             CONTENT
+        ========================== -->
+
+        <main class="main-content">
+
+
+            <!-- Page Header -->
+
+            <div class="employees-page-header">
+
+
+                <div>
+
+                    <p class="small-path">
+                        HR WORKSPACE / EMPLOYEES
+                    </p>
+
+
+                    <h1>
+                        Employees
+                    </h1>
+
+
+                    <p class="subtitle">
+                        View, search and manage all employee accounts.
+                    </p>
+
+                </div>
+
+
+                <button class="add-employee-btn">
+
+                    <span>+</span>
+
+                    Add Employee
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =========================
+                 EMPLOYEE TABLE SECTION
+            ========================== -->
+
+            <section class="employees-section">
+
+
+                <div class="employees-title">
+
+                    <h3>
+                        All employees
+                    </h3>
+
+                    <span>
+                        12 employees
+                    </span>
+
+                </div>
+
+
+
+                <div class="employees-card">
+
+
+                    <!-- FILTERS -->
+
+                    <div class="employee-filters">
+
+
+                        <div class="search-box">
+
+                            <span>
+                                ⌕
+                            </span>
+
+                            <input
+                                type="text"
+                                id="employeeSearch"
+                                placeholder="Search by name or email">
+
+                        </div>
+
+
+
+                        <select id="departmentFilter">
+
+                            <option value="all">
+                                All departments
+                            </option>
+
+                            <option value="Engineering">
+                                Engineering
+                            </option>
+
+                            <option value="Finance">
+                                Finance
+                            </option>
+
+                            <option value="Marketing">
+                                Marketing
+                            </option>
+
+                            <option value="Operations">
+                                Operations
+                            </option>
+
+                            <option value="Human Resources">
+                                Human Resources
+                            </option>
+
+                        </select>
+
+
+
+                        <select id="statusFilter">
+
+                            <option value="all">
+                                All statuses
+                            </option>
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- TABLE -->
+
+                    <div class="employee-table">
+
+
+                        <!-- HEADER -->
+
+                        <div class="employee-table-header">
+
+                            <div>
+                                EMPLOYEE
+                            </div>
+
+                            <div>
+                                DEPARTMENT
+                            </div>
+
+                            <div>
+                                POSITION
+                            </div>
+
+                            <div>
+                                STATUS
+                            </div>
+
+                            <div>
+                                ACTIONS
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 1
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Lujain Okour"
+                             data-department="Engineering"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    LO
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Lujain Okour
+                                    </strong>
+
+                                    <span>
+                                        lujain@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Engineering
+                            </div>
+
+
+                            <div>
+                                Front-end Developer
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 2
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Haya Ahmed"
+                             data-department="Finance"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    HA
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Haya Ahmed
+                                    </strong>
+
+                                    <span>
+                                        haya@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Finance
+                            </div>
+
+
+                            <div>
+                                Accountant
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 3
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Rana Saleh"
+                             data-department="Marketing"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    RS
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Rana Saleh
+                                    </strong>
+
+                                    <span>
+                                        rana@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Marketing
+                            </div>
+
+
+                            <div>
+                                Content Specialist
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 4
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Khaled Nasser"
+                             data-department="Operations"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    KN
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Khaled Nasser
+                                    </strong>
+
+                                    <span>
+                                        khaled@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Operations
+                            </div>
+
+
+                            <div>
+                                Operations Coordinator
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 5
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Dina Mansour"
+                             data-department="Human Resources"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    DM
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Dina Mansour
+                                    </strong>
+
+                                    <span>
+                                        dina@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Human Resources
+                            </div>
+
+
+                            <div>
+                                HR Assistant
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             EMPLOYEE 6
+                        ====================== -->
+
+                        <div class="employee-row"
+                             data-name="Yousef Ali"
+                             data-department="Engineering"
+                             data-status="Active">
+
+
+                            <div class="employee-person">
+
+                                <div class="small-avatar">
+                                    YA
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Yousef Ali
+                                    </strong>
+
+                                    <span>
+                                        yousef@company.com
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                Engineering
+                            </div>
+
+
+                            <div>
+                                Back-end Developer
+                            </div>
+
+
+                            <div>
+
+                                <span class="table-status">
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <button class="view-btn">
+                                    View
+                                </button>
+
+                                <button class="icon-btn">
+                                    ✎
+                                </button>
+
+                                <button class="icon-btn">
+                                    ♲
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- TABLE FOOTER -->
+
+                    <div class="table-footer">
+
+
+                        <p>
+                            Showing 1-6 of 12 employees
+                        </p>
+
+
+                        <div class="pagination">
+
+                            <button>
+                                Previous
+                            </button>
+
+                            <button class="page-active">
+                                1
+                            </button>
+
+                            <button>
+                                2
+                            </button>
+
+                            <button>
+                                Next
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">HR</div>
+
+            <div>
+                <h2>HR Management</h2>
+                <p>System</p>
+            </div>
+        </div>
+
+
+        <div class="sidebar-content">
+
+            <p class="sidebar-title">HR WORKSPACE</p>
+
+            <nav class="nav-menu">
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </a>
+
+                <a href="#" class="nav-link active">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="3"></circle>
+                        <path d="M6 20c0-3.4 2.7-6 6-6s6 2.6 6 6"></path>
+                        <path d="M9 4l3-2 3 2"></path>
+                    </svg>
+                    View Information
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="4" y="4" width="16" height="16" rx="1"></rect>
+                        <path d="M8 12l3 3 5-6"></path>
+                    </svg>
+                    Tasks
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="5" y="5" width="14" height="14"></rect>
+                        <path d="M9 9h6M9 12h6M9 15h4"></path>
+                    </svg>
+                    Task Review
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 4h14v16H5z"></path>
+                        <path d="M8 8h8M8 12h8M8 16h8"></path>
+                    </svg>
+                    Leave Requests
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="5" y="5" width="14" height="14"></rect>
+                        <path d="M7 7l10 10M11 7l6 6M7 11l6 6"></path>
+                    </svg>
+                    Policies
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="7" y="7" width="10" height="10"></rect>
+                    </svg>
+                    Feedback
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="7" y="7" width="10" height="10"></rect>
+                    </svg>
+                    Meetings
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 17h8"></path>
+                        <path d="M9 17v-1c-2-1-2-3-2-5a5 5 0 0110 0c0 2 0 4-2 5v1"></path>
+                        <path d="M11 20h2"></path>
+                    </svg>
+                    Notifications
+                </a>
+
+                <a href="#" class="nav-link">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="3"></circle>
+                        <path d="M7 19c0-3 2-5 5-5s5 2 5 5"></path>
+                    </svg>
+                    Profile
+                </a>
+
+            </nav>
+        </div>
+
+
+        <div class="sidebar-footer">
+            <a href="#">About</a>
+            <a href="#">Contact Us</a>
+            <a href="#" id="logout">Logout</a>
+        </div>
+
+    </aside>
+
+
+    <!-- ==================== RIGHT SIDE ==================== -->
+    <div class="right-side">
+
+        <!-- TOP HEADER -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                <span>Workspace</span>
+                <span>/</span>
+                <span>Employees</span>
+                <span>/</span>
+                <strong>Employee Details</strong>
+            </div>
+
+
+            <div class="top-user">
+
+                <button class="bell">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 17h8"></path>
+                        <path d="M9 17v-1c-2-1-2-3-2-5a5 5 0 0110 0c0 2 0 4-2 5v1"></path>
+                        <path d="M11 20h2"></path>
+                    </svg>
+                </button>
+
+                <div class="manager-avatar">HM</div>
+
+                <div class="manager-info">
+                    <strong>HR Manager</strong>
+                    <span>HR</span>
+                </div>
+
+                <span class="chevron">⌄</span>
+
+            </div>
+
+        </header>
+
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="main-content">
+
+            <div class="page-top">
+
+                <div>
+                    <p class="small-path">
+                        HR WORKSPACE / EMPLOYEES / EMPLOYEE DETAILS
+                    </p>
+
+                    <h1>Employee Details</h1>
+
+                    <p class="subtitle">
+                        View this employee's information and salary details.
+                    </p>
+                </div>
+
+
+                <button class="back-btn" id="backBtn">
+                    <span>←</span>
+                    Back to Employees
+                </button>
+
+            </div>
+
+
+            <!-- ==================== EMPLOYEE AREA ==================== -->
+            <div class="employee-grid">
+
+                <!-- PROFILE -->
+                <section class="profile-section">
+
+                    <h3>Profile photo</h3>
+
+                    <div class="profile-card">
+
+                        <div class="profile-avatar">
+                            LO
+                        </div>
+
+                        <h2>Lujain Okour</h2>
+
+                        <p>Junior Developer</p>
+
+                        <span class="active-status">
+                            Active
+                        </span>
+
+                        <button id="editBtn" class="edit-btn">
+                            Edit Employee
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DETAILS -->
+                <section class="details-section">
+
+                    <h3>Employee details</h3>
+
+                    <div class="details-card">
+
+                        <div class="field">
+                            <label>Full name</label>
+                            <div class="input-look">Lujain Okour</div>
+                        </div>
+
+                        <div class="field">
+                            <label>Email address</label>
+                            <div class="input-look">
+                                lujain.okour@company.com
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Phone number</label>
+                            <div class="input-look">
+                                +962 79 000 0000
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Job title</label>
+                            <div class="input-look">
+                                Junior Developer
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Department</label>
+                            <div class="input-look">
+                                Engineering
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Joining date</label>
+                            <div class="input-look">
+                                Jan 15, 2026
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Status</label>
+                            <div class="input-look">
+                                Active
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Role</label>
+                            <div class="input-look">
+                                Employee
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ==================== SALARY ==================== -->
+            <section class="salary-section">
+
+                <div class="salary-heading">
+                    <h3>Salary details</h3>
+                    <button id="viewMore">View more</button>
+                </div>
+
+
+                <div class="salary-card">
+
+                    <p class="salary-note">
+                        Visible to HR only. &nbsp; Pay period: October 2026.
+                    </p>
+
+
+                    <!-- TOP SALARY CARDS -->
+                    <div class="salary-summary">
+
+                        <div class="summary-box">
+                            <span>Basic salary</span>
+                            <strong>800.00 JOD</strong>
+                        </div>
+
+                        <div class="summary-box">
+                            <span>Total incentives</span>
+                            <strong>+125.00 JOD</strong>
+                        </div>
+
+                        <div class="summary-box">
+                            <span>Total deductions</span>
+                            <strong>-95.00 JOD</strong>
+                        </div>
+
+                        <div class="summary-box net">
+                            <span>Net salary</span>
+                            <strong>830.00 JOD</strong>
+                        </div>
+
+                    </div>
+
+
+                    <p class="formula">
+                        Net salary = Basic salary + Incentives - Deductions
+                    </p>
+
+
+                    <!-- BREAKDOWN -->
+                    <div class="breakdown">
+
+                        <!-- INCENTIVES -->
+                        <div class="breakdown-box">
+
+                            <div class="breakdown-title">
+                                <strong>Incentives</strong>
+                                <strong>125.00 JOD</strong>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Performance bonus</span>
+                                <span>+60.00 JOD</span>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Transport allowance</span>
+                                <span>+40.00 JOD</span>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Attendance bonus</span>
+                                <span>+25.00 JOD</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- DEDUCTIONS -->
+                        <div class="breakdown-box">
+
+                            <div class="breakdown-title">
+                                <strong>Deductions</strong>
+                                <strong>95.00 JOD</strong>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Social security</span>
+                                <span>-60.00 JOD</span>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Late arrival</span>
+                                <span>-15.00 JOD</span>
+                            </div>
+
+                            <div class="breakdown-row">
+                                <span>Unpaid leave</span>
+                                <span>-20.00 JOD</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+                    <div class="payment">
+
+                        <div>
+                            <span>Pay period</span>
+                            <strong>October 2026</strong>
+                        </div>
+
+                        <div>
+                            <span>Payment date</span>
+                            <strong>Oct 28, 2026</strong>
+                        </div>
+
+                        <div>
+                            <span>Payment status</span>
+                            <strong>Pending</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/script.js"></script>
+
+</body>
+</html>
