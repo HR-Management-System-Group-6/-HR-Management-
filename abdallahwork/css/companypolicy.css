@@ -1,0 +1,9 @@
+.nav_side_bar{
+    display: flex;
+}
+.side_bar{
+    background-color: darkblue;
+}
+.side_bar_bottom{
+    margin-top: 50px;
+}
