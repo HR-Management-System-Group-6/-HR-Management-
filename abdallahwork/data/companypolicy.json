@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "title": "Attendance and Punctuality",
+    "category": "Attendance",
+    "description": "Employees are expected to arrive on time and follow the company's working hours.",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "title": "Leave Policy",
+    "category": "Leave",
+    "description": "Employees can request annual, sick, and emergency leave according to company rules.",
+    "status": "Active"
+  },
+  {
+    "id": 3,
+    "title": "Remote Work Policy",
+    "category": "Workplace",
+    "description": "Employees may work remotely when approved by their manager and when their job responsibilities allow it.",
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "title": "Code of Conduct",
+    "category": "Employee Conduct",
+    "description": "All employees must behave professionally and respectfully toward colleagues, customers, and management.",
+    "status": "Active"
+  },
+  {
+    "id": 5,
+    "title": "Dress Code Policy",
+    "category": "Workplace",
+    "description": "Employees are expected to maintain a professional and appropriate appearance during working hours.",
+    "status": "Active"
+  },
+  {
+    "id": 6,
+    "title": "Health and Safety Policy",
+    "category": "Safety",
+    "description": "Employees must follow workplace health and safety procedures and report any unsafe conditions.",
+    "status": "Active"
+  },
+  {
+    "id": 7,
+    "title": "Data Privacy Policy",
+    "category": "Security",
+    "description": "Employees must protect company and customer information and must not share confidential data without authorization.",
+    "status": "Active"
+  },
+  {
+    "id": 8,
+    "title": "IT and Computer Usage",
+    "category": "Technology",
+    "description": "Company computers, software, and internet access should be used responsibly and mainly for work-related activities.",
+    "status": "Active"
+  },
+  {
+    "id": 9,
+    "title": "Anti-Harassment Policy",
+    "category": "Employee Conduct",
+    "description": "The company does not tolerate harassment, discrimination, or inappropriate behavior in the workplace.",
+    "status": "Active"
+  },
+  {
+    "id": 10,
+    "title": "Performance Review Policy",
+    "category": "Performance",
+    "description": "Employee performance is reviewed regularly to provide feedback and support professional development.",
+    "status": "Active"
+  }
+]

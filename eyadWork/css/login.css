@@ -1,0 +1,513 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #e4e4e4;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #142b45;
+}
+
+
+.page {
+    width: 90%;
+    max-width: 1100px;
+    min-height: 560px;
+
+    background: #f7f9fb;
+
+    display: grid;
+    grid-template-columns: 48% 52%;
+
+    padding: 14px;
+
+    gap: 0;
+}
+
+
+
+.left-panel {
+    position: relative;
+
+    background: #0b213b;
+
+    border-radius: 15px;
+
+    color: white;
+
+    overflow: hidden;
+
+    padding: 27px 26px;
+}
+
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 26px;
+    height: 26px;
+
+    background: #b9e1fa;
+
+    color: #173652;
+
+    border-radius: 6px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.brand h4 {
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.brand span {
+    font-size:9px;
+    color: #b9e1fa;
+}
+
+
+
+.left-content {
+    position: relative;
+    z-index: 5;
+
+    margin-top: 75px;
+}
+
+.small-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 9px;
+
+    color: #c4d8e8;
+
+    margin-bottom: 20px;
+}
+
+.small-line span {
+    width: 18px;
+    height: 1px;
+
+    background: #6da4ca;
+}
+
+
+.left-content h1 {
+    font-size: 29px;
+    line-height: 1.15;
+
+    letter-spacing: -0.5px;
+
+    margin-bottom: 20px;
+}
+
+.left-content h1 span {
+    color: #b6ddfa;
+}
+
+.left-content p {
+    font-size: 10px;
+
+    line-height: 1.7;
+
+    color: #bdd0df;
+}
+
+
+.decoration-image {
+    position: absolute;
+
+    width: 330px;
+    height: auto;
+
+    right: -1px;
+    bottom: -1px;
+
+
+}
+
+
+.role-card {
+    position: absolute;
+
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+
+    background: #03172c;
+
+    padding: 14px;
+
+    border-radius: 8px;
+
+    z-index: 10;
+}
+
+.role-card small {
+    display: block;
+
+    color: #9db5c8;
+
+    font-size: 10px;
+
+    margin-bottom: 7px;
+}
+
+.role-card p {
+    color: white;
+
+    font-size: 10px;
+}
+
+.role-card p span {
+    color: #c4d5e2;
+}
+
+
+
+.right-panel {
+    position: relative;
+
+    background: #f7f9fb;
+
+    padding: 40px 45px 25px;
+}
+
+
+.login-container {
+    max-width: 270px;
+
+    margin: 0 auto;
+}
+
+
+
+.back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    text-decoration: none;
+
+    color: #47719b;
+
+    font-size: 10px;
+
+    margin-bottom: 48px;
+}
+
+.back i {
+    font-size: 11px;
+}
+
+
+.welcome > span {
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    color: #46769f;
+
+    margin-bottom: 8px;
+}
+
+.welcome h2 {
+    font-size: 20px;
+
+    color: #193653;
+
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    font-size: 10px;
+
+    color: #67839d;
+
+    margin-bottom: 25px;
+}
+
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 8px;
+}
+
+.account-header strong {
+    font-size: 11px;
+    color: #203c58;
+}
+
+.account-header span {
+    font-size: 10px;
+    color: #6f8aa1;
+}
+
+
+.account-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+
+.account-option {
+    position: relative;
+    height: 90px; 
+    border: 1px solid #cbd9e5;
+    border-radius: 7px;
+    background: white;
+    padding: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.account-option:hover {
+    border-color: #75a9d2;
+}
+
+.account-option input {
+    display: none;
+}
+
+
+.option-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.option-content i {
+    color: #477ba8;
+    font-size: 18px; 
+}
+
+.option-content strong {
+    display: block;
+    font-size: 14px; 
+    color: #213e5a;
+    margin-bottom: 3px;
+}
+
+.option-content small {
+    display: block;
+    font-size: 11px; 
+    color: #6e879e;
+}
+
+
+.radio {
+    position: absolute;
+
+    top: 10px;
+    right: 9px;
+
+    width: 10px;
+    height: 10px;
+
+    border: 1px solid #8fc0e6;
+
+    border-radius: 50%;
+}
+
+.account-option input:checked + .option-content + .radio {
+    border: 3px solid #5798cc;
+}
+
+
+.input-group {
+    margin-bottom: 13px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px; 
+    font-weight: bold;
+    color: #263f58;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #c9d8e4;
+    border-radius: 5px;
+    padding: 8px 12px;
+    background: white;
+    outline: none;
+    font-size: 13px; 
+    color: #233f59;
+    transition: 0.2s;
+}
+
+.input-group input::placeholder {
+    color: #89a2b7;
+    font-size: 12px; 
+}
+
+.input-group input:focus {
+    border-color: #5797c8;
+
+    box-shadow: 0 0 0 2px rgba(87, 151, 200, 0.1);
+}
+
+
+
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    padding-right: 35px;
+}
+
+.password-input button {
+    position: absolute;
+
+    right: 9px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: #47759b;
+
+    cursor: pointer;
+
+    font-size: 10px;
+}
+
+
+.login-btn {
+    width: 100%;
+
+    height: 30px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background: #1c3b5d;
+
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 13px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition: 0.2s;
+}
+
+.login-btn:hover {
+    background: #142f4d;
+}
+
+.login-btn i {
+    font-size: 10px;
+}
+
+
+
+@media (max-width: 850px) {
+
+    body {
+        padding: 20px 0;
+    }
+
+    .page {
+        width: 95%;
+
+        grid-template-columns: 1fr;
+
+        padding: 10px;
+    }
+
+    .left-panel {
+        min-height: 450px;
+    }
+
+    .right-panel {
+        min-height: 500px;
+
+        padding: 40px 30px 70px;
+    }
+
+    footer {
+        left: 30px;
+        right: 30px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .page {
+        width: 100%;
+
+        padding: 0;
+
+        background: white;
+    }
+
+    .left-panel {
+        border-radius: 0;
+
+        min-height: 430px;
+    }
+
+    .right-panel {
+        padding: 35px 20px 70px;
+    }
+
+    .login-container {
+        max-width: 100%;
+    }
+
+    .left-content h1 {
+        font-size: 26px;
+    }
+
+    .account-types {
+        grid-template-columns: 1fr;
+    }
+}

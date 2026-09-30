@@ -1,0 +1,68 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+.heroinfo{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 40px;
+    border: 1px solid wheat;
+    background-color: rgb(195, 239, 224);
+}
+.herocontent{
+    padding: 50px;
+}
+.img{
+    width: 500px;
+    height: 300px;
+    
+}
+.title_team{
+    text-align: center;
+    margin: 10px;
+}
+.content-margin{
+    margin: 5px;
+}
+.team-container{
+    display: grid;
+    
+   
+
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(2,1fr);
+    gap: 50px;
+     padding: 30px 50px;
+}
+.team-card{
+   padding: 60px;
+    background-color: rgb(252, 249, 246);
+    border: 1px solid rgb(216, 219, 208);
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3;
+}
+.team-card:hover{
+    transform: scale(1.1);
+}
+.teamicon{
+    width: 100px;
+    height: 100px;
+}
+.team_name{
+}
+.btn-team{
+    margin: 5px;
+    font-size: 20px;
+}
