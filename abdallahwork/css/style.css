@@ -5,349 +5,358 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    color: #172b4d;
-    background-color: #ffffff;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: #f4f7fb;
+    color: #183657;
 }
 
-a {
-    text-decoration: none;
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    background: #03172b;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 28px 16px;
 }
-.navbar{
+
+.logo {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 8px;
-
-}
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 45px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7fb;
-    color: #183153;
-}
-
-
-/* ================= ABOUT ================= */
-
-.about {
-    max-width: 1200px;
-    margin: auto;
-    padding: 35px 30px 60px;
-}
-
-
-/* ================= TITLE ================= */
-
-.about-title {
-    margin-bottom: 40px;
-}
-
-.about-title p {
-    font-size: 10px;
+.logo-box {
+    background: #b9e2f7;
+    color: #183657;
+    padding: 12px;
+    border-radius: 12px;
     font-weight: bold;
-    color: #54779d;
-
-    margin-bottom: 8px;
 }
 
-.about-title h1 {
-    font-size: 42px;
-    color: #183153;
-
-    margin-bottom: 8px;
-}
-
-.about-title span {
+.logo h3 {
     font-size: 15px;
-    color: #58708f;
+}
+
+.logo small {
+    color: #8eb5d6;
+}
+
+.menu-title {
+    font-size: 10px;
+    color: #7fa5c6;
+    margin-bottom: 18px;
+}
+
+.sidebar a {
+    display: block;
+    color: #b9d0e5;
+    text-decoration: none;
+    padding: 12px 14px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+}
+
+.sidebar a:hover,
+.sidebar .active {
+    background: #193b60;
+    color: white;
+}
+
+.sidebar i {
+    width: 25px;
+}
+
+.bottom-menu {
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    border-top: 1px solid #24415d;
+    padding-top: 12px;
+}
+.img{
+    width: 100%;
+   
 }
 
 
-/* ================= ABOUT CARD ================= */
+/* ================= MAIN ================= */
 
-.about-card {
-    background-color: white;
+.main {
+    margin-left: 245px;
+}
 
-    border: 1px solid #dce4ec;
-    border-radius: 10px;
 
-    padding: 18px;
+/* Header */
+
+header {
+    height: 90px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 35px;
+}
+
+header p {
+    color: #6083a8;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-circle {
+    background: #b9e2f7;
+    border-radius: 50%;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.user small {
+    display: block;
+    color: #6083a8;
+}
+
+
+/* Page title */
+
+.page-title {
+    padding: 35px;
+}
+
+.page-title small,
+section > small,
+.hero small {
+    color: #4c79a5;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.page-title h1 {
+    font-size: 38px;
+    margin: 8px 0;
+}
+
+.page-title p {
+    color: #52769d;
+}
+
+
+/* ================= HERO ================= */
+
+.hero {
+    background: white;
+    margin: 0 35px 35px;
+    padding: 35px;
+    border-radius: 15px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    gap: 30px;
-
-    margin-bottom: 35px;
 }
 
-
-/* ================= ABOUT CONTENT ================= */
-
-.about-content {
-    padding: 20px;
-    flex: 1;
-}
-.about-content-p{
-    margin-top: 10px
+.hero-text {
+    width: 55%;
 }
 
-.small-title {
-    font-size: 9px;
-    font-weight: bold;
-    color: #5c82a8;
-
-    margin-bottom: 10px;
+.hero h2 {
+    font-size: 30px;
+    margin: 12px 0;
 }
 
-.about-content h2 {
-    font-size: 25px;
-    color: #183153;
-
-    margin-bottom: 12px;
+.hero p {
+    color: #52769d;
+    line-height: 1.7;
 }
 
-.description {
-    max-width: 480px;
-
-    font-size: 14px;
-    line-height: 1.6;
-
-    color: #58708f;
-
-    margin-bottom: 25px;
-}
-
-
-/* ================= OPTIONS ================= */
-
-.about-options {
-    display: flex;
-    gap: 10px;
-    margin: 10px;
-}
-
-.option {
-    width: 200px;
-
-    padding: 20px;
-    margin: 10px;
+.hero-image {
+    width: 40%;
+    height: 220px;
+    background: #e5f3fa;
+    border-radius: 15px;
 
     display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    background-color: #f5f8fc;
-
-    border: 1px solid #e0e8f0;
-    border-radius: 8px;
-}
-
-.icon {
-    width: 32px;
-    height: 32px;
-   
-
-    display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+}
 
-    background-color: #e5f0fa;
+.hero-image i {
+    font-size: 90px;
+    color: #315f8d;
+}
 
+button {
+    border: none;
+    background: #087b83;
+    color: white;
+    padding: 12px 20px;
     border-radius: 7px;
-
-    font-size: 16px;
+    cursor: pointer;
 }
 
-.option h3 {
-    font-size: 11px;
-    color: #183153;
-
-    margin-bottom: 4px;
+.hero-buttons {
+    margin-top: 20px;
 }
 
-.option p {
-    font-size: 9px;
-    color: #6b87a4;
-}
-
-
-/* ================= IMAGE ================= */
-
-.about-image {
-    width: 50%;
-    height: 260px;
-
-    overflow: hidden;
-
-    border-radius: 8px;
-    transition: all 0.3;
-}
-.about-image:hover{
-      transform: scale(1.2)
-}
-
-.about-image img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    display: block;
+.second-btn {
+    background: white;
+    color: #315f8d;
+    border: 1px solid #8bb1cf;
+    margin-left: 8px;
 }
 
 
-/* ================= TEAM ================= */
+/* ================= SECTIONS ================= */
 
-.team h2 {
-    font-size: 20px;
+.section,
+.why {
+    padding: 35px;
+}
 
-    color: #183153;
-
-    margin-bottom: 15px;
+.section h2,
+.why h2 {
+    margin: 8px 0 25px;
 }
 
 
-/* ================= TEAM CONTAINER ================= */
+/* Cards */
 
-.team-container {
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
+.cards {
+    display: flex;
     gap: 15px;
 }
 
-
-/* ================= TEAM CARD ================= */
-
-.team-card {
-    background-color: white;
-
-    border: 1px solid #dce4ec;
-
-    border-radius: 9px;
-
-    padding: 20px 15px;
-
-    text-align: center;
-
-    min-height: 180px;
-    transition: all 0.3;
-}
-.team-card:hover{
-     transform: scale(1.2)
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    flex: 1;
+    border: 1px solid #e0e8ef;
 }
 
+.card i {
+    background: #e3f4fa;
+    color: #28718d;
+    padding: 13px;
+    border-radius: 50%;
+}
 
-/* ================= PERSON ICON ================= */
+.card h3 {
+    margin: 18px 0 8px;
+    font-size: 16px;
+}
 
-.person-icon {
-    width: 58px;
-    height: 58px;
+.card p,
+.why p {
+    color: #6383a3;
+    font-size: 14px;
+}
 
-    margin: 0 auto 15px;
 
+/* Why */
+
+.why {
+    background: white;
+}
+
+.why-content {
+    display: flex;
+    gap: 30px;
+}
+
+.why-content > div {
+    flex: 1;
+    padding: 15px;
+}
+
+.why i {
+    font-size: 22px;
+    color: #087b83;
+}
+
+
+/* Mission */
+
+.mission {
+    background: #087078;
+    color: white;
+    padding: 35px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 25px;
+}
 
-    background-color: #c9e9fb;
+.mission > i {
+    font-size: 45px;
+}
 
-    border-radius: 50%;
-
-    font-size: 27px;
+.mission p {
+    max-width: 600px;
+    line-height: 1.6;
 }
 
 
-/* ================= TEAM TEXT ================= */
+/* CTA */
 
-.team-card h3 {
-    font-size: 12px;
-
-    color: #183153;
-
-    margin-bottom: 5px;
+.cta {
+    padding: 40px 35px;
+    background: #e8f5f7;
 }
 
-.team-card p {
-    font-size: 10px;
-
-    color: #5d7fa2;
-
-    margin-bottom: 12px;
+.cta h2 {
+    margin: 8px 0;
 }
 
-.team-card hr {
-    border: none;
-
-    border-top: 1px solid #e4eaf0;
-
-    margin-bottom: 12px;
-}
-
-.team-card span {
-    font-size: 9px;
-
-    line-height: 1.5;
-
-    color: #7893ae;
-}
-.btn-team a i{
-   font-size: 20px;
-   margin: 5px;
+.cta p {
+    color: #52769d;
+    margin-bottom: 18px;
 }
 
 
-/* ================= RESPONSIVE ================= */
+/* ================= MOBILE ================= */
 
 @media (max-width: 800px) {
 
-    .about {
-        padding: 25px 20px;
+    .sidebar {
+        width: 70px;
     }
 
-    .about-card {
-        flex-direction: column;
-        align-items: stretch;
+    .sidebar h3,
+    .sidebar small,
+    .sidebar .menu-title,
+    .sidebar a {
+        font-size: 0;
     }
 
-    .about-image {
-        width: 100%;
-        height: 250px;
+    .sidebar i {
+        font-size: 18px;
     }
 
-    .team-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-@media (max-width: 500px) {
-
-    .about-title h1 {
-        font-size: 34px;
+    .main {
+        margin-left: 70px;
     }
 
-    .about-options {
+    .hero,
+    .cards,
+    .why-content {
         flex-direction: column;
     }
 
-    .option {
+    .hero-text,
+    .hero-image {
         width: 100%;
     }
 
-    .team-container {
-        grid-template-columns: 1fr;
+    .cards {
+        display: flex;
     }
 }
