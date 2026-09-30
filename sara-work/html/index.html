@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HR Management System</title>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js">
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+</head>
+
+<body>
+
+ <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+          <div class="brand">
+
+    <div class="brand-logo">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- الشخص الأيسر -->
+            <circle cx="18" cy="18" r="7" fill="#ffffff"/>
+            <path d="M6 42c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+            <!-- الشخص الأيمن -->
+            <circle cx="42" cy="18" r="7" fill="#bfe4fa"/>
+            <path d="M30 42c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="#bfe4fa" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+            <!-- الدائرة الصغيرة -->
+            <circle cx="30" cy="20" r="3" fill="#bfe4fa"/>
+        </svg>
+    </div>
+
+    <div class="brand-text">
+        <h3>HR Core</h3>
+        <span>Management System</span>
+    </div>
+
+</div>
+
+
+            <div class="nav-links">
+
+                <a href="#home" class="active">
+                    Home
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+                <a href="#services">
+                    Services
+                </a>
+
+                <a href="contact.html">Contact Us</a>
+
+            </div>
+
+
+            <button class="login-btn" id="authBtn">
+                Login
+                <span>→</span>
+            </button>
+
+
+            <button class="menu-btn" aria-label="Open menu">
+                ☰
+            </button>
+
+        </nav>
+    <!--  HERO SECTION -->
+
+    <header class="hero" id="home">
+
+
+        <!-- HERO CONTENT -->
+
+        <div class="hero-content">
+
+
+            <!-- LEFT SIDE -->
+
+            <div class="hero-left">
+
+                <div class="eyebrow hero-item">
+
+                    <span></span>
+
+                    PEOPLE FIRST. WORK SIMPLIFIED.
+
+                </div>
+
+
+                <h1 class="hero-item">
+
+                    A better way<br>
+                    to work.
+
+                </h1>
+
+
+                <h2 class="hero-item">
+
+                    Welcome to HR Core  Management System
+
+                </h2>
+
+
+                <p class="hero-item">
+
+                    Bring your people, tasks and everyday requests
+                    together in one clear, connected workspace.
+
+                </p>
+
+
+                <div class="hero-buttons hero-item">
+
+                    <a href="#services" class="primary-btn">
+
+                        Go to workspace
+
+                        <span>→</span>
+
+                    </a>
+
+
+                    <a href="#services" class="secondary-btn">
+
+                        Explore services
+
+                        <span>→</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE ANIMATION -->
+
+            <div class="hero-animation">
+
+                <lottie-player id="hrAnimation" src="https://assets10.lottiefiles.com/packages/lf20_kyu7xb1v.json"
+                    background="transparent" speed="1" loop autoplay>
+                </lottie-player>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- HERO BOTTOM -->
+
+        <div class="hero-bottom">
+
+            <div>
+
+                <span>ONE PLATFORM</span>
+
+                <p>
+                    For HR teams. For every employee.
+                </p>
+
+            </div>
+
+
+            <div class="video-control">
+
+                <span class="pause">
+                    Ⅱ
+                </span>
+
+                <div>
+
+                    <small>
+                        HR workspace
+                    </small>
+
+                    <small>
+                        Connected teams
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!--  ABOUT SECTION  -->
+
+    <section class="about" id="about">
+
+        <div class="about-content">
+
+            <div class="about-title">
+                <span class="section-number">
+                    01 / ABOUT US
+                </span>
+
+                <h2>
+                   Making HR simpler, clearer<br>and more connected.
+                </h2>
+            </div>
+
+            <div class="about-text">
+
+                <p>
+Our HR Management System is designed to make everyday workplace processes easier for both employees and HR teams. 
+ From managing employee information and leave requests to organizing tasks, meetings, 
+    and company policies, everything is brought together in one simple and organized platform.
+We aim to reduce paperwork, improve communication, 
+and help teams spend less time managing administrative tasks and more time focusing on their work.
+
+                </p>
+
+                <p>
+                   Simple tools. Better organization. A smoother workplace.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!--  WORKSPACE SECTION -->
+
+    <section class="workspace" id="services">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-number">01 / YOUR WORKSPACE</span>
+
+                <h2>
+                    Less searching.<br>
+                    More getting things done.
+                </h2>
+            </div>
+
+            <div class="section-description">
+                <p>
+                    From the first task to the next meeting,
+                    find what you need in one place.
+                </p>
+
+                <span>
+                    Tools tailored to your account role.
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- Cards -->
+
+        <div class="service-grid">
+
+            <!-- Card 1 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <span>01</span>
+                </div>
+
+                <h3>Employee management</h3>
+
+                <p>
+                    A clear view of employee profiles,
+                    departments and work information.
+                </p>
+
+                <div class="card-footer">
+                    <span>Explore employees</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+
+            <!-- Card 2 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-clipboard-check"></i>
+                    </div>
+                    <span>02</span>
+                </div>
+
+                <h3>Task management</h3>
+
+                <p>
+                    Keep assignments, submissions
+                    and reviews moving forward.
+                </p>
+
+                <div class="card-footer">
+                    <span>Explore tasks</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+
+            <!-- Card 3 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <span>03</span>
+                </div>
+
+                <h3>Leave requests</h3>
+
+                <p>
+                    Request time away and follow
+                    each decision with clarity.
+                </p>
+
+                <div class="card-footer">
+                    <span>Explore leave</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+
+            <!-- Card 4 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <span>04</span>
+                </div>
+
+                <h3>Company policies</h3>
+
+                <p>
+                    Your workplace guidance,
+                    organized and easy to find.
+                </p>
+
+                <div class="card-footer">
+                    <span>Read policies</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+
+            <!-- Card 5 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-chat-left-text"></i>
+                    </div>
+                    <span>05</span>
+                </div>
+
+                <h3>Feedback</h3>
+
+                <p>
+                    Give your HR team a direct view
+                    of your ideas and concerns.
+                </p>
+
+                <div class="card-footer">
+                    <span>Share feedback</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+
+            <!-- Card 6 -->
+            <article class="service-card">
+
+                <div class="card-top">
+                    <div class="card-icon">
+                        <i class="bi bi-camera-video"></i>
+                    </div>
+                    <span>06</span>
+                </div>
+
+                <h3>Meetings</h3>
+
+                <p>
+                    Know what is coming up and
+                    join your team with one link.
+                </p>
+
+                <div class="card-footer">
+                    <span>View meetings</span>
+                    <span>→</span>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!--  GETTING STARTED  -->
+
+    <section class="getting-started">
+
+        <div class="getting-left">
+
+            <span class="section-number">
+                02 / GETTING STARTED
+            </span>
+
+            <h2>
+                Your workday,<br>
+                a little simpler.
+            </h2>
+
+            <p>
+                One login. The right tools.<br>
+                A clear next step.
+            </p>
+
+            <button class="dark-btn">
+                Sign in
+                <span>→</span>
+            </button>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">01</div>
+
+                <div>
+                    <h3>Sign in to your account</h3>
+                    <p>Use the account created by your HR team.</p>
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">02</div>
+
+                <div>
+                    <h3>Find your workspace</h3>
+                    <p>See the tools and information for your role.</p>
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">03</div>
+
+                <div>
+                    <h3>Move your work forward</h3>
+                    <p>Manage tasks, requests and everyday updates.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!--  FOOTER  -->
+
+    <footer id="contact">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <div class="footer-title">
+                    <div class="brand-logo">HR</div>
+                    <h3>HR Management System</h3>
+                </div>
+
+                <h2>A more connected workplace.</h2>
+
+                <p>
+                    People, tasks and communication,<br>
+                    all in one place.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>Explore</h4>
+
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Contact Us</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>Contact</h4>
+
+                <span>Reach your HR team</span>
+                <span>Email to be provided</span>
+                <span>Phone to be provided</span>
+
+            </div>
+
+
+            <div class="map-placeholder">
+
+                <div class="map-pin">●</div>
+
+                <span>
+                    Office location to be provided
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>HR Management System</span>
+
+            <span>Built around your workday.</span>
+
+        </div>
+
+    </footer>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
