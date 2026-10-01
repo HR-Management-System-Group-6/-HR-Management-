@@ -1,5 +1,9 @@
 /*  HOME PAGE JAVASCRIPT */
 
+function loginClick()
+{
+    window.location.href = "../../eyadWork/html/login.html"
+}
 
 /*  DOM ELEMENTS*/
 
@@ -576,24 +580,32 @@ serviceCards.forEach(card => {
 
 function updateAuthButton() {
     const authBtn = document.getElementById("authBtn");
+
     if (!authBtn) return;
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+    );
 
     if (currentUser) {
+
         authBtn.innerHTML = `${currentUser.name} <span>→</span>`;
+
         authBtn.onclick = () => {
             localStorage.removeItem("currentUser");
             window.location.reload();
         };
+
     } else {
+
         authBtn.innerHTML = `Login <span>→</span>`;
+
         authBtn.onclick = () => {
-            window.location.href = "login.html";
+            window.location.href =
+                "../../eyadWork/html/login.html";
         };
     }
 }
-
 updateAuthButton();
 
 

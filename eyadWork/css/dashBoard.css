@@ -245,7 +245,7 @@ body {
 .user-info {
     display: flex;
     flex-direction: column;
-
+    align-items: center;
     gap: 4px;
 }
 
@@ -256,6 +256,7 @@ body {
 .user-info span {
     font-size: 11px;
     color: #4d7198;
+    text-align: left;
 }
 
 .user-profile > i {

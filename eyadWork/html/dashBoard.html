@@ -12,6 +12,12 @@
     >
 
     <link rel="stylesheet" href="/eyadWork/css/dashBoard.css">
+    <link rel="stylesheet" href="/eyadWork/css/leaveRequest.css">
+    <link rel="stylesheet" href="/eyadWork/css/leaveView.css">
+    <link rel="stylesheet" href="/eyadWork//css/taskEmployee.css">
+    <link rel="stylesheet" href="/eyadWork/css/taskHr.css">
+
+
 </head>
 
 <body>
@@ -44,12 +50,12 @@
                 <span>My Profile</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="displayTask()">
                 <i class="bi bi-clipboard"></i>
                 <span>My Tasks</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="displayLeave()">
                 <i class="bi bi-calendar3"></i>
                 <span>Leave Requests</span>
             </a>
@@ -59,10 +65,10 @@
                 <span>Policies</span>
             </a>
 
-            <button href="#" class="nav-item" onclick="displayFeedback()">
+            <a href="#" class="nav-item" onclick="displayFeedback()">
                 <i class="bi bi-chat-square"></i>
                 <span>Feedback</span>
-            </button>
+            </a>
 
             <a href="#" class="nav-item">
                 <i class="bi bi-camera-video"></i>
@@ -73,17 +79,7 @@
 
         <div class="sidebar-bottom">
 
-            <a href="#" class="nav-item active">
-                <i class="bi bi-info-circle"></i>
-                <span>About</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-envelope"></i>
-                <span>Contact Us</span>
-            </a>
-
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="logout()">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>
@@ -102,14 +98,13 @@
 
 
             <div class="user-profile">
-
                 <div class="user-avatar">
                     LO
                 </div>
 
                 <div class="user-info">
-                    <strong>Lujain Okour</strong>
-                    <span>Employee</span>
+                    <strong id="user">Lujain Okour</strong>
+                    <span id="role">Employee</span>
                 </div>
 
                 
@@ -129,5 +124,12 @@
 
 </div>
 <script src="/sara-work/js/feedback.js"></script>
+<script src="/eyadWork/js/leave.js"></script>
+<script src="/eyadWork/js/login.js"></script>
+<script src="/eyadWork/js/dashBoard.js"></script>
+<script src="/eyadWork/js/taskManagment.js"></script>
+<script src="/eyadWork/js/taskManagment.js"></script>
+
+
 </body>
 </html>

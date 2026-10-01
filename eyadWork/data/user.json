@@ -1,11 +1,21 @@
 [
   {
     "email": "hr@example.com",
+    "name":"tariq",
     "password": "123",
     "role": "HR"
+
   },
   {
     "email": "employee@example.com",
+    "name": "ahmad",
+    "password": "123",
+    "role": "Employee"
+  },
+
+  {
+    "email": "eyad@example.com",
+    "name": "eyad",
     "password": "123",
     "role": "Employee"
   }
