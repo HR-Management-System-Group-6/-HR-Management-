@@ -22,39 +22,22 @@
           <div class="brand">
 
     <div class="brand-logo">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-    <!-- السقف -->
-    <path d="M10 22 L30 10 L50 22" 
-          stroke="#bfe4fa" stroke-width="2.5" 
-          stroke-linecap="round" stroke-linejoin="round"/>
-
-    <!-- المبنى -->
-    <rect x="14" y="22" width="32" height="28" 
-          stroke="#bfe4fa" stroke-width="2.5" 
-          stroke-linejoin="round"/>
-
-    <!-- النوافذ -->
-    <rect x="20" y="28" width="5" height="5" fill="#bfe4fa"/>
-    <rect x="28" y="28" width="5" height="5" fill="#bfe4fa"/>
-    <rect x="36" y="28" width="5" height="5" fill="#bfe4fa"/>
-
-    <rect x="20" y="37" width="5" height="5" fill="#bfe4fa"/>
-    <rect x="36" y="37" width="5" height="5" fill="#bfe4fa"/>
-
-    <!-- الباب -->
-    <rect x="27" y="42" width="6" height="8" fill="#bfe4fa"/>
-
-    <!-- النجمة -->
-    <path d="M30 2 L31 5 L34 5 L31.5 7 L32.5 10 L30 8 L27.5 10 L28.5 7 L26 5 L29 5 Z" 
-          fill="#c9a961"/>
-</svg>
+       
+         <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 50 L18 28 L28 38 L40 22 L52 38 L62 28 L62 50 Z" 
+                  fill="none" stroke="#c9a961" stroke-width="3" stroke-linejoin="round"/>
+            <rect x="18" y="50" width="44" height="6" fill="#c9a961"/>
+            <circle cx="18" cy="26" r="3" fill="#c9a961"/>
+            <circle cx="40" cy="20" r="3" fill="#c9a961"/>
+            <circle cx="62" cy="26" r="3" fill="#c9a961"/>
+        </svg>
     </div>
 
-    <div class="brand-text">
-        <h3>Aurera Hotel </h3>
-        <span> Hr Management System</span>
+     <div class="brand-text">
+        <h3>Crown Financial</h3>
+        <span>HR Management</span>
     </div>
+</div>
 
 </div>
 
@@ -65,7 +48,7 @@
                     Home
                 </a>
 
-                <a href="#about">
+                <a href="/abdallahwork/html/about.html">
                     About
                 </a>
 
@@ -89,136 +72,88 @@
             </button>
 
         </nav>
-    <!--  HERO SECTION -->
-
     <header class="hero" id="home">
 
+    <!-- 🎬 الفيديو الخلفي -->
+    <video 
+        class="hero-video" 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        poster="">
+        <source src="hero.mp4.mp4" type="video/mp4">
+    </video>
 
-        <!-- HERO CONTENT -->
+    <!-- 🌑 Overlay كحلي فوق الفيديو -->
+    <div class="hero-overlay"></div>
 
-        <div class="hero-content">
+    <!-- 🎨 Geometric lines (اختياري) -->
+    <div class="hero-pattern"></div>
 
+    <!-- 📝 HERO CONTENT -->
+    <div class="hero-content">
 
-            <!-- LEFT SIDE -->
+        <!-- LEFT SIDE -->
+        <div class="hero-left">
 
-            <div class="hero-left">
-
-                <div class="eyebrow hero-item">
-
-                    <span></span>
-
-                    PEOPLE FIRST. WORK SIMPLIFIED.
-
-                </div>
-
-
-                <h1 class="hero-item">
-
-                    A better way<br>
-                    to work.
-
-                </h1>
-
-
-                <h2 class="hero-item">
-
-                    Welcome to HR Core  Management System
-
-                </h2>
-
-
-                <p class="hero-item">
-
-                    Bring your people, tasks and everyday requests
-                    together in one clear, connected workspace.
-
-                </p>
-
-
-                <div class="hero-buttons hero-item">
-
-                    <a href="#services" class="primary-btn">
-
-                        Go to workspace
-
-                        <span>→</span>
-
-                    </a>
-
-
-                    <a href="#services" class="secondary-btn">
-
-                        Explore services
-
-                        <span>→</span>
-
-                    </a>
-
-                </div>
-
+            <div class="eyebrow hero-item">
+                <span></span>
+                PEOPLE FIRST. WORK SIMPLIFIED.
             </div>
 
+            <h1 class="hero-item">
+                A better way<br>
+                to work.
+            </h1>
 
-            <!-- RIGHT SIDE ANIMATION -->
+            <h2 class="hero-item">
+                Welcome to Crown Financial HR Management System
+            </h2>
 
-            <div class="hero-animation" id="heroAnimation">
-            
-    <div class="animation-aura"></div>
-       
-<lottie-player
-    src="https://assets2.lottiefiles.com/packages/lf20_qp1q7mct.json"
-    background="transparent"
-    speed="1"
-    loop
-    autoplay>
-</lottie-player>   
+            <p class="hero-item">
+                Bring your people, tasks and everyday requests
+                together in one clear, connected workspace.
+            </p>
 
+            <div class="hero-buttons hero-item">
 
+                <a href="#services" class="primary-btn">
+                    Go to workspace
+                    <span>→</span>
+                </a>
+
+                <a href="#services" class="secondary-btn">
+                    Explore services
+                    <span>→</span>
+                </a>
 
             </div>
-
 
         </div>
 
+    </div>
 
-        <!-- HERO BOTTOM -->
+    <!-- HERO BOTTOM -->
+    <div class="hero-bottom">
 
-        <div class="hero-bottom">
+        <div>
+            <span>ONE PLATFORM</span>
+            <p>For HR teams. For every employee.</p>
+        </div>
 
+        <div class="video-control">
+            <span class="pause">Ⅱ</span>
             <div>
-
-                <span>ONE PLATFORM</span>
-
-                <p>
-                    For HR teams. For every employee.
-                </p>
-
+                <small>HR workspace</small>
+                <small>Connected teams</small>
             </div>
-
-
-            <div class="video-control">
-
-                <span class="pause">
-                    Ⅱ
-                </span>
-
-                <div>
-
-                    <small>
-                        HR workspace
-                    </small>
-
-                    <small>
-                        Connected teams
-                    </small>
-
-                </div>
-
-            </div>
-
         </div>
 
-    </header>
+    </div>
+
+</header>
+
 
     <!--  ABOUT SECTION  -->
 

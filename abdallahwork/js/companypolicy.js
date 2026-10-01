@@ -1,7 +1,18 @@
 fetch("../data/companypolicy.json")
-    .then(response => response.json())
+    .then(response => {
+        console.log(response.url);
+        console.log(response.status);
+        return response.text();
+    })
     .then(data => {
-
+        console.log(data);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
+fetch("../data/companypolicy.json")
+     .then(response => response.json())
+    .then(data => {
         for (let index = 0; index < data.length; index++) {
 
             document.getElementById("policies-container").innerHTML += `

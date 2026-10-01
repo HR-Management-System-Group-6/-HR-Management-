@@ -64,7 +64,7 @@ button {
 }
 
 
-/* geometric background */
+/* geometric background 
 
 .hero::before {
     content: "";
@@ -87,7 +87,7 @@ button {
     transform: skewX(-5deg);
 
     opacity: .8;
-}
+}*/
 
 .hero::after {
     content: "";
@@ -153,10 +153,28 @@ button {
 }
 
 .brand-logo svg {
-    width: 28px;
+   /* width: 28px;
     height: 28px;
-    display: block;
+    display: block;*/
+    width: 30px;
+    height: 30px;
 }
+
+/*.brand-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 2px;
+    line-height: 1;
+}
+
+.brand-text span {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: #55779a;
+    text-transform: uppercase;
+}*/
 
 .brand-text h3 {
     font-size: 15px;
@@ -485,7 +503,7 @@ button {
 
     gap: 80px;
 
-    align-items: center;
+    align-items: start;
 }
 
 .about-title h2 {
@@ -1839,5 +1857,121 @@ footer {
 
     .form-row {
         grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* =========================================
+   HERO VIDEO BACKGROUND
+========================================= */
+
+.hero {
+    position: relative;
+    min-height: 760px;
+    margin: 20px 28px 0;
+    border-radius: 25px;
+    overflow: hidden;
+    background: #0d1f3c; /* fallback */
+    color: white;
+    isolation: isolate;
+}
+
+/* 🎬 الفيديو */
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 1;             /* ← فيديو واضح تماماً */
+}
+
+/* 🌑 Overlay كحلي */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+        105deg,
+        rgba(0, 16, 34, 0.70) 0%,
+        rgba(0, 19, 38, 0.50) 45%,
+        rgba(25, 59, 96, 0.30) 100%
+    );
+}
+
+/* ✨ خطوط هندسية (اختياري) 
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background:
+        repeating-linear-gradient(
+            72deg,
+            transparent 0px,
+            transparent 55px,
+            rgba(180, 210, 235, 0.08) 56px,
+            rgba(180, 210, 235, 0.08) 58px
+        );
+    pointer-events: none;
+}
+*/
+/* 📝 المحتوى فوق الفيديو */
+.hero-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    min-height: 570px;
+    padding: 120px 55px 40px;
+    gap: 40px;
+}
+
+/* Hero Bottom فوق الفيديو */
+.hero-bottom {
+    position: absolute;
+    z-index: 5;
+    left: 55px;
+    right: 55px;
+    bottom: 25px;
+}
+
+/* 🎬 تأثير عند الـ hover (اختياري) */
+.hero:hover .hero-video {
+    transform: scale(1.03);
+    transition: transform 8s ease;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+    .hero-content {
+        padding: 110px 40px 40px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .hero {
+        min-height: 620px;
+        margin: 10px;
+        border-radius: 18px;
+    }
+
+    .hero-content {
+        padding: 100px 28px 30px;
+        min-height: 520px;
+    }
+
+    .hero-video {
+        opacity: 0.55;
+    }
+
+    .hero-bottom {
+        left: 28px;
+        right: 28px;
     }
 }
