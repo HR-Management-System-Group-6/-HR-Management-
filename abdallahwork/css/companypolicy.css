@@ -243,7 +243,9 @@ body {
     transform: translateY(20px);
 }
 
-.policy-card.show {
+.policy-card {
+    opacity: 0;
+    transform: translateY(20px);
     animation: fadeUp 0.5s ease-out forwards;
 }
 
@@ -257,30 +259,4 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-/* RESPONSIVE */
-
-@media (max-width: 900px) {
-
-    #policies-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .page-header h1 {
-        font-size: 32px;
-    }
-
-    .policies {
-        padding: 40px 20px;
-    }
-
-    #policies-container {
-        grid-template-columns: 1fr;
-    }
-
 }
