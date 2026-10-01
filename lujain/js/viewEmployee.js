@@ -3,6 +3,7 @@
 // ======================================================
 
 const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+let role = user?.role?.toLowerCase()
 
 if (!loggedInUser) {
     console.log("No logged in user found");
@@ -164,9 +165,7 @@ function displayHRPayrollEmployees() {
 
     const content = document.getElementById("content");
 
-    if (!content) {
-        return;
-    }
+    if (role=="hr")
 
 
     content.innerHTML = `
