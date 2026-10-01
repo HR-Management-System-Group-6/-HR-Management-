@@ -2,9 +2,10 @@ function displayFeedback() {
 
     let content = document.getElementById("content")
     /* نحدد الـ Role */
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-    const isHR = user && user.role === "employee";
-
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const role = user?.role?.toLowerCase();
+    
+ if (role== "employee"){
     content.innerHTML = `
     
         <main class="main-area">
@@ -14,7 +15,7 @@ function displayFeedback() {
             <div class="breadcrumb">
                 <span>Workspace</span>
                 <span class="separator">/</span>
-                <strong>${isHR ? "Feedback" : "Contact Us"}</strong>
+                
             </div>
 
             <div class="user-info" id="userInfo">
@@ -24,7 +25,7 @@ function displayFeedback() {
 
         <section class="content-area">
 
-        <div id="employeeView" style="${isHR ? "display: none;" : "display: block;"}">
+        <div id="employeeView" >
                 <div class="page-header">
                     <span class="page-label">MY WORKSPACE / CONTACT US</span>
                     <h1>Feedback</h1>
@@ -182,12 +183,15 @@ function displayFeedback() {
 
                 </div>
 
-            </div>
+            </div> `
+ }  
 
-            <!-- ============================
-                 HR VIEW
-            ============================= -->
-            <div id="hrView" style="${isHR ? "display: block;" : "display: none;"}">
+
+            else if(role =="hr")
+            {
+                content.innerHTML=`
+
+            <div id="hrView">
 
                 <div class="page-header">
                     <span class="page-label">MY WORKSPACE / FEEDBACK</span>
@@ -249,27 +253,26 @@ function displayFeedback() {
             </div>
 
         </section>
-
+            
     </main>
     `;
+            }
 
-
-    initFeedbackPage();
+  initFeedbackPage();
 
 }
 
-/* =========================================
-   INIT PAGE (بعد الرندر)
-========================================= */
+/* INIT PAGE (بعد الرندر)*/
+/*
 function initFeedbackPage() {
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
-    const isHR = user && user.role === "HR";
+    const isHR = user && user.role === "HR";  */
 
     /* 1) تعبئة بيانات المستخدم */
-    setupUserInfo();
+   /* setupUserInfo();
 
-    /* 2) حسب الـ Role */
+   
     if (isHR) {
         setupHRFilters();
         loadFeedbacks();
@@ -280,13 +283,363 @@ function initFeedbackPage() {
     }
 }
 
-
-/* =========================================
-   USER INFO (Topbar + Form)
-========================================= */
 function setupUserInfo() {
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (!user) return;
+
+    /* Topbar 
+    const userInfo = document.getElementById("userInfo");
+    if (userInfo) {
+
+        const initials = (user.name || "U")
+            .split(" ")
+            .map(n => n[0])
+            .slice(0, 2)
+            .join("")
+            .toUpperCase();
+
+        userInfo.innerHTML = `
+            <div class="avatar">${initials}</div>
+            <div class="user-text">
+                <strong>${user.name}</strong>
+                <span>${user.role}</span>
+            </div>
+        `;
+    }
+
+    /* Form (فقط للموظف) 
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+
+    if (nameInput) nameInput.value = user.name || "";
+    if (emailInput) emailInput.value = user.email || "";
+}
+
+function setupFormValidation() {
+
+    const form = document.getElementById("feedbackForm");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        clearErrors();
+
+        const subject = document.getElementById("subject").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        let valid = true;
+
+        if (subject.length < 3) {
+            showError("subject", "subjectError", "Subject is required (min 3 characters).");
+            valid = false;
+        }
+
+        if (message.length < 10) {
+            showError("message", "messageError", "Message is required (min 10 characters).");
+            valid = false;
+        }
+
+        if (!valid) return;
+
+        /* نجيب المستخدم الحالي 
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+
+        /* نبني الـ Feedback 
+        const feedback = {
+            id: Date.now(),
+            name: user?.name || "Guest",
+            email: user?.email || "guest@company.com",
+            subject: subject,
+            message: message,
+            status: "new",
+            date: new Date().toISOString().split("T")[0]
+        };
+
+        /* نحفظ 
+        saveFeedback(feedback);
+
+        /* نصفّر الفورم 
+        form.reset();
+        setupUserInfo(); /* نرجع نعبي الـ readonly */
+
+        /* رسالة نجاح 
+        showSuccess("✓ Message sent successfully!");
+    });
+}
+
+
+
+function setupCharCounter() {
+
+    const message = document.getElementById("message");
+    const counter = document.getElementById("charCount");
+
+    if (!message || !counter) return;
+
+    message.addEventListener("input", () => {
+        counter.textContent = message.value.length;
+    });
+}
+
+
+
+function clearErrors() {
+    document.querySelectorAll(".error-message").forEach(el => {
+        el.textContent = "";
+    });
+    document.querySelectorAll(".form-control").forEach(el => {
+        el.classList.remove("error");
+    });
+}
+
+function showError(inputId, errorId, msg) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    if (input) input.classList.add("error");
+    if (error) error.textContent = msg;
+}
+
+function showSuccess(msg) {
+    const form = document.getElementById("feedbackForm");
+    if (!form) return;
+
+    let success = form.querySelector(".success-message");
+    if (!success) {
+        success = document.createElement("div");
+        success.className = "success-message";
+        form.appendChild(success);
+    }
+
+    success.textContent = msg;
+
+    setTimeout(() => {
+        success.textContent = "";
+    }, 4000);
+}
+
+
+function getFeedbacks() {
+    return JSON.parse(localStorage.getItem("feedbacks")) || [];
+}
+
+function saveFeedback(feedback) {
+    const feedbacks = getFeedbacks();
+    feedbacks.push(feedback);
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+}
+
+
+
+function loadFeedbacks() {
+
+    const tbody = document.getElementById("feedbackTableBody");
+    if (!tbody) return;
+
+    const search = (document.getElementById("searchInput")?.value || "").toLowerCase();
+    const status = document.getElementById("filterStatus")?.value || "";
+
+    let feedbacks = getFeedbacks();
+
+    /* Search 
+    if (search) {
+        feedbacks = feedbacks.filter(f =>
+            (f.name || "").toLowerCase().includes(search) ||
+            (f.email || "").toLowerCase().includes(search) ||
+            (f.subject || "").toLowerCase().includes(search)
+        );
+    }
+
+    /* Filter Status 
+    if (status) {
+        feedbacks = feedbacks.filter(f => f.status === status);
+    }
+
+    /* ترتيب من الأحدث للأقدم 
+    feedbacks.sort((a, b) => b.id - a.id);
+
+    /* إذا فاضي 
+    if (feedbacks.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    <div class="empty-state">No feedbacks found.</div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    /* نبني الجدول 
+    tbody.innerHTML = feedbacks.map((f, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${f.name}</td>
+            <td>${f.email}</td>
+            <td>${f.subject}</td>
+            <td>${f.date}</td>
+            <td>
+                <span class="status-badge ${f.status}">
+                    ${f.status}
+                </span>
+            </td>
+            <td>
+                <button class="action-btn view" onclick="viewFeedback(${f.id})">View</button>
+                <button class="action-btn toggle" onclick="toggleStatus(${f.id})">
+                    ${f.status === "new" ? "Review" : "Unreview"}
+                </button>
+                <button class="action-btn delete" onclick="deleteFeedback(${f.id})">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+
+    updateStats();
+}
+
+
+function updateStats() {
+
+    const feedbacks = getFeedbacks();
+
+    const totalEl = document.getElementById("totalCount");
+    const newEl = document.getElementById("newCount");
+    const reviewedEl = document.getElementById("reviewedCount");
+
+    if (totalEl) totalEl.textContent = feedbacks.length;
+    if (newEl) newEl.textContent = feedbacks.filter(f => f.status === "new").length;
+    if (reviewedEl) reviewedEl.textContent = feedbacks.filter(f => f.status === "reviewed").length;
+}
+
+
+function setupHRFilters() {
+
+    const searchInput = document.getElementById("searchInput");
+    const filterStatus = document.getElementById("filterStatus");
+
+    if (searchInput) searchInput.addEventListener("input", loadFeedbacks);
+    if (filterStatus) filterStatus.addEventListener("change", loadFeedbacks);
+}
+
+
+/* تغيير الحالة 
+function toggleStatus(id) {
+
+    const feedbacks = getFeedbacks();
+    const index = feedbacks.findIndex(f => f.id === id);
+    if (index === -1) return;
+
+    feedbacks[index].status =
+        feedbacks[index].status === "new" ? "reviewed" : "new";
+
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+
+    loadFeedbacks();
+}
+
+/* حذف 
+function deleteFeedback(id) {
+
+    if (!confirm("Are you sure you want to delete this feedback?")) return;
+
+    let feedbacks = getFeedbacks();
+    feedbacks = feedbacks.filter(f => f.id !== id);
+
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+
+    loadFeedbacks();
+}
+
+/* عرض التفاصيل (Modal) 
+function viewFeedback(id) {
+
+    const feedbacks = getFeedbacks();
+    const f = feedbacks.find(item => item.id === id);
+    if (!f) return;
+
+    /* ننشئ الـ Modal لو مش موجود 
+    let modal = document.getElementById("feedbackModal");
+    let content = document.getElementById("feedbackModalContent");
+
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.className = "feedback-modal";
+        modal.id = "feedbackModal";
+        modal.innerHTML = `<div class="feedback-modal-content" id="feedbackModalContent"></div>`;
+        document.body.appendChild(modal);
+
+        content = document.getElementById("feedbackModalContent");
+
+        /* إغلاق عند الضغط على الخلفية 
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
+
+    content.innerHTML = `
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <h3>${f.subject}</h3>
+
+        <div class="modal-row">
+            <span>From</span>
+            <p>${f.name} (${f.email})</p>
+        </div>
+
+        <div class="modal-row">
+            <span>Date</span>
+            <p>${f.date}</p>
+        </div>
+
+        <div class="modal-row">
+            <span>Status</span>
+            <p><span class="status-badge ${f.status}">${f.status}</span></p>
+        </div>
+
+        <div class="modal-row">
+            <span>Message</span>
+            <p>${f.message}</p>
+        </div>
+    `;
+
+    modal.classList.add("open");
+}
+
+function closeModal() {
+    const modal = document.getElementById("feedbackModal");
+    if (modal) modal.classList.remove("open");
+}
+
+*/
+
+
+
+/* INIT PAGE —  */
+function initFeedbackPage() {
+
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const role = user?.role?.toLowerCase();
+
+    /* 1) نعبي بيانات المستخدم */
+    setupUserInfo();
+
+    /* 2) حسب الـ Role */
+    if (role === "hr") {
+        setupHRFilters();
+        loadFeedbacks();
+        updateStats();
+    } else if (role === "employee") {
+        setupFormValidation();
+        setupCharCounter();
+    }
+}
+
+
+/* =========================================
+   USER INFO — Topbar + Form
+========================================= */
+function setupUserInfo() {
+
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) return;
 
     /* Topbar */
@@ -349,7 +702,7 @@ function setupFormValidation() {
         if (!valid) return;
 
         /* نجيب المستخدم الحالي */
-        const user = JSON.parse(localStorage.getItem("currentUser"));
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
         /* نبني الـ Feedback */
         const feedback = {
@@ -362,12 +715,12 @@ function setupFormValidation() {
             date: new Date().toISOString().split("T")[0]
         };
 
-        /* نحفظ */
+        /* نحفظ في Local Storage */
         saveFeedback(feedback);
 
         /* نصفّر الفورم */
         form.reset();
-        setupUserInfo(); /* نرجع نعبي الـ readonly */
+        setupUserInfo();
 
         /* رسالة نجاح */
         showSuccess("✓ Message sent successfully!");
@@ -444,7 +797,7 @@ function saveFeedback(feedback) {
 
 
 /* =========================================
-   HR: LOAD FEEDBACKS
+   HR — LOAD FEEDBACKS
 ========================================= */
 function loadFeedbacks() {
 
@@ -498,12 +851,8 @@ function loadFeedbacks() {
                     ${f.status}
                 </span>
             </td>
-            <td>
+                        <td>
                 <button class="action-btn view" onclick="viewFeedback(${f.id})">View</button>
-                <button class="action-btn toggle" onclick="toggleStatus(${f.id})">
-                    ${f.status === "new" ? "Review" : "Unreview"}
-                </button>
-                <button class="action-btn delete" onclick="deleteFeedback(${f.id})">Delete</button>
             </td>
         </tr>
     `).join("");
@@ -513,7 +862,7 @@ function loadFeedbacks() {
 
 
 /* =========================================
-   HR: STATS
+   HR — STATS
 ========================================= */
 function updateStats() {
 
@@ -530,7 +879,7 @@ function updateStats() {
 
 
 /* =========================================
-   HR: FILTERS
+   HR — FILTERS
 ========================================= */
 function setupHRFilters() {
 
@@ -543,10 +892,10 @@ function setupHRFilters() {
 
 
 /* =========================================
-   HR: ACTIONS
+   HR — ACTIONS
 ========================================= */
 
-/* تغيير الحالة */
+/* تغيير الحالة 
 function toggleStatus(id) {
 
     const feedbacks = getFeedbacks();
@@ -561,7 +910,7 @@ function toggleStatus(id) {
     loadFeedbacks();
 }
 
-/* حذف */
+/* حذف 
 function deleteFeedback(id) {
 
     if (!confirm("Are you sure you want to delete this feedback?")) return;
@@ -572,7 +921,7 @@ function deleteFeedback(id) {
     localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
 
     loadFeedbacks();
-}
+} */
 
 /* عرض التفاصيل (Modal) */
 function viewFeedback(id) {
