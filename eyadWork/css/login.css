@@ -1,5 +1,4 @@
 
-
 * {
     margin: 0;
     padding: 0;
@@ -510,4 +509,38 @@ body {
     .account-types {
         grid-template-columns: 1fr;
     }
+}
+
+/* ===============================
+   Google Sign-In
+   =============================== */
+
+.google-divider {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 15px 0;
+}
+
+.google-divider span {
+    flex: 1;
+    height: 1px;
+    background: #d6e0e8;
+}
+
+.google-divider small {
+    font-size: 9px;
+    color: #8aa0b3;
+}
+
+.google-login {
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.google-login > div {
+    max-width: 100%;
 }

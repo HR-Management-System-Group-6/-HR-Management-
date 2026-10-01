@@ -1,0 +1,539 @@
+/* =========================
+   CONTENT / SECTION
+========================= */
+
+.content {
+    padding: 24px 20px;
+    background: #f3f7fb;
+    min-height: calc(100vh - 57px);
+}
+
+
+/* =========================
+   PAGE LABEL
+========================= */
+
+.page-label {
+    color: #46749c;
+    font-size: 6px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+
+/* =========================
+   TITLE ROW
+========================= */
+
+.title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.title-row h1 {
+    color: #1c3858;
+    font-size: 21px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.title-row p {
+    color: #66829d;
+    font-size: 8px;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn {
+    height: 28px;
+    padding: 0 13px;
+
+    background: #ffffff;
+    border: 1px solid #7fa7ce;
+    border-radius: 6px;
+
+    color: #1d3b5b;
+
+    font-size: 8px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    cursor: pointer;
+}
+
+.back-btn i {
+    font-size: 11px;
+}
+
+.back-btn:hover {
+    background: #f0f7fc;
+}
+
+
+/* =========================
+   EMPLOYEE AREA
+========================= */
+
+.employee-area {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+}
+
+
+/* =========================
+   PHOTO SECTION
+========================= */
+
+.photo-section h3 {
+    color: #1d3958;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.photo-card {
+    height: 225px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e9f0;
+    border-radius: 9px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 38px 15px 15px;
+}
+
+
+/* =========================
+   AVATAR
+========================= */
+
+.avatar-placeholder {
+    width: 85px;
+    height: 85px;
+
+    background: #eef5fb;
+    border: 1px dashed #b7d0e6;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    color: #76a2c7;
+}
+
+.avatar-placeholder > i {
+    font-size: 48px;
+}
+
+
+/* Plus button */
+
+.plus-btn {
+    position: absolute;
+
+    right: -4px;
+    bottom: -1px;
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #173b60;
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.plus-btn i {
+    font-size: 13px;
+}
+
+
+/* =========================
+   UPLOAD BUTTON
+========================= */
+
+.upload-btn {
+    margin-top: 22px;
+
+    width: 165px;
+    height: 32px;
+
+    border: 1px solid #7ba5ce;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #21405f;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    cursor: pointer;
+}
+
+.upload-btn i {
+    font-size: 12px;
+}
+
+.upload-btn:hover {
+    background: #f3f8fc;
+}
+
+
+/* Photo hint */
+
+.photo-hint {
+    margin-top: 9px;
+
+    color: #8ca1b5;
+    font-size: 7px;
+}
+
+
+/* =========================
+   DETAILS SECTION
+========================= */
+
+.details-section {
+    background: #ffffff;
+
+    border: 1px solid #e0e8ef;
+    border-radius: 9px;
+
+    padding: 17px 20px 14px;
+}
+
+
+/* Header */
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.details-header h3 {
+    color: #1d3958;
+    font-size: 14px;
+    margin: 0;
+}
+
+.details-header span {
+    font-size: 7px;
+    color: #69839c;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.employee-form {
+    width: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    margin-bottom: 11px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 8px;
+    font-weight: 600;
+
+    color: #26435f;
+
+    margin-bottom: 6px;
+}
+
+.form-group label span {
+    color: #477aa5;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 34px;
+
+    border: 1px solid #cbdce9;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    padding: 0 11px;
+
+    outline: none;
+
+    color: #29435c;
+
+    font-size: 8px;
+}
+
+.form-group input::placeholder {
+    color: #8da4b8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6c9bc4;
+
+    box-shadow:
+        0 0 0 2px rgba(80, 137, 183, 0.08);
+}
+
+
+/* =========================
+   SELECT
+========================= */
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+
+    padding-right: 35px;
+
+    color: #8da4b8;
+}
+
+.select-wrapper i {
+    position: absolute;
+
+    right: 11px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 9px;
+
+    color: #52718e;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon input {
+    padding-right: 35px;
+}
+
+.input-icon i {
+    position: absolute;
+
+    right: 11px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 11px;
+
+    color: #6d8ba5;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 35px;
+}
+
+.password-wrapper i {
+    position: absolute;
+
+    right: 11px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #66839d;
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.form-group small {
+    color: #8198ad;
+
+    font-size: 6px;
+
+    line-height: 1.5;
+
+    margin-top: 5px;
+}
+
+
+/* =========================
+   FORM ACTIONS
+========================= */
+
+.form-actions {
+    border-top: 1px solid #e5edf3;
+
+    margin-top: 18px;
+    padding-top: 17px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.cancel-btn,
+.create-btn {
+    height: 34px;
+
+    border-radius: 6px;
+
+    padding: 0 22px;
+
+    font-size: 8px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* Cancel */
+
+.cancel-btn {
+    background: #ffffff;
+
+    border: 1px solid #aac2d7;
+
+    color: #23415e;
+}
+
+.cancel-btn:hover {
+    background: #f5f8fb;
+}
+
+
+/* Create */
+
+.create-btn {
+    background: #193b5d;
+
+    border: 1px solid #193b5d;
+
+    color: #ffffff;
+}
+
+.create-btn:hover {
+    background: #234d75;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .employee-area {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-card {
+        height: 220px;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .content {
+        padding: 18px 12px;
+    }
+
+    .title-row {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .title-row h1 {
+        font-size: 18px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .title-row {
+        flex-direction: column;
+    }
+
+    .back-btn {
+        align-self: flex-start;
+    }
+
+    .employee-area {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-card {
+        height: 200px;
+    }
+}
