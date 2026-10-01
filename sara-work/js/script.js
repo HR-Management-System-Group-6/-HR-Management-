@@ -687,3 +687,48 @@ if (pauseButton) {
     );
 
 }
+
+/* =========================================
+   HERO VIDEO CONTROL
+========================================= */
+
+const heroVideo = document.querySelector(".hero-video");
+const pauseBtn = document.querySelector(".video-control .pause");
+
+if (heroVideo && pauseBtn) {
+
+    let isPaused = false;
+
+    pauseBtn.style.cursor = "pointer";
+
+    pauseBtn.addEventListener("click", () => {
+
+        if (isPaused) {
+            heroVideo.play();
+            pauseBtn.textContent = "Ⅱ";
+            isPaused = false;
+        } else {
+            heroVideo.pause();
+            pauseBtn.textContent = "▶";
+            isPaused = true;
+        }
+
+    });
+
+}
+
+/* =========================================
+   HERO VIDEO — تأكد من التشغيل التلقائي
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const video = document.querySelector(".hero-video");
+    if (!video) return;
+
+    // بعض المتصفحات تحتاج تشغيل يدوي
+    video.play().catch(err => {
+        console.log("Autoplay blocked:", err);
+    });
+
+});
