@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Employee</title>
+    <title>Employee Details</title>
 
     <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="/eyadWork/css/addEmployee.css">
+    <link rel="stylesheet" href="/eyadWork/css/viewEmployeeDetail.css">
 </head>
 
 <body>
@@ -22,10 +20,10 @@
     <!-- ================= SIDEBAR ================= -->
     <aside class="sidebar">
 
-        <div class="logo-area">
-            <div class="logo-box">HR</div>
+        <div class="brand">
+            <div class="brand-icon">HR</div>
 
-            <div class="logo-text">
+            <div class="brand-text">
                 <strong>HR Management</strong>
                 <span>SYSTEM</span>
             </div>
@@ -35,67 +33,59 @@
             HR WORKSPACE
         </div>
 
-        <nav class="sidebar-nav">
+        <nav class="sidebar-menu">
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
 
-            <a href="#" class="nav-item active">
-                <i class="bi bi-people"></i>
-                <span>Employees</span>
+            <a href="#" class="menu-item active">
+                <i class="bi bi-person-lines-fill"></i>
+                <span>View information</span>
             </a>
 
-            <a href="#" class="nav-item">
-                <i class="bi bi-clipboard-check"></i>
+            <a href="#" class="menu-item">
+                <i class="bi bi-clipboard2"></i>
                 <span>Tasks</span>
             </a>
 
-            <a href="#" class="nav-item">
-                <i class="bi bi-file-check"></i>
+            <a href="#" class="menu-item">
+                <i class="bi bi-clipboard-check"></i>
                 <span>Task Review</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-calendar3"></i>
                 <span>Leave Requests</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-file-earmark-text"></i>
                 <span>Policies</span>
             </a>
 
-            <a href="#" class="nav-item">
-                <i class="bi bi-chat-left-text"></i>
+            <a href="#" class="menu-item">
+                <i class="bi bi-chat-square"></i>
                 <span>Feedback</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-camera-video"></i>
                 <span>Meetings</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-bell"></i>
                 <span>Notifications</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="menu-item">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
 
         </nav>
-
-        <div class="sidebar-bottom">
-
-            <a href="#">About</a>
-            <a href="#">Contact Us</a>
-            <a href="#">Logout</a>
-
-        </div>
 
     </aside>
 
@@ -103,7 +93,7 @@
     <!-- ================= MAIN ================= -->
     <main class="main">
 
-        <!-- HEADER -->
+        <!-- TOP HEADER -->
         <header class="top-header">
 
             <div class="breadcrumb">
@@ -113,7 +103,7 @@
                 <span>Employees</span>
                 <i class="bi bi-chevron-right"></i>
 
-                <strong>Add Employee</strong>
+                <strong>Employee Details</strong>
             </div>
 
 
@@ -123,41 +113,38 @@
                     <i class="bi bi-bell"></i>
                 </button>
 
-                <div class="profile-mini">
-
-                    <div class="profile-avatar">
-                        HM
-                    </div>
-
-                    <div class="profile-info">
-                        <strong>HR Manager</strong>
-                        <span>HR</span>
-                    </div>
-
-                    <i class="bi bi-chevron-down"></i>
-
+                <div class="user-avatar">
+                    HM
                 </div>
+
+                <div class="user-info">
+                    <strong>HR Manager</strong>
+                    <span>HR</span>
+                </div>
+
+                <i class="bi bi-chevron-down dropdown-icon"></i>
 
             </div>
 
         </header>
 
 
-        <!-- ================= CONTENT ================= -->
+        <!-- CONTENT -->
         <section class="content">
 
             <div class="page-label">
-                HR WORKSPACE / EMPLOYEES / ADD EMPLOYEE
+                HR WORKSPACE / EMPLOYEES / EMPLOYEE DETAILS
             </div>
 
 
+            <!-- TITLE -->
             <div class="title-row">
 
                 <div>
-                    <h1>Add Employee</h1>
+                    <h1>Employee Details</h1>
 
                     <p>
-                        Create an employee account. The employee logs in with these details.
+                        View this employee's information and salary details.
                     </p>
                 </div>
 
@@ -169,254 +156,133 @@
             </div>
 
 
-            <!-- ================= FORM AREA ================= -->
-            <div class="employee-area">
+            <!-- EMPLOYEE CONTENT -->
+            <div class="employee-layout">
 
-                <!-- PROFILE PHOTO -->
-                <div class="photo-section">
+
+                <!-- ================= PROFILE ================= -->
+                <div class="profile-section">
 
                     <h3>Profile photo</h3>
 
-                    <div class="photo-card">
+                    <div class="profile-card">
 
-                        <div class="avatar-placeholder">
-                            <i class="bi bi-person"></i>
-
-                            <button class="plus-btn">
-                                <i class="bi bi-plus"></i>
-                            </button>
+                        <div class="profile-avatar">
+                            LO
                         </div>
 
-                        <button class="upload-btn">
-                            <i class="bi bi-upload"></i>
-                            Upload photo
-                        </button>
+                        <h2>Lujain Okour</h2>
 
-                        <span class="photo-hint">
-                            JPG or PNG image.
+                        <p class="job-title">
+                            Junior Developer
+                        </p>
+
+                        <span class="status-badge">
+                            Active
                         </span>
+
+                        <div class="profile-divider"></div>
+
+                        <button class="edit-btn">
+                            Edit Employee
+                        </button>
 
                     </div>
 
                 </div>
 
 
-                <!-- EMPLOYEE DETAILS -->
+                <!-- ================= DETAILS ================= -->
                 <div class="details-section">
 
-                    <div class="details-header">
-                        <h3>Employee details</h3>
+                    <h3>Employee details</h3>
 
-                        <span>
-                            * Required fields
-                        </span>
+                    <div class="details-card">
+
+                        <div class="form-grid">
+
+                            <!-- Full Name -->
+                            <div class="field">
+                                <label>Full name</label>
+
+                                <div class="input-box">
+                                    Lujain Okour
+                                </div>
+                            </div>
+
+
+                            <!-- Email -->
+                            <div class="field">
+                                <label>Email address</label>
+
+                                <div class="input-box">
+                                    lujain.okour@company.com
+                                </div>
+                            </div>
+
+
+                            <!-- Phone -->
+                            <div class="field">
+                                <label>Phone number</label>
+
+                                <div class="input-box">
+                                    +962 79 000 0000
+                                </div>
+                            </div>
+
+
+                            <!-- Job Title -->
+                            <div class="field">
+                                <label>Job title</label>
+
+                                <div class="input-box">
+                                    Junior Developer
+                                </div>
+                            </div>
+
+
+                            <!-- Department -->
+                            <div class="field">
+                                <label>Department</label>
+
+                                <div class="input-box">
+                                    Engineering
+                                </div>
+                            </div>
+
+
+                            <!-- Joining Date -->
+                            <div class="field">
+                                <label>Joining date</label>
+
+                                <div class="input-box">
+                                    Jan 15, 2026
+                                </div>
+                            </div>
+
+
+                            <!-- Status -->
+                            <div class="field">
+                                <label>Status</label>
+
+                                <div class="input-box">
+                                    Active
+                                </div>
+                            </div>
+
+
+                            <!-- Role -->
+                            <div class="field">
+                                <label>Role</label>
+
+                                <div class="input-box">
+                                    Employee
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
-
-
-                    <form class="employee-form">
-
-                        <!-- ROW 1 -->
-                        <div class="form-row">
-
-                            <div class="form-group">
-                                <label>
-                                    Full name <span>*</span>
-                                </label>
-
-                                <input
-                                    type="text"
-                                    placeholder="Enter full name"
-                                >
-                            </div>
-
-
-                            <div class="form-group">
-                                <label>
-                                    Email address <span>*</span>
-                                </label>
-
-                                <input
-                                    type="email"
-                                    placeholder="name@company.com"
-                                >
-                            </div>
-
-                        </div>
-
-
-                        <!-- ROW 2 -->
-                        <div class="form-row">
-
-                            <div class="form-group">
-                                <label>
-                                    Phone number <span>*</span>
-                                </label>
-
-                                <input
-                                    type="tel"
-                                    placeholder="+00 000 000 0000"
-                                >
-                            </div>
-
-
-                            <div class="form-group">
-                                <label>
-                                    Job title <span>*</span>
-                                </label>
-
-                                <input
-                                    type="text"
-                                    placeholder="Enter job title"
-                                >
-                            </div>
-
-                        </div>
-
-
-                        <!-- ROW 3 -->
-                        <div class="form-row">
-
-                            <div class="form-group">
-
-                                <label>
-                                    Department <span>*</span>
-                                </label>
-
-                                <div class="select-wrapper">
-
-                                    <select>
-                                        <option value="">
-                                            Select department
-                                        </option>
-
-                                        <option>
-                                            IT
-                                        </option>
-
-                                        <option>
-                                            HR
-                                        </option>
-
-                                        <option>
-                                            Finance
-                                        </option>
-
-                                        <option>
-                                            Marketing
-                                        </option>
-                                    </select>
-
-                                    <i class="bi bi-chevron-down"></i>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label>
-                                    Joining date <span>*</span>
-                                </label>
-
-                                <div class="input-icon">
-
-                                    <input
-                                        type="date"
-                                    >
-
-                                    <i class="bi bi-calendar3"></i>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ROW 4 -->
-                        <div class="form-row">
-
-                            <div class="form-group">
-
-                                <label>
-                                    Status <span>*</span>
-                                </label>
-
-                                <div class="select-wrapper">
-
-                                    <select>
-                                        <option value="">
-                                            Select status
-                                        </option>
-
-                                        <option>
-                                            Active
-                                        </option>
-
-                                        <option>
-                                            Inactive
-                                        </option>
-                                    </select>
-
-                                    <i class="bi bi-chevron-down"></i>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label>
-                                    Initial password <span>*</span>
-                                </label>
-
-                                <div class="password-wrapper">
-
-                                    <input
-                                        type="password"
-                                        placeholder="Enter initial password"
-                                        id="password"
-                                    >
-
-                                    <i
-                                        class="bi bi-eye"
-                                        id="togglePassword"
-                                    ></i>
-
-                                </div>
-
-                                <small>
-                                    At least 8 characters, one uppercase letter,
-                                    one number and one special character.
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- BUTTONS -->
-                        <div class="form-actions">
-
-                            <button
-                                type="button"
-                                class="cancel-btn"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                type="submit"
-                                class="create-btn"
-                            >
-                                Create Employee
-                            </button>
-
-                        </div>
-
-                    </form>
 
                 </div>
 
@@ -427,38 +293,6 @@
     </main>
 
 </div>
-
-
-<script>
-
-    // Password show / hide
-    const togglePassword =
-        document.getElementById("togglePassword");
-
-    const password =
-        document.getElementById("password");
-
-    togglePassword.addEventListener("click", function () {
-
-        if (password.type === "password") {
-
-            password.type = "text";
-
-            this.classList.remove("bi-eye");
-            this.classList.add("bi-eye-slash");
-
-        } else {
-
-            password.type = "password";
-
-            this.classList.remove("bi-eye-slash");
-            this.classList.add("bi-eye");
-
-        }
-
-    });
-
-</script>
 
 </body>
 </html>
