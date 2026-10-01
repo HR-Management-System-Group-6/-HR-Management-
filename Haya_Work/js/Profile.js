@@ -1,17 +1,25 @@
 /* =========================================
-   DISPLAY PROFILE PAGE (JavaScript نظيف بالكامل)
+
 ========================================= */
 function displayProfile() {
     let content = document.getElementById("content");
     
-    const user = JSON.parse(localStorage.getItem("currentUser")) || {
-        name: "Lujain Okour",
+
+    const user = JSON.parse(localStorage.getItem("loggedInUser")) || {
+        name: "Haya Ahmad",
         role: "Employee",
-        email: "lujain.okour@company.com",
-        phone: "+962 79 123 4567",
+        email: "hayamoh152002@gmail.com",
+        phone: "0782065514",
         department: "Engineering",
         joiningDate: "Jan 15, 2026"
     };
+
+    let avatarContent = "";
+    if (user.picture) {
+        avatarContent = `<img src="${user.picture}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+    } else {
+        avatarContent = getInitials(user.name);
+    }
 
     content.innerHTML = `
         <section class="content-area">
@@ -27,17 +35,17 @@ function displayProfile() {
                 <div class="contact-card profile-grid-card" style="padding: 30px;">
                     
                     <!-- Left Card: Avatar & Basic Info -->
-                    <div class="profile-sidebar-box">
-                        <div class="profile-avatar-lg">
-                            ${getInitials(user.name)}
+                    <div class="profile-sidebar-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="profile-avatar-lg" style="width: 100px; height: 100px; border-radius: 50%; background-color: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; overflow: hidden; margin-bottom: 15px;">
+                            ${avatarContent}
                         </div>
                         <h2 class="profile-name">${user.name}</h2>
                         <span class="profile-role">${user.role}</span>
                         
-                        <hr class="profile-divider">
+                        <hr class="profile-divider" style="width: 100%; margin: 20px 0;">
                         
-                        <span class="profile-dept">${user.department} Department</span>
-                        <span class="profile-joined">Member since ${user.joiningDate}</span>
+                        <span class="profile-dept">${user.department || "General"} Department</span>
+                        <span class="profile-joined">Member since ${user.joiningDate || "Jan 15, 2026"}</span>
                     </div>
 
                     <!-- Right Card: Detailed Info -->
@@ -64,11 +72,11 @@ function displayProfile() {
                             </div>
                             <div>
                                 <span class="info-label">Department</span>
-                                <strong class="info-value">${user.department}</strong>
+                                <strong class="info-value">${user.department || "Engineering"}</strong>
                             </div>
                             <div>
                                 <span class="info-label">Joining date</span>
-                                <strong class="info-value">${user.joiningDate}</strong>
+                                <strong class="info-value">${user.joiningDate || "Jan 15, 2026"}</strong>
                             </div>
                         </div>
 
@@ -90,31 +98,31 @@ function displayProfile() {
    ENABLE EDIT MODE
 ========================================= */
 function enableEditProfile() {
-    const user = JSON.parse(localStorage.getItem("currentUser")) || {
-        name: "Lujain Okour",
-        role: "Employee",
-        email: "lujain.okour@company.com",
-        phone: "+962 79 123 4567",
-        department: "Engineering",
-        joiningDate: "Jan 15, 2026"
-    };
+    const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+
+    let avatarContent = "";
+    if (user.picture) {
+        avatarContent = `<img src="${user.picture}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+    } else {
+        avatarContent = getInitials(user.name);
+    }
 
     const container = document.getElementById("profileViewContainer");
     container.innerHTML = `
         <form id="editProfileForm" onsubmit="saveProfileChanges(event)" class="contact-card profile-grid-card" style="padding: 30px;">
             
             <!-- Left Card: Avatar -->
-            <div class="profile-sidebar-box">
-                <div class="profile-avatar-lg">
-                    ${getInitials(user.name)}
+            <div class="profile-sidebar-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="profile-avatar-lg" style="width: 100px; height: 100px; border-radius: 50%; background-color: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; overflow: hidden; margin-bottom: 15px;">
+                    ${avatarContent}
                 </div>
                 <h2 class="profile-name">${user.name}</h2>
                 <span class="profile-role">${user.role}</span>
                 
-                <button type="button" class="map-open-btn" style="width: 100%;">
+                <button type="button" class="map-open-btn" style="width: 100%; margin-top: 15px;">
                     Change photo
                 </button>
-                <span class="photo-hint">JPG or PNG 1MB max</span>
+                <span class="photo-hint" style="margin-top: 5px; font-size: 12px; color: #666;">JPG or PNG 1MB max</span>
             </div>
 
             <!-- Right Card: Editable Inputs -->
@@ -125,11 +133,11 @@ function enableEditProfile() {
                 <div class="profile-form-grid">
                     <div class="form-group">
                         <label class="form-label">Username</label>
-                        <input type="text" id="editName" value="${user.name}" class="form-control" required>
+                        <input type="text" id="editName" value="${user.name || ''}" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Email address</label>
-                        <input type="email" id="editEmail" value="${user.email}" class="form-control" required>
+                        <input type="email" id="editEmail" value="${user.email || ''}" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Phone number</label>
@@ -137,15 +145,15 @@ function enableEditProfile() {
                     </div>
                     <div class="form-group">
                         <label class="form-label">Position</label>
-                        <input type="text" id="editRole" value="${user.role}" class="form-control">
+                        <input type="text" id="editRole" value="${user.role || ''}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Department</label>
-                        <input type="text" id="editDept" value="${user.department}" class="form-control">
+                        <input type="text" id="editDept" value="${user.department || ''}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Joining date</label>
-                        <input type="text" id="editDate" value="${user.joiningDate}" class="form-control">
+                        <input type="text" id="editDate" value="${user.joiningDate || ''}" class="form-control">
                     </div>
                 </div>
 
@@ -168,7 +176,11 @@ function enableEditProfile() {
 function saveProfileChanges(e) {
     e.preventDefault();
 
+    // جلب البيانات القديمة للاحتفاظ بالخصائص مثل (picture أو googleId إن وجدت)
+    const currentUser = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+
     const updatedUser = {
+        ...currentUser,
         name: document.getElementById("editName").value,
         email: document.getElementById("editEmail").value,
         phone: document.getElementById("editPhone").value,
@@ -177,7 +189,8 @@ function saveProfileChanges(e) {
         joiningDate: document.getElementById("editDate").value
     };
 
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    // حفظ التعديلات تحت نفس المفتاح loggedInUser
+    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
     displayProfile();
 }
 
