@@ -1,10 +1,9 @@
-function displayFeedback()
-{
+function displayFeedback() {
 
-    let content =document.getElementById("content")
+    let content = document.getElementById("content")
     /* نحدد الـ Role */
-const user = JSON.parse(localStorage.getItem("currentUser"));
-const isHR = user && user.role === "HR";
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const isHR = user && user.role === "employee";
 
     content.innerHTML = `
     
@@ -633,3 +632,4 @@ function closeModal() {
     const modal = document.getElementById("feedbackModal");
     if (modal) modal.classList.remove("open");
 }
+
