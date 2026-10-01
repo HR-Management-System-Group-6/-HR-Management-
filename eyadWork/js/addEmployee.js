@@ -1,155 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+function displayAddEmployee() {
 
-    <title>Add Employee</title>
+    let content = document.getElementById("content");
 
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
-
-    <link rel="stylesheet" href="/eyadWork/css/addEmployee.css">
-</head>
-
-<body>
-
-<div class="app">
-
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="sidebar">
-
-        <div class="logo-area">
-            <div class="logo-box">HR</div>
-
-            <div class="logo-text">
-                <strong>HR Management</strong>
-                <span>SYSTEM</span>
-            </div>
-        </div>
-
-        <div class="workspace-title">
-            HR WORKSPACE
-        </div>
-
-        <nav class="sidebar-nav">
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="#" class="nav-item active">
-                <i class="bi bi-people"></i>
-                <span>Employees</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-clipboard-check"></i>
-                <span>Tasks</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-file-check"></i>
-                <span>Task Review</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-calendar3"></i>
-                <span>Leave Requests</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-file-earmark-text"></i>
-                <span>Policies</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-chat-left-text"></i>
-                <span>Feedback</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-camera-video"></i>
-                <span>Meetings</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-bell"></i>
-                <span>Notifications</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
-            </a>
-
-        </nav>
-
-        <div class="sidebar-bottom">
-
-            <a href="#">About</a>
-            <a href="#">Contact Us</a>
-            <a href="#">Logout</a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
-    <main class="main">
-
-        <!-- HEADER -->
-        <header class="top-header">
-
-            <div class="breadcrumb">
-                <span>Workspace</span>
-                <i class="bi bi-chevron-right"></i>
-
-                <span>Employees</span>
-                <i class="bi bi-chevron-right"></i>
-
-                <strong>Add Employee</strong>
-            </div>
-
-
-            <div class="header-right">
-
-                <button class="notification-btn">
-                    <i class="bi bi-bell"></i>
-                </button>
-
-                <div class="profile-mini">
-
-                    <div class="profile-avatar">
-                        HM
-                    </div>
-
-                    <div class="profile-info">
-                        <strong>HR Manager</strong>
-                        <span>HR</span>
-                    </div>
-
-                    <i class="bi bi-chevron-down"></i>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- ================= CONTENT ================= -->
+    content.innerHTML = `
         <section class="content">
 
             <div class="page-label">
                 HR WORKSPACE / EMPLOYEES / ADD EMPLOYEE
             </div>
-
 
             <div class="title-row">
 
@@ -161,7 +19,7 @@
                     </p>
                 </div>
 
-                <button class="back-btn">
+                <button class="back-btn" type="button" onclick="displayEmployees()">
                     <i class="bi bi-arrow-left"></i>
                     Back to Employees
                 </button>
@@ -170,6 +28,7 @@
 
 
             <!-- ================= FORM AREA ================= -->
+
             <div class="employee-area">
 
                 <!-- PROFILE PHOTO -->
@@ -180,14 +39,16 @@
                     <div class="photo-card">
 
                         <div class="avatar-placeholder">
+
                             <i class="bi bi-person"></i>
 
-                            <button class="plus-btn">
+                            <button class="plus-btn" type="button">
                                 <i class="bi bi-plus"></i>
                             </button>
+
                         </div>
 
-                        <button class="upload-btn">
+                        <button class="upload-btn" type="button">
                             <i class="bi bi-upload"></i>
                             Upload photo
                         </button>
@@ -202,78 +63,100 @@
 
 
                 <!-- EMPLOYEE DETAILS -->
+
                 <div class="details-section">
 
                     <div class="details-header">
+
                         <h3>Employee details</h3>
 
                         <span>
                             * Required fields
                         </span>
+
                     </div>
 
 
-                    <form class="employee-form">
+                    <form class="employee-form" id="employeeForm">
 
                         <!-- ROW 1 -->
+
                         <div class="form-row">
 
                             <div class="form-group">
+
                                 <label>
                                     Full name <span>*</span>
                                 </label>
 
                                 <input
                                     type="text"
+                                    id="employeeName"
                                     placeholder="Enter full name"
+                                    required
                                 >
+
                             </div>
 
 
                             <div class="form-group">
+
                                 <label>
                                     Email address <span>*</span>
                                 </label>
 
                                 <input
                                     type="email"
+                                    id="employeeEmail"
                                     placeholder="name@company.com"
+                                    required
                                 >
+
                             </div>
 
                         </div>
 
 
                         <!-- ROW 2 -->
+
                         <div class="form-row">
 
                             <div class="form-group">
+
                                 <label>
                                     Phone number <span>*</span>
                                 </label>
 
                                 <input
                                     type="tel"
+                                    id="employeePhone"
                                     placeholder="+00 000 000 0000"
+                                    required
                                 >
+
                             </div>
 
 
                             <div class="form-group">
+
                                 <label>
                                     Job title <span>*</span>
                                 </label>
 
                                 <input
                                     type="text"
+                                    id="employeeJob"
                                     placeholder="Enter job title"
+                                    required
                                 >
+
                             </div>
 
                         </div>
 
 
                         <!-- ROW 3 -->
+
                         <div class="form-row">
 
                             <div class="form-group">
@@ -284,26 +167,28 @@
 
                                 <div class="select-wrapper">
 
-                                    <select>
+                                    <select id="employeeDepartment" required>
+
                                         <option value="">
                                             Select department
                                         </option>
 
-                                        <option>
+                                        <option value="IT">
                                             IT
                                         </option>
 
-                                        <option>
+                                        <option value="HR">
                                             HR
                                         </option>
 
-                                        <option>
+                                        <option value="Finance">
                                             Finance
                                         </option>
 
-                                        <option>
+                                        <option value="Marketing">
                                             Marketing
                                         </option>
+
                                     </select>
 
                                     <i class="bi bi-chevron-down"></i>
@@ -323,6 +208,8 @@
 
                                     <input
                                         type="date"
+                                        id="employeeJoiningDate"
+                                        required
                                     >
 
                                     <i class="bi bi-calendar3"></i>
@@ -335,33 +222,22 @@
 
 
                         <!-- ROW 4 -->
+
                         <div class="form-row">
 
                             <div class="form-group">
 
                                 <label>
-                                    Status <span>*</span>
+                                    Status
                                 </label>
 
-                                <div class="select-wrapper">
-
-                                    <select>
-                                        <option value="">
-                                            Select status
-                                        </option>
-
-                                        <option>
-                                            Active
-                                        </option>
-
-                                        <option>
-                                            Inactive
-                                        </option>
-                                    </select>
-
-                                    <i class="bi bi-chevron-down"></i>
-
-                                </div>
+                                <input
+                                    type="text"
+                                    id="employeeStatus"
+                                    value="Active"
+                                    readonly
+                                    class="status-active"
+                                >
 
                             </div>
 
@@ -376,8 +252,9 @@
 
                                     <input
                                         type="password"
-                                        placeholder="Enter initial password"
                                         id="password"
+                                        placeholder="Enter initial password"
+                                        required
                                     >
 
                                     <i
@@ -398,11 +275,13 @@
 
 
                         <!-- BUTTONS -->
+
                         <div class="form-actions">
 
                             <button
                                 type="button"
                                 class="cancel-btn"
+                                id="cancelEmployee"
                             >
                                 Cancel
                             </button>
@@ -423,42 +302,198 @@
             </div>
 
         </section>
-
-    </main>
-
-</div>
+    `;
 
 
-<script>
+    // ==========================================
+    // CREATE EMPLOYEE
+    // ==========================================
 
-    // Password show / hide
+    const form = document.getElementById("employeeForm");
+
+    form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+
+        // Get values
+        const name = document.getElementById("employeeName").value.trim();
+        const email = document.getElementById("employeeEmail").value.trim();
+        const phone = document.getElementById("employeePhone").value.trim();
+        const job = document.getElementById("employeeJob").value.trim();
+        const department = document.getElementById("employeeDepartment").value;
+        const joiningDate = document.getElementById("employeeJoiningDate").value;
+        const status = document.getElementById("employeeStatus").value;
+        const password = document.getElementById("password").value;
+
+
+        // ==========================================
+        // VALIDATION
+        // ==========================================
+
+        if (
+            !name ||
+            !email ||
+            !phone ||
+            !job ||
+            !department ||
+            !joiningDate ||
+            !password
+        ) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+
+        // Password validation
+        const passwordRegex =
+            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+
+            alert(
+                "Password must be at least 8 characters and contain one uppercase letter, one number and one special character."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // GET OLD EMPLOYEES
+        // ==========================================
+
+        let employees = JSON.parse(
+            localStorage.getItem("employees")
+        ) || [];
+
+
+        // ==========================================
+        // CHECK DUPLICATE EMAIL
+        // ==========================================
+
+        const emailExists = employees.some(
+            employee =>
+                employee.email.toLowerCase() === email.toLowerCase()
+        );
+
+        if (emailExists) {
+
+            alert("An employee with this email already exists.");
+
+            return;
+        }
+
+
+        // ==========================================
+        // CREATE NEW EMPLOYEE
+        // ==========================================
+
+        const newEmployee = {
+
+            id: Date.now(),
+
+            name: name,
+
+            email: email,
+
+            phone: phone,
+
+            jobTitle: job,
+
+            department: department,
+
+            joiningDate: joiningDate,
+
+            status: status,
+
+            password: password,
+
+            role: "employee"
+
+        };
+
+
+        // ==========================================
+        // ADD NEW EMPLOYEE TO OLD EMPLOYEES
+        // ==========================================
+
+        employees.push(newEmployee);
+
+
+        // ==========================================
+        // SAVE ALL EMPLOYEES
+        // ==========================================
+
+        localStorage.setItem(
+            "employees",
+            JSON.stringify(employees)
+        );
+
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        alert("Employee created successfully!");
+
+
+        // Reset form
+        form.reset();
+
+        document.getElementById("employeeStatus").value = "Active";
+
+
+        console.log("All Employees:", employees);
+
+    });
+
+
+    // ==========================================
+    // SHOW / HIDE PASSWORD
+    // ==========================================
+
     const togglePassword =
         document.getElementById("togglePassword");
 
-    const password =
+    const passwordInput =
         document.getElementById("password");
 
     togglePassword.addEventListener("click", function () {
 
-        if (password.type === "password") {
+        if (passwordInput.type === "password") {
 
-            password.type = "text";
+            passwordInput.type = "text";
 
             this.classList.remove("bi-eye");
+
             this.classList.add("bi-eye-slash");
 
         } else {
 
-            password.type = "password";
+            passwordInput.type = "password";
 
             this.classList.remove("bi-eye-slash");
+
             this.classList.add("bi-eye");
 
         }
 
     });
 
-</script>
 
-</body>
-</html>
+    // ==========================================
+    // CANCEL BUTTON
+    // ==========================================
+
+    document
+        .getElementById("cancelEmployee")
+        .addEventListener("click", function () {
+
+            form.reset();
+
+            document.getElementById("employeeStatus").value = "Active";
+
+        });
+
+}
