@@ -1,0 +1,1259 @@
+/* =========================================================
+   LUJAIN - HR EMPLOYEES
+   Styles ONLY the dynamic content inside #content
+   Dashboard / Sidebar / Header are NOT changed
+========================================================= */
+
+#content,
+#content * {
+    box-sizing: border-box;
+}
+
+#content {
+    width: 100%;
+    color: #173b5b;
+}
+
+#content .main-content {
+    width: 100%;
+    padding: 32px 30px 45px;
+}
+
+#content button,
+#content input,
+#content select {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   SHARED PAGE HEADER
+========================================================= */
+
+#content .payroll-header,
+#content .page-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 25px;
+    margin-bottom: 26px;
+}
+
+#content .small-path {
+    margin: 0 0 8px;
+    color: #5d8eaf;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#content h1 {
+    margin: 0;
+    color: #173b5b;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+#content .subtitle {
+    margin: 7px 0 0;
+    color: #5d87a6;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+#content .add-employee-btn {
+    min-width: 150px;
+    height: 42px;
+    padding: 0 18px;
+    margin-top: 14px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: #173b5b;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+#content .add-employee-btn:hover {
+    background: #102f49;
+}
+
+
+/* =========================================================
+   SEARCH + SELECT
+========================================================= */
+
+#content .payroll-search {
+    width: 100%;
+    position: relative;
+}
+
+#content .payroll-search i {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    color: #5c8cad;
+    font-size: 13px;
+}
+
+#content .payroll-search input {
+    width: 100%;
+    height: 39px;
+
+    padding: 0 14px 0 39px;
+
+    border: 1px solid #bdd0df;
+    border-radius: 6px;
+    outline: none;
+
+    background: white;
+    color: #244f70;
+
+    font-size: 11px;
+}
+
+#content .payroll-search input::placeholder {
+    color: #7296b1;
+}
+
+#content .payroll-search input:focus {
+    border-color: #5791bb;
+}
+
+#content select {
+    width: 100%;
+    height: 39px;
+
+    padding: 0 13px;
+
+    border: 1px solid #bdd0df;
+    border-radius: 6px;
+    outline: none;
+
+    background: white;
+    color: #315e7e;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+#content .payroll-avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+
+    border-radius: 50%;
+
+    background: #c9ecff;
+    color: #225879;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+#content .payroll-status {
+    min-width: 64px;
+    min-height: 24px;
+
+    padding: 5px 10px;
+
+    border-radius: 30px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 9px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#content .payroll-status.active {
+    background: #d3efff;
+    color: #22597b;
+}
+
+#content .payroll-status.leave {
+    background: #e5eff6;
+    color: #365e7a;
+}
+
+#content .payroll-status.inactive {
+    background: white;
+    border: 1px solid #abc7da;
+    color: #4e7897;
+}
+
+
+/* =========================================================
+   =========================================================
+   PAGE 1
+   HR PAYROLL EMPLOYEES
+   =========================================================
+========================================================= */
+
+
+/* ================= SUMMARY ================= */
+
+#content .payroll-summary {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns:
+        0.85fr
+        1.25fr
+        1.15fr
+        1.15fr
+        1.05fr;
+
+    gap: 14px;
+
+    margin-bottom: 17px;
+}
+
+#content .payroll-stat {
+    min-width: 0;
+    min-height: 82px;
+
+    padding: 15px 16px;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#content .payroll-stat span {
+    color: #638eac;
+    font-size: 9px;
+}
+
+#content .payroll-stat strong {
+    margin-top: 10px;
+
+    color: #173b5b;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+#content .payroll-stat.payroll-net {
+    background: #173b5b;
+    border-color: #173b5b;
+}
+
+#content .payroll-stat.payroll-net span {
+    color: #c6dbe9;
+}
+
+#content .payroll-stat.payroll-net strong {
+    color: white;
+}
+
+
+/* ================= FILTERS ================= */
+
+#content .payroll-filters {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns:
+        minmax(300px, 1fr)
+        190px
+        190px;
+
+    gap: 13px;
+
+    margin-bottom: 17px;
+}
+
+
+/* ================= TABLE CARD ================= */
+
+#content .payroll-table-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+}
+
+#content .payroll-table-title {
+    min-height: 53px;
+
+    padding: 0 17px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#content .payroll-table-title h3 {
+    margin: 0;
+
+    color: #173b5b;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+#content .payroll-table-title span {
+    color: #6791af;
+    font-size: 9px;
+}
+
+
+/* ================= TABLE GRID ================= */
+
+#content .payroll-table-header,
+#content .payroll-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(190px, 1.65fr)
+        minmax(130px, 1.05fr)
+        minmax(90px, 0.75fr)
+        minmax(75px, 0.7fr)
+        minmax(60px, 0.6fr)
+        minmax(75px, 0.7fr)
+        minmax(75px, 0.7fr)
+        minmax(60px, 0.6fr)
+        minmax(60px, 0.55fr);
+
+    align-items: center;
+}
+
+#content .payroll-table-header {
+    min-height: 33px;
+
+    margin: 0 14px;
+    padding: 0 8px;
+
+    border-radius: 4px;
+
+    background: #f0f6fa;
+}
+
+#content .payroll-table-header > div {
+    color: #4f7fa1;
+
+    font-size: 7px;
+    font-weight: 700;
+}
+
+#content .payroll-row {
+    min-height: 59px;
+
+    margin: 0 14px;
+    padding: 7px 8px;
+
+    border-bottom: 1px solid #e6eef4;
+
+    color: #3c6684;
+
+    font-size: 9px;
+}
+
+#content .payroll-row:last-child {
+    border-bottom: 0;
+}
+
+
+/* ================= EMPLOYEE ================= */
+
+#content .payroll-person {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+#content .payroll-person > div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#content .payroll-person strong {
+    margin-bottom: 1px;
+
+    color: #173b5b;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+#content .payroll-person span {
+    display: block;
+
+    color: #6892af;
+
+    font-size: 7px;
+    line-height: 1.3;
+}
+
+
+/* ================= JOB ================= */
+
+#content .job-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+#content .job-info strong {
+    color: #3d6582;
+
+    font-size: 9px;
+    font-weight: 500;
+}
+
+#content .job-info span {
+    color: #6892af;
+
+    font-size: 7px;
+}
+
+
+/* ================= NET ================= */
+
+#content .net-money {
+    color: #173b5b;
+    font-weight: 700;
+}
+
+
+/* ================= VIEW ================= */
+
+#content .payroll-view {
+    padding: 4px 2px;
+
+    border: 0;
+
+    background: transparent;
+    color: #174c75;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+#content .payroll-view span {
+    margin-left: 3px;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   =========================================================
+   PAGE 2
+   HR EMPLOYEES MANAGEMENT
+   =========================================================
+========================================================= */
+
+#content .hr-employees-page {
+    width: 100%;
+}
+
+#content .hr-employees-section {
+    width: 100%;
+}
+
+
+/* ================= TITLE ================= */
+
+#content .hr-employees-heading {
+    width: 100%;
+
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#content .hr-employees-heading h3 {
+    margin: 0;
+
+    color: #173b5b;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#content .hr-employees-heading span {
+    color: #6791af;
+    font-size: 9px;
+}
+
+
+/* ================= CARD ================= */
+
+#content .hr-employees-card {
+    width: 100%;
+
+    padding: 16px;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+}
+
+
+/* ================= FILTERS ================= */
+
+#content .hr-employee-filters {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 1fr)
+        185px
+        185px;
+
+    gap: 13px;
+
+    margin-bottom: 16px;
+}
+
+
+/* ================= TABLE ================= */
+
+#content .hr-employee-table-header,
+#content .hr-management-row {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 1.6fr)
+        minmax(130px, 0.85fr)
+        minmax(170px, 1fr)
+        minmax(100px, 0.65fr)
+        minmax(150px, 0.85fr);
+
+    align-items: center;
+}
+
+#content .hr-employee-table-header {
+    min-height: 33px;
+
+    padding: 0 12px;
+
+    border-radius: 5px;
+
+    background: #f0f6fa;
+}
+
+#content .hr-employee-table-header > div {
+    color: #4f7fa1;
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+
+/* ================= ROW ================= */
+
+#content .hr-management-row {
+    min-height: 59px;
+
+    padding: 7px 12px;
+
+    border-bottom: 1px solid #e7eef4;
+
+    color: #4d7896;
+
+    font-size: 9px;
+}
+
+
+/* ================= PERSON ================= */
+
+#content .hr-management-person {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+#content .hr-management-person > div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#content .hr-management-person strong {
+    margin-bottom: 2px;
+
+    color: #173b5b;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+#content .hr-management-person span {
+    color: #6791af;
+
+    font-size: 8px;
+}
+
+
+/* ================= ACTIONS ================= */
+
+#content .hr-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+#content .hr-view-btn {
+    min-width: 55px;
+    height: 29px;
+
+    padding: 0 12px;
+
+    border: 1px solid #5794c0;
+    border-radius: 6px;
+
+    background: white;
+    color: #174b72;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+#content .hr-edit-btn,
+#content .hr-delete-btn {
+    width: 29px;
+    height: 29px;
+
+    padding: 0;
+
+    border: 1px solid #aac8dc;
+    border-radius: 6px;
+
+    background: white;
+    color: #39739c;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+#content .hr-view-btn:hover,
+#content .hr-edit-btn:hover,
+#content .hr-delete-btn:hover {
+    background: #f1f7fb;
+}
+
+
+/* ================= PAGINATION ================= */
+
+#content .hr-pagination {
+    min-height: 53px;
+
+    padding-top: 14px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#content .hr-pagination > span {
+    color: #5985a5;
+
+    font-size: 9px;
+}
+
+#content .pagination-buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+}
+
+#content .pagination-buttons button {
+    min-width: 32px;
+    height: 30px;
+
+    padding: 0 10px;
+
+    border: 1px solid #b7cedf;
+    border-radius: 6px;
+
+    background: white;
+    color: #326589;
+
+    font-size: 9px;
+
+    cursor: pointer;
+}
+
+#content .pagination-buttons .active-page {
+    background: #173b5b;
+    border-color: #173b5b;
+
+    color: white;
+}
+
+#content .pagination-buttons button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* =========================================================
+   =========================================================
+   PAGE 3
+   HR EMPLOYEE DETAILS
+   =========================================================
+========================================================= */
+
+#content .employee-details-page {
+    width: 100%;
+}
+
+
+/* ================= BACK ================= */
+
+#content .back-btn {
+    min-width: 155px;
+    height: 38px;
+
+    padding: 0 16px;
+
+    border: 1px solid #5794c0;
+    border-radius: 6px;
+
+    background: white;
+    color: #285d83;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+#content .back-btn:hover {
+    background: #f3f8fb;
+}
+
+
+/* ================= PROFILE + DETAILS ================= */
+
+#content .employee-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        225px
+        minmax(0, 1fr);
+
+    gap: 18px;
+
+    align-items: start;
+
+    margin-bottom: 28px;
+}
+
+#content .profile-section h3,
+#content .details-section h3,
+#content .salary-section h3 {
+    margin: 0 0 10px;
+
+    color: #173b5b;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* ================= PROFILE ================= */
+
+#content .profile-card {
+    width: 100%;
+    min-height: 300px;
+
+    padding: 22px 17px 17px;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#content .profile-avatar {
+    width: 80px;
+    height: 80px;
+
+    margin-bottom: 14px;
+
+    border-radius: 50%;
+
+    background: #bfe7fd;
+    color: #1c4d6f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#content .profile-card h2 {
+    margin: 0;
+
+    color: #173b5b;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+#content .profile-card > p {
+    margin: 5px 0 10px;
+
+    color: #5983a1;
+
+    font-size: 9px;
+}
+
+#content .profile-divider {
+    width: 100%;
+    height: 1px;
+
+    margin: 20px 0 17px;
+
+    background: #e2eaf1;
+}
+
+#content .edit-btn {
+    width: 100%;
+    height: 39px;
+
+    margin-top: auto;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: #173b5b;
+    color: white;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* ================= EMPLOYEE DETAILS ================= */
+
+#content .details-card {
+    width: 100%;
+
+    padding: 23px;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px 17px;
+}
+
+#content .field {
+    min-width: 0;
+}
+
+#content .field label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #5984a2;
+
+    font-size: 8px;
+}
+
+#content .input-look {
+    width: 100%;
+    min-height: 38px;
+
+    padding: 0 12px;
+
+    border: 1px solid #bfd1df;
+    border-radius: 5px;
+
+    background: #f2f7fa;
+    color: #315b79;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   SALARY DETAILS
+========================================================= */
+
+#content .salary-section {
+    width: 100%;
+}
+
+#content .salary-heading {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#content .sample-data {
+    color: #73a0bf;
+
+    font-size: 8px;
+}
+
+#content .salary-card {
+    width: 100%;
+
+    padding: 19px;
+
+    border: 1px solid #d7e3ec;
+    border-radius: 8px;
+
+    background: white;
+}
+
+#content .salary-note {
+    margin: 0 0 15px;
+
+    color: #5f8bab;
+
+    font-size: 8px;
+}
+
+
+/* ================= SALARY SUMMARY ================= */
+
+#content .salary-summary {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 13px;
+}
+
+#content .summary-box {
+    min-height: 75px;
+
+    padding: 14px 16px;
+
+    border-radius: 7px;
+
+    background: #f0f6fa;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#content .summary-box span {
+    color: #5f8bab;
+
+    font-size: 8px;
+}
+
+#content .summary-box strong {
+    margin-top: 9px;
+
+    color: #173b5b;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#content .summary-box.net {
+    background: #173b5b;
+}
+
+#content .summary-box.net span {
+    color: #c5dae8;
+}
+
+#content .summary-box.net strong {
+    color: white;
+}
+
+#content .formula {
+    margin: 9px 0 13px;
+
+    color: #5884a3;
+
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   INCENTIVES / DEDUCTIONS
+========================================================= */
+
+#content .salary-breakdown {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+#content .salary-breakdown-card {
+    overflow: hidden;
+
+    border: 1px solid #d8e4ed;
+    border-radius: 7px;
+
+    background: white;
+}
+
+#content .breakdown-title,
+#content .breakdown-row {
+    min-height: 38px;
+
+    padding: 0 13px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #e6eef4;
+}
+
+#content .breakdown-row:last-child {
+    border-bottom: 0;
+}
+
+#content .breakdown-title strong {
+    color: #173b5b;
+
+    font-size: 9px;
+}
+
+#content .breakdown-row span {
+    color: #4e7390;
+
+    font-size: 8px;
+}
+
+#content .breakdown-row strong {
+    color: #4e7d9f;
+
+    font-size: 8px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   PAYMENT INFORMATION
+========================================================= */
+
+#content .payment-info {
+    width: 100%;
+    min-height: 38px;
+
+    margin-top: 14px;
+    padding: 0 15px;
+
+    border-radius: 5px;
+
+    background: #f0f6fa;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    align-items: center;
+}
+
+#content .payment-info > div {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+}
+
+#content .payment-info span {
+    color: #6a93af;
+
+    font-size: 7px;
+}
+
+#content .payment-info strong {
+    color: #173b5b;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   Still only affects #content
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    #content .payroll-table-card,
+    #content .hr-employees-card {
+        overflow-x: auto;
+    }
+
+    #content .payroll-table-header,
+    #content .payroll-row {
+        min-width: 950px;
+    }
+
+    #content .hr-employee-table-header,
+    #content .hr-management-row {
+        min-width: 800px;
+    }
+
+    #content .payroll-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    #content .main-content {
+        padding: 25px 20px 40px;
+    }
+
+    #content .payroll-filters,
+    #content .hr-employee-filters {
+        grid-template-columns: 1fr;
+    }
+
+    #content .employee-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #content .salary-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    #content .payroll-header,
+    #content .page-top {
+        flex-direction: column;
+    }
+
+    #content .add-employee-btn {
+        margin-top: 0;
+    }
+
+    #content .payroll-summary,
+    #content .salary-summary,
+    #content .salary-breakdown,
+    #content .details-card {
+        grid-template-columns: 1fr;
+    }
+
+    #content .payment-info {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    #content .hr-pagination {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

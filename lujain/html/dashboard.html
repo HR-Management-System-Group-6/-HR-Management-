@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HR Management</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- CSS الداشبورد الثابت - لا نغيره -->
+    <link rel="stylesheet" href="/eyadWork/css/dashBoard.css">
+
+    <!-- CSS صفحات لجين الثلاث -->
+    <link rel="stylesheet" href="../css/hrEmployees.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- Logo -->
+        <div class="logo-section">
+
+            <div class="logo">
+                HR
+            </div>
+
+            <div>
+                <h2>HR Management</h2>
+                <span>SYSTEM</span>
+            </div>
+
+        </div>
+
+
+        <!-- Workspace -->
+        <p class="workspace-title">
+            MY WORKSPACE
+        </p>
+
+
+        <!-- =====================================
+             NAVIGATION
+        ====================================== -->
+
+        <nav class="navigation">
+
+
+            <!-- Dashboard -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="javascript:void(0)"
+                class="nav-item"
+                onclick="displayHREmployees()"
+            >
+                <i class="bi bi-people"></i>
+                <span>Employees</span>
+            </a>
+            <!-- My Profile -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+            </a>
+
+
+            <!-- My Tasks -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-clipboard"></i>
+                <span>My Tasks</span>
+            </a>
+
+
+            <!-- Leave Requests -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-calendar3"></i>
+                <span>Leave Requests</span>
+            </a>
+
+
+            <!-- Policies -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Policies</span>
+            </a>
+
+
+            <!-- Feedback -->
+            <button
+                type="button"
+                class="nav-item"
+                onclick="displayFeedback()"
+            >
+                <i class="bi bi-chat-square"></i>
+                <span>Feedback</span>
+            </button>
+
+
+            <!-- Meetings -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-camera-video"></i>
+                <span>Meetings</span>
+            </a>
+
+
+        </nav>
+
+
+        <!-- =====================================
+             SIDEBAR BOTTOM
+        ====================================== -->
+
+        <div class="sidebar-bottom">
+
+
+            <!-- About -->
+            <a
+                href="#"
+                class="nav-item active"
+            >
+                <i class="bi bi-info-circle"></i>
+                <span>About</span>
+            </a>
+
+
+            <!-- Contact -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-envelope"></i>
+                <span>Contact Us</span>
+            </a>
+
+
+            <!-- Logout -->
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main">
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <header class="header">
+
+            <div class="user-profile">
+
+
+                <!-- Avatar -->
+                <div class="user-avatar">
+                    LO
+                </div>
+
+
+                <!-- User Information -->
+                <div class="user-info">
+
+                    <strong>
+                        Lujain Okour
+                    </strong>
+
+                    <span>
+                        Employee
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================
+             DYNAMIC CONTENT
+        ====================================== -->
+
+        <section id="content">
+
+            <!--
+                Sidebar ثابت
+                Header ثابت
+
+                ومحتوى الصفحات يظهر هون
+                عن طريق JavaScript
+            -->
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+
+<!-- Team Feedback -->
+<script src="/sara-work/js/feedback.js"></script>
+
+
+<!-- Lujain JavaScript -->
+<script src="../js/script.js"></script>
+</body>
+
+</html>
