@@ -39,8 +39,18 @@ fetch("../data/companypolicy.json")
                 </div>
             `;
         }
-
+        
     })
+
+   
     .catch(error => {
         console.log("Error:", error);
     });
+
+
+
+    // let edit=document.getElementById("edit")
+    // edit.addEventListener("click",function(){
+    //     document.getElementById
+
+    // })

@@ -21,7 +21,7 @@ p {
 }
 
 
-/* ================= HERO ================= */
+/* HERO */
 
 .heroinfo {
     display: flex;
@@ -30,11 +30,7 @@ p {
 
     padding: 60px 8%;
 
-    background: linear-gradient(
-        135deg,
-        #dff5ee,
-        #eef8f7
-    );
+    background: linear-gradient(135deg, #dff5ee, #eef8f7);
 
     border-bottom: 1px solid #d8e8e5;
 }
@@ -65,6 +61,7 @@ p {
 .img {
     width: 500px;
     height: 300px;
+
     object-fit: cover;
 
     border-radius: 20px;
@@ -73,7 +70,7 @@ p {
 }
 
 
-/* ================= TEAM TITLE ================= */
+/* TEAM TITLE */
 
 .title_team {
     text-align: center;
@@ -97,10 +94,138 @@ p {
     font-size: 15px;
 }
 
-
-/* ================= GENERAL ================= */
-
 .content-margin {
+    margin: 5px;
+}
+
+
+/* TEAM CARDS */
+
+.team-container {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    gap: 25px;
+
+    padding: 30px 8% 70px;
+}
+
+.team-card {
+    padding: 35px 25px;
+
+    background-color: white;
+
+    border: 1px solid #e3eaee;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow: 0 8px 25px rgba(24, 54, 87, 0.06);
+
+    transition: all 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 15px 35px rgba(24, 54, 87, 0.12);
+
+    border-color: #b8dedd;
+}
+
+
+/* PERSON IMAGE */
+
+.person-icon {
+    margin-bottom: 15px;
+}
+
+.teamicon {
+    width: 105px;
+    height: 105px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 5px solid #e3f4f1;
+
+    padding: 3px;
+
+    background-color: white;
+}
+
+
+/* NAME */
+
+.team_name {
+    color: #183657;
+
+    font-size: 18px;
+
+    margin: 10px 0 5px;
+}
+
+.team-card p {
+    color: #71859a;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+.title_team,
+.team-card {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.show {
+    animation: fadeUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* LINE */
+
+.team-card hr {
+    border: none;
+
+    height: 1px;
+
+    background-color: #e5ebef;
+
+    margin: 18px 0;
+}
+
+
+/* SOCIAL BUTTONS */
+
+.btn-team {
     margin: 5px;
 }
 
@@ -234,7 +359,7 @@ p {
 }
 
 
-/* ================= TABLET ================= */
+/* TABLET */
 
 @media (max-width: 900px) {
 
@@ -261,15 +386,13 @@ p {
 }
 
 
-/* ================= MOBILE ================= */
+/* MOBILE */
 
 @media (max-width: 600px) {
 
     .heroinfo {
         flex-direction: column;
-
         text-align: center;
-
         padding: 40px 20px;
     }
 
@@ -288,7 +411,6 @@ p {
     .img {
         width: 100%;
         height: 220px;
-
         margin-top: 25px;
     }
 
@@ -302,7 +424,6 @@ p {
 
     .team-container {
         grid-template-columns: 1fr;
-
         padding: 20px;
     }
 
