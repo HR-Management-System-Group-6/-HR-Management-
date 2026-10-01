@@ -1,0 +1,364 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #f4f7fb;
+    color: #183657;
+}
+
+.main {
+    width: 100%;
+}
+
+.page-title {
+    padding: 45px 7%;
+}
+
+.page-title small,
+section > small,
+.hero small {
+    color: #4d79a5;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.page-title h1 {
+    font-size: 40px;
+    margin: 8px 0;
+}
+
+.page-title p {
+    color: #5d7d9f;
+    font-size: 17px;
+}
+
+.hero {
+    background-color: white;
+    margin: 0 7% 50px;
+    padding: 40px;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.hero-text {
+    width: 50%;
+}
+
+.hero h2 {
+    font-size: 34px;
+    margin: 12px 0;
+}
+
+.hero p {
+    color: #5d7d9f;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+.hero-buttons {
+    margin-top: 25px;
+}
+
+button {
+    background-color: #087b83;
+    color: white;
+    border: none;
+
+    padding: 12px 22px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #06666d;
+}
+
+.second-btn {
+    background-color: white;
+    color: #315f8d;
+
+    border: 1px solid #8bb1cf;
+
+    margin-left: 10px;
+}
+
+.second-btn:hover {
+    background-color: #eef6fa;
+}
+
+.hero-image {
+    width: 45%;
+    height: 300px;
+
+    background-color: #e8f5f7;
+
+    border-radius: 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.section {
+    padding: 40px 7%;
+}
+
+.section h2,
+.why h2 {
+    margin: 10px 0 25px;
+    font-size: 28px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    flex: 1;
+
+    border: 1px solid #e2eaf1;
+
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card i {
+    background-color: #e3f4fa;
+    color: #28718d;
+
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    font-size: 20px;
+}
+
+.card h3 {
+    margin: 18px 0 8px;
+    font-size: 17px;
+}
+
+.card p {
+    color: #6383a3;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.why {
+    background-color: white;
+
+    padding: 45px 7%;
+
+    margin-top: 30px;
+}
+
+.why-content {
+    display: flex;
+    gap: 30px;
+}
+
+.why-content > div {
+    flex: 1;
+    padding: 20px;
+}
+
+.why i {
+    color: #087b83;
+    font-size: 25px;
+}
+
+.why h3 {
+    margin: 12px 0 7px;
+}
+
+.why p {
+    color: #6383a3;
+    line-height: 1.6;
+}
+
+.mission {
+    background-color: #087078;
+    color: white;
+
+    padding: 45px 7%;
+    margin: 70px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.mission > i {
+    font-size: 50px;
+}
+
+.mission small {
+    color: #bde9eb;
+}
+
+.mission h2 {
+    margin: 8px 0;
+}
+
+.mission p {
+    max-width: 700px;
+    line-height: 1.7;
+}
+
+.cta {
+    padding: 50px 7%;
+    background-color: #e8f5f7;
+}
+
+.cta small {
+    color: #4d79a5;
+    font-weight: bold;
+}
+
+.cta h2 {
+    margin: 10px 0;
+    font-size: 28px;
+}
+
+.cta p {
+    color: #5d7d9f;
+    margin-bottom: 20px;
+}
+
+.hero-text {
+    animation: slideLeft 1s ease-out;
+}
+
+.hero-image {
+    animation: slideRight 1s ease-out;
+}
+
+.card {
+    animation: fadeUp 0.8s ease-out both;
+}
+
+.card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .hero {
+        flex-direction: column;
+        padding: 25px;
+    }
+
+    .hero-text,
+    .hero-image {
+        width: 100%;
+    }
+
+    .hero-image {
+        margin-top: 30px;
+        height: 250px;
+    }
+
+    .cards {
+        flex-direction: column;
+    }
+
+    .why-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mission {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-title h1 {
+        font-size: 32px;
+    }
+
+    .hero h2 {
+        font-size: 27px;
+    }
+}
