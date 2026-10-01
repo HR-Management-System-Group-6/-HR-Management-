@@ -8,10 +8,7 @@ function displayTask() {
 
     const role = user?.role?.toLowerCase();
 
-
-    // =========================================================
-    // EMPLOYEE
-    // =========================================================
+  
 
     if (role === "employee") {
 
