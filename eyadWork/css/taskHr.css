@@ -1,318 +1,488 @@
-/* =========================
-   CONTENT SECTION
-========================= */
+/* =========================================================
+   HR TASK MANAGEMENT
+   MODERN UI
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
 
 .content {
-    padding: 26px 20px 22px;
-    max-width: 1220px;
-    background: #f4f8fc;
+    width: 100%;
+    min-height: calc(100vh - 96px);
+    padding: 38px 42px 50px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(36, 99, 145, 0.06),
+            transparent 32%
+        ),
+        #f6f8fb;
+    color: #172b4d;
 }
 
 
-/* =========================
+/* =========================================================
    PAGE LABEL
-========================= */
+========================================================= */
 
 .page-label {
-    color: #17609a;
-    font-size: 9px;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
-    margin-bottom: 8px;
+    color: #3b82b6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    margin-bottom: 12px;
+}
+
+.page-label::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+    background: #3b82b6;
+
+    box-shadow: 0 0 0 5px rgba(59, 130, 182, 0.10);
 }
 
 
-/* =========================
+/* =========================================================
    TITLE
-========================= */
+========================================================= */
 
 .title-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-end;
 
-    margin-bottom: 35px;
+    margin-bottom: 32px;
 }
 
 .title-row h1 {
-    font-size: 30px;
-    line-height: 1.2;
+    margin: 0 0 8px;
 
-    color: #193b60;
-
-    margin: 0 0 7px;
+    color: #102f50;
+    font-size: 34px;
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
 }
 
 .title-row p {
-    color: #38658f;
-
-    font-size: 12px;
-
     margin: 0;
+
+    color: #6b829a;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .sample-data {
-    color: #6d8daa;
+    display: inline-flex;
+    align-items: center;
 
-    font-size: 7px;
+    padding: 9px 14px;
 
-    margin-top: 22px;
+    border: 1px solid #d9e5ef;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #39729f;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+
+    box-shadow: 0 4px 15px rgba(27, 55, 82, 0.04);
 }
 
 
-/* =========================
-   TASK LAYOUT
-========================= */
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
 
 .task-layout {
     display: grid;
 
-    grid-template-columns: 310px 1fr;
+    grid-template-columns: minmax(320px, 370px) minmax(0, 1fr);
 
-    gap: 18px;
-
-    align-items: stretch;
+    gap: 24px;
+    align-items: start;
 }
 
 
-/* =========================
+/* =========================================================
    CARDS
-========================= */
+========================================================= */
 
 .card {
-    background: #ffffff;
+    position: relative;
 
-    border: 1px solid #d9e3ed;
+    background: rgba(255, 255, 255, 0.96);
 
-    border-radius: 12px;
+    border: 1px solid #e1e8ef;
+    border-radius: 18px;
 
-    padding: 20px;
+    box-shadow:
+        0 8px 25px rgba(23, 53, 79, 0.05),
+        0 2px 6px rgba(23, 53, 79, 0.03);
 
-    box-shadow: 0 1px 2px rgba(20, 50, 80, 0.03);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.card:hover {
+    box-shadow:
+        0 15px 35px rgba(23, 53, 79, 0.08),
+        0 3px 8px rgba(23, 53, 79, 0.04);
 }
 
 
-/* =========================
+/* =========================================================
    CREATE TASK CARD
-========================= */
+========================================================= */
+
+.create-card {
+    padding: 28px;
+}
+
+.create-card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 28px;
+    right: 28px;
+
+    height: 3px;
+
+    border-radius: 0 0 8px 8px;
+
+    background: linear-gradient(
+        90deg,
+        #173f63,
+        #4d91c2
+    );
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #edf1f5;
+}
 
 .card-header h2,
 .tasks-header h2 {
-    color: #173b60;
+    margin: 0 0 7px;
 
-    font-size: 17px;
+    color: #123657;
 
-    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -0.3px;
 }
 
 .card-header p,
 .tasks-header p {
-    color: #4f759b;
-
-    font-size: 10px;
-
-    line-height: 1.5;
-
     margin: 0;
+
+    color: #71859a;
+
+    font-size: 13px;
+    line-height: 1.6;
 }
 
 
-/* =========================
+/* =========================================================
    FORM
-========================= */
+========================================================= */
 
 form {
-    margin-top: 23px;
+    margin-top: 24px;
 }
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
 
-    color: #193b5f;
-
-    font-size: 10px;
-    font-weight: 700;
-
     margin-bottom: 8px;
+
+    color: #294b69;
+
+    font-size: 12px;
+    font-weight: 700;
 }
-
-
-/* INPUT */
 
 input,
 textarea,
 select {
     width: 100%;
 
-    border: 1px solid #bdd0e2;
-
-    border-radius: 6px;
-
     outline: none;
 
-    background: #ffffff;
+    border: 1px solid #d5e0e9;
+    border-radius: 11px;
 
-    color: #315a82;
+    background: #fbfcfd;
+    color: #284b68;
 
-    font-size: 10px;
+    font-family: inherit;
+    font-size: 13px !important;
 
-    transition: border-color 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 input {
-    height: 43px;
-
-    padding: 0 12px;
+    height: 48px;
+    padding: 0 15px;
 }
 
 textarea {
-    height: 100px;
+    min-height: 120px;
+    padding: 14px 15px;
 
-    padding: 12px;
-
-    resize: none;
+    resize: vertical;
+    line-height: 1.55;
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: #7295b8;
+    color: #9aabba;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    border-color: #b9ccdc;
+    background: #ffffff;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: #5085b5;
+    border-color: #4385b5;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(67, 133, 181, 0.10);
 }
 
 
-/* =========================
+/* =========================================================
    SELECT
-========================= */
+========================================================= */
 
 .select-wrapper {
     position: relative;
 }
 
-select {
-    height: 43px;
+.select-wrapper select {
+    height: 48px;
 
-    padding: 0 35px 0 12px;
+    padding: 0 42px 0 15px;
 
     appearance: none;
-
     cursor: pointer;
 }
 
 .select-wrapper::after {
     content: "\F282";
 
-    font-family: "bootstrap-icons";
-
     position: absolute;
-
-    right: 12px;
+    right: 15px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    color: #315f8b;
+    font-family: "bootstrap-icons";
 
-    font-size: 12px;
+    color: #587995;
+    font-size: 14px;
 
     pointer-events: none;
 }
 
 
-/* =========================
+/* =========================================================
    CREATE BUTTON
-========================= */
+========================================================= */
 
 .create-btn {
     width: 100%;
-    height: 43px;
+    height: 50px;
+
+    margin-top: 6px;
 
     border: none;
+    border-radius: 11px;
 
-    border-radius: 6px;
+    background: linear-gradient(
+        135deg,
+        #143c60,
+        #225b87
+    );
 
-    background: #1c4167;
-
-    color: white;
+    color: #ffffff;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
-    padding: 0 13px;
+    padding: 0 17px;
 
-    font-size: 10px;
+    font-family: inherit;
+    font-size: 13px !important;
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: background 0.2s;
+    box-shadow:
+        0 7px 18px rgba(20, 60, 96, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .create-btn:hover {
-    background: #153653;
+    background: linear-gradient(
+        135deg,
+        #103451,
+        #1b5079
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(20, 60, 96, 0.24);
+}
+
+.create-btn:active {
+    transform: translateY(0);
 }
 
 .create-btn i {
-    font-size: 14px;
+    font-size: 16px;
+
+    transition: transform 0.2s ease;
+}
+
+.create-btn:hover i {
+    transform: translateX(4px);
 }
 
 
-/* =========================
-   ALL TASKS
-========================= */
+/* =========================================================
+   TASKS CARD
+========================================================= */
 
 .tasks-card {
-    padding: 20px;
+    padding: 28px;
 }
 
 .tasks-header {
     display: flex;
-
     justify-content: space-between;
     align-items: flex-start;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #edf1f5;
 
     margin-bottom: 20px;
 }
 
 .task-count {
-    color: #4d80ad;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size: 8px;
+    min-width: 72px;
 
-    margin-top: 5px;
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    background: #eef6fb;
+    color: #3374a2;
+
+    font-size: 11px;
+    font-weight: 700;
 }
 
 
-/* =========================
+/* =========================================================
    TASK ITEM
-========================= */
+========================================================= */
 
 .task-item {
-    min-height: 127px;
+    position: relative;
 
-    border: 1px solid #d4e1ec;
-
-    border-radius: 8px;
-
-    padding: 14px;
+    min-height: 145px;
 
     display: flex;
-
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 
-    gap: 20px;
+    gap: 24px;
 
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    padding: 22px 22px 22px 25px;
+
+    border: 1px solid #e1e8ef;
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.task-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 4px;
+
+    background: #4385b5;
+
+    opacity: 0.8;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+
+    border-color: #cbdce9;
+
+    box-shadow:
+        0 10px 25px rgba(30, 67, 94, 0.07);
 }
 
 .task-item:last-child {
@@ -320,83 +490,143 @@ select {
 }
 
 
-/* =========================
+/* =========================================================
    TASK INFORMATION
-========================= */
+========================================================= */
 
 .task-info {
     min-width: 0;
+    flex: 1;
 }
 
 .task-info h3 {
-    color: #173b60;
+    margin: 0 0 8px;
 
-    font-size: 13px;
+    color: #153a5c;
 
-    margin: 0 0 9px;
+    font-size: 16px;
+    font-weight: 750;
+
+    letter-spacing: -0.2px;
 }
 
 .task-info p {
-    color: #41698f;
+    max-width: 700px;
 
-    font-size: 9px;
+    margin: 0 0 13px;
 
-    margin: 0 0 9px;
+    color: #71859a;
+
+    font-size: 13px;
+    line-height: 1.55;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
 }
 
 .assigned {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 
-    color: #52789d;
+    margin-bottom: 12px;
 
-    font-size: 9px;
+    color: #71869a;
 
-    margin-bottom: 9px;
+    font-size: 12px;
+}
+
+.assigned::before {
+    content: "\F4DA";
+
+    font-family: "bootstrap-icons";
+
+    color: #4c89b5;
+    font-size: 13px;
 }
 
 
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 .status {
     display: inline-flex;
-
     align-items: center;
+    justify-content: center;
+    gap: 7px;
 
-    min-width: 91px;
-    height: 23px;
+    min-width: 105px;
+    min-height: 29px;
 
-    padding: 0 11px;
+    padding: 5px 13px;
 
-    border-radius: 12px;
+    border-radius: 20px;
 
-    font-size: 8px;
+    font-size: 11px;
+    font-weight: 700;
 
-    color: #426582;
-
-    background: #e7f1f8;
+    border: 1px solid transparent;
 }
 
-.status.in-progress {
-    background: #e5f0f8;
+.status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
 }
+
+
+/* Pending */
 
 .status.pending {
-    background: #e5f0f8;
+    background: #fff7e8;
+    color: #b7791f;
+    border-color: #f7dfb2;
 }
+
+
+/* In progress */
+
+.status.in-progress {
+    background: #edf5ff;
+    color: #3978b2;
+    border-color: #cfe2f5;
+}
+
+
+/* Completed */
 
 .status.completed {
-    background: #e5f0f8;
+    background: #edf9f2;
+    color: #31805a;
+    border-color: #ccebd9;
 }
 
 
-/* =========================
-   TASK BUTTONS
-========================= */
+/* Submitted */
+
+.status.submitted {
+    background: #f3efff;
+    color: #7254aa;
+    border-color: #ddd3f4;
+}
+
+
+/* =========================================================
+   TASK ACTIONS
+========================================================= */
 
 .task-actions {
     display: flex;
+    align-items: center;
 
     gap: 9px;
 
@@ -404,80 +634,500 @@ select {
 }
 
 .task-actions button {
-    width: 70px;
-    height: 30px;
+    min-width: 78px;
+    height: 38px;
 
-    border-radius: 6px;
+    padding: 0 14px;
 
-    font-size: 9px;
-    font-weight: 600;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
 
     cursor: pointer;
 
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.task-actions button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Edit */
+
+.edit-btn {
+    border: 1px solid #c8dce9;
+
     background: #ffffff;
 
-    transition: 0.2s;
+    color: #275a7f;
 }
 
-.block-btn,
-.edit-btn {
-    border: 1px solid #8eb9df;
-
-    color: #214d78;
-}
-
-.block-btn:hover,
 .edit-btn:hover {
-    background: #edf5fb;
+    background: #edf6fb;
+
+    border-color: #9fc3db;
+
+    box-shadow:
+        0 5px 12px rgba(39, 90, 127, 0.08);
 }
 
 
-/* =========================
+/* Block */
+
+.block-btn {
+    border: 1px solid #f0caca;
+
+    background: #fffafa;
+
+    color: #b14e4e;
+}
+
+.block-btn:hover {
+    background: #fff0f0;
+
+    border-color: #e8aaaa;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.task-item:has(.task-info h3:first-child) {
+    background: #ffffff;
+}
+
+
+/* =========================================================
    FOOTER
-========================= */
+========================================================= */
 
 .footer-text {
-    margin-top: 85px;
+    margin-top: 35px;
 
-    color: #5f88ad;
+    color: #93a5b5;
 
-    font-size: 8px;
+    font-size: 11px;
+    text-align: center;
 }
 
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* =========================================================
+   EDIT MODAL
+========================================================= */
 
-@media (max-width: 900px) {
+.edit-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(12, 32, 51, 0.62);
+
+    backdrop-filter: blur(7px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.edit-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   MODAL CONTENT
+========================================================= */
+
+.edit-modal-content {
+    width: 100%;
+    max-width: 600px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.20);
+
+    transform: translateY(-20px) scale(0.98);
+
+    transition:
+        transform 0.3s ease;
+}
+
+.edit-modal.active .edit-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.edit-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 28px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #edf1f5;
+}
+
+.edit-modal-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #4284b2;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.edit-modal-header h2 {
+    margin: 0 0 7px;
+
+    color: #153a5c;
+
+    font-size: 25px;
+    font-weight: 750;
+}
+
+.edit-modal-header p {
+    margin: 0;
+
+    color: #7a8da0;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.close-edit-modal {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e0e8ee;
+    border-radius: 10px;
+
+    background: #f7f9fb;
+
+    color: #5d7489;
+
+    font-size: 23px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.close-edit-modal:hover {
+    background: #edf3f7;
+
+    color: #153a5c;
+
+    transform: rotate(4deg);
+}
+
+
+/* =========================================================
+   EDIT FORM
+========================================================= */
+
+.edit-form-group {
+    margin-bottom: 19px;
+}
+
+.edit-form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #294b69;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.edit-form-group input,
+.edit-form-group textarea,
+.edit-form-group select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d5e0e9;
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #fbfcfd;
+    color: #284b68;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.edit-form-group input {
+    height: 48px;
+    padding: 0 15px;
+}
+
+.edit-form-group textarea {
+    min-height: 110px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+
+    line-height: 1.55;
+}
+
+.edit-form-group input:focus,
+.edit-form-group textarea:focus,
+.edit-form-group select:focus {
+    border-color: #4385b5;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(67, 133, 181, 0.10);
+}
+
+
+/* =========================================================
+   EDIT SELECT
+========================================================= */
+
+.edit-select-wrapper {
+    position: relative;
+}
+
+.edit-select-wrapper select {
+    height: 48px;
+
+    padding: 0 42px 0 15px;
+
+    appearance: none;
+
+    cursor: pointer;
+}
+
+.edit-select-wrapper::after {
+    content: "\F282";
+
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-family: "bootstrap-icons";
+
+    color: #587995;
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.edit-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 28px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #edf1f5;
+}
+
+.cancel-edit-btn,
+.save-edit-btn {
+    min-width: 125px;
+    height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.cancel-edit-btn {
+    border: 1px solid #d6e1e9;
+
+    background: #ffffff;
+
+    color: #587086;
+}
+
+.cancel-edit-btn:hover {
+    background: #f5f8fa;
+
+    transform: translateY(-1px);
+}
+
+.save-edit-btn {
+    border: 1px solid #173f63;
+
+    background: linear-gradient(
+        135deg,
+        #153e61,
+        #245f8d
+    );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 16px rgba(23, 63, 99, 0.18);
+}
+
+.save-edit-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 20px rgba(23, 63, 99, 0.25);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.edit-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.edit-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.edit-modal-content::-webkit-scrollbar-thumb {
+    background: #cbd8e2;
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .content {
+        padding: 30px;
+    }
+
+    .task-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 18px;
+    }
+
+    .create-card,
+    .tasks-card {
+        padding: 22px;
+    }
+
+    .title-row h1 {
+        font-size: 30px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .content {
+        padding: 25px 20px 40px;
+    }
 
     .task-layout {
         grid-template-columns: 1fr;
     }
 
-    .content {
-        padding: 25px 18px;
-    }
-}
-
-
-@media (max-width: 600px) {
-
     .title-row {
-        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
 
     .sample-data {
-        display: none;
-    }
-
-    .title-row h1 {
-        font-size: 25px;
+        margin-top: 5px;
     }
 
     .task-item {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
     }
 
     .task-actions {
@@ -489,433 +1139,79 @@ select {
     }
 }
 
-/* =========================================================
-   EDIT TASK MODAL
-========================================================= */
-
-.edit-modal {
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(10, 31, 50, 0.55);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    z-index: 9999;
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity 0.25s ease,
-        visibility 0.25s ease;
-
-}
-
-
-.edit-modal.active {
-
-    opacity: 1;
-
-    visibility: visible;
-
-}
-
 
 /* =========================================================
-   MODAL CONTENT
-========================================================= */
-
-.edit-modal-content {
-
-    width: 100%;
-
-    max-width: 560px;
-
-    background: #ffffff;
-
-    border-radius: 14px;
-
-    border: 1px solid #d9e3ed;
-
-    padding: 26px;
-
-    box-shadow:
-        0 20px 60px rgba(20, 50, 80, 0.18);
-
-    transform: translateY(-15px);
-
-    transition: transform 0.25s ease;
-
-}
-
-
-.edit-modal.active .edit-modal-content {
-
-    transform: translateY(0);
-
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.edit-modal-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-start;
-
-    margin-bottom: 25px;
-
-}
-
-
-.edit-modal-label {
-
-    display: block;
-
-    color: #17609a;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 0.8px;
-
-    margin-bottom: 7px;
-
-}
-
-
-.edit-modal-header h2 {
-
-    margin: 0 0 7px;
-
-    color: #173b60;
-
-    font-size: 22px;
-
-}
-
-
-.edit-modal-header p {
-
-    margin: 0;
-
-    color: #4f759b;
-
-    font-size: 11px;
-
-}
-
-
-/* =========================================================
-   CLOSE BUTTON
-========================================================= */
-
-.close-edit-modal {
-
-    width: 34px;
-
-    height: 34px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background: #f1f6fa;
-
-    color: #315f8b;
-
-    font-size: 22px;
-
-    line-height: 1;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    transition: 0.2s;
-
-}
-
-
-.close-edit-modal:hover {
-
-    background: #e5eef5;
-
-    color: #173b60;
-
-}
-
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.edit-form-group {
-
-    margin-bottom: 17px;
-
-}
-
-
-.edit-form-group label {
-
-    display: block;
-
-    color: #193b5f;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    margin-bottom: 7px;
-
-}
-
-
-.edit-form-group input,
-.edit-form-group textarea,
-.edit-form-group select {
-
-    width: 100%;
-
-    box-sizing: border-box;
-
-    border: 1px solid #bdd0e2;
-
-    border-radius: 7px;
-
-    outline: none;
-
-    background: #ffffff;
-
-    color: #315a82;
-
-    font-size: 11px;
-
-    font-family: inherit;
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
-
-}
-
-
-.edit-form-group input {
-
-    height: 43px;
-
-    padding: 0 12px;
-
-}
-
-
-.edit-form-group textarea {
-
-    height: 90px;
-
-    padding: 11px 12px;
-
-    resize: vertical;
-
-}
-
-
-.edit-form-group input:focus,
-.edit-form-group textarea:focus,
-.edit-form-group select:focus {
-
-    border-color: #5085b5;
-
-    box-shadow:
-        0 0 0 3px rgba(80, 133, 181, 0.08);
-
-}
-
-
-/* =========================================================
-   SELECT
-========================================================= */
-
-.edit-select-wrapper {
-
-    position: relative;
-
-}
-
-
-.edit-select-wrapper select {
-
-    height: 43px;
-
-    padding: 0 35px 0 12px;
-
-    appearance: none;
-
-    cursor: pointer;
-
-}
-
-
-.edit-select-wrapper::after {
-
-    content: "\F282";
-
-    font-family: "bootstrap-icons";
-
-    position: absolute;
-
-    right: 13px;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    color: #315f8b;
-
-    font-size: 12px;
-
-    pointer-events: none;
-
-}
-
-
-/* =========================================================
-   ACTIONS
-========================================================= */
-
-.edit-modal-actions {
-
-    display: flex;
-
-    justify-content: flex-end;
-
-    gap: 10px;
-
-    margin-top: 25px;
-
-    padding-top: 18px;
-
-    border-top: 1px solid #e5edf4;
-
-}
-
-
-.cancel-edit-btn,
-.save-edit-btn {
-
-    height: 40px;
-
-    padding: 0 18px;
-
-    border-radius: 6px;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-
-}
-
-
-.cancel-edit-btn {
-
-    border: 1px solid #b8cddd;
-
-    background: #ffffff;
-
-    color: #315a82;
-
-}
-
-
-.cancel-edit-btn:hover {
-
-    background: #f1f6fa;
-
-}
-
-
-.save-edit-btn {
-
-    border: 1px solid #1c4167;
-
-    background: #1c4167;
-
-    color: #ffffff;
-
-}
-
-
-.save-edit-btn:hover {
-
-    background: #153653;
-
-}
-
-
-/* =========================================================
-   RESPONSIVE
+   RESPONSIVE - SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
 
-    .edit-modal {
-
-        padding: 12px;
-
+    .content {
+        padding: 22px 14px 35px;
     }
 
+    .title-row {
+        flex-direction: column;
+        margin-bottom: 24px;
+    }
+
+    .title-row h1 {
+        font-size: 27px;
+    }
+
+    .title-row p {
+        font-size: 13px;
+    }
+
+    .sample-data {
+        display: none;
+    }
+
+    .create-card,
+    .tasks-card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .task-item {
+        padding: 18px;
+    }
+
+    .task-info h3 {
+        font-size: 15px;
+    }
+
+    .task-info p {
+        font-size: 12px;
+    }
+
+    .task-actions {
+        flex-direction: column;
+    }
+
+    .task-actions button {
+        width: 100%;
+    }
+
+    .edit-modal {
+        padding: 12px;
+    }
 
     .edit-modal-content {
-
-        padding: 20px;
-
+        padding: 22px;
+        border-radius: 17px;
     }
-
 
     .edit-modal-header h2 {
-
-        font-size: 20px;
-
+        font-size: 21px;
     }
-
 
     .edit-modal-actions {
-
         flex-direction: column-reverse;
-
     }
-
 
     .cancel-edit-btn,
     .save-edit-btn {
-
         width: 100%;
-
     }
-
 }

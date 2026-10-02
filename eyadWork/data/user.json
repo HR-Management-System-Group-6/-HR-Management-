@@ -1,22 +1,73 @@
 [
+
+{
+    "email": "employee@example.com",
+    "name":"Eyad Mansur",
+    "password": "123",
+    "role": "Employee",
+    "phone":"079725154",
+    "jobTitle": "Frontend Developer",
+    "joiningDate": "2025-03-15",
+    "department": "IT",
+    "status": "Active"
+
+  },
+
+
   {
     "email": "hr@example.com",
-    "name":"tariq",
+    "name": "Ahmad Khaled",
     "password": "123",
-    "role": "HR"
-
+    "role": "HR",
+    "phone": "0798123456",
+    "jobTitle": "Frontend Developer",
+    "joiningDate": "2025-03-15",
+    "department": "IT",
+    "status": "Active"
   },
   {
-    "email": "employee@example.com",
-    "name": "ahmad",
-    "password": "123",
-    "role": "Employee"
+    "email": "sara@example.com",
+    "name": "Sara Ali",
+    "password": "789",
+    "role": "Employee",
+    "phone": "0789234567",
+    "jobTitle": "UI/UX Designer",
+    "joiningDate": "2024-11-20",
+    "department": "Design",
+    "status": "Active"
   },
-
   {
-    "email": "eyad@example.com",
-    "name": "eyad",
-    "password": "123",
-    "role": "Employee"
+    "email": "omar@example.com",
+    "name": "Omar Hassan",
+    "password": "321",
+    "role": "Employee",
+    "phone": "0777345678",
+    "jobTitle": "Backend Developer",
+    "joiningDate": "2025-01-10",
+    "department": "IT",
+    "status": "Active"
+  },
+  {
+    "email": "lina@example.com",
+    "name": "Lina Ahmad",
+    "password": "654",
+    "role": "Employee",
+    "phone": "0796456789",
+    "jobTitle": "Marketing Specialist",
+    "joiningDate": "2024-08-05",
+    "department": "Marketing",
+    "status": "On Leave"
+  },
+  {
+    "email": "yousef@example.com",
+    "name": "Yousef Mahmoud",
+    "password": "987",
+    "role": "Employee",
+    "phone": "0788567890",
+    "jobTitle": "HR Assistant",
+    "joiningDate": "2025-06-18",
+    "department": "Human Resources",
+    "status": "Active"
   }
+
 ]

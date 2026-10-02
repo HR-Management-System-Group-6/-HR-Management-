@@ -434,3 +434,94 @@ transform: scale(1.2);
         padding: 30px 20px;
     }
 }
+body {
+    background-color: #ffffff;
+    color: #000f22;
+}
+
+.heroinfo {
+    background: linear-gradient(
+        120deg,
+        #000f22 0%,
+        #1b3554 50%,
+        #3f6593 100%
+    );
+    border-bottom-color: #5b86b6;
+}
+
+.herocontent h3 {
+    color: #80aad3;
+}
+
+.herocontent h1 {
+    color: #ffffff;
+}
+
+.herocontent p {
+    color: #c0e6fd;
+}
+
+.img {
+    box-shadow: 0 15px 35px rgba(0, 15, 34, 0.15);
+}
+
+.title_team h3 {
+    color: #3f6593;
+}
+
+.title_team h1 {
+    color: #000f22;
+}
+
+.title_team p {
+    color: #3f6593;
+}
+
+.team-card {
+    background-color: #ffffff;
+    border-color: #80aad3;
+    box-shadow: 0 8px 25px rgba(27, 53, 84, 0.06);
+}
+
+.team-card:hover {
+    border-color: #3f6593;
+    box-shadow: 0 15px 35px rgba(27, 53, 84, 0.12);
+}
+
+.teamicon {
+    border-color: #c0e6fd;
+    background-color: #ffffff;
+}
+
+.team_name {
+    color: #000f22;
+}
+
+.team-card p {
+    color: #3f6593;
+}
+
+.team-card hr {
+    background-color: #c0e6fd;
+}
+
+.btn-team a {
+    color: #1b3554;
+    background-color: #c0e6fd;
+    background-image: linear-gradient(
+        135deg,
+        #c0e6fd 0%,
+        #80aad3 100%
+    );
+}
+
+.btn-team a:hover {
+    color: #ffffff;
+    background-color: #1b3554;
+    background-image: linear-gradient(
+        135deg,
+        #3f6593 0%,
+        #1b3554 60%,
+        #000f22 100%
+    );
+}

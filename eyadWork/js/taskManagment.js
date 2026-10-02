@@ -1,108 +1,258 @@
+// =============================================================
+// TASK MANAGEMENT SYSTEM
+// =============================================================
+
+
+// =============================================================
+// GLOBAL VARIABLES
+// =============================================================
+
+let currentEditingTaskId = null;
+let selectedTaskName = "";
+let selectedTaskId = null;
+
+
+// =============================================================
+// DISPLAY TASK PAGE
+// =============================================================
+
 function displayTask() {
 
-    const content = document.getElementById("content");
+    const content =
+        document.getElementById("content");
 
-    const user = JSON.parse(
-        localStorage.getItem("loggedInUser")
-    );
+    if (!content) {
 
-    const role = user?.role?.toLowerCase();
+        console.error(
+            "Element #content not found."
+        );
 
-  
+        return;
+    }
+
+
+    let user = null;
+
+    try {
+
+        user =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInUser"
+                )
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Could not read loggedInUser:",
+            error
+        );
+
+    }
+
+
+    if (!user) {
+
+        console.error(
+            "No logged in user found."
+        );
+
+        return;
+    }
+
+
+    const role =
+        String(
+            user.role || ""
+        )
+        .trim()
+        .toLowerCase();
+
 
     if (role === "employee") {
 
-        content.innerHTML = `
+        displayEmployeePage(
+            content,
+            user
+        );
+
+        return;
+    }
+
+
+    if (role === "hr") {
+
+        displayHrPage(
+            content
+        );
+
+        return;
+    }
+
+
+    console.warn(
+        "Unknown user role:",
+        role
+    );
+
+}
+
+
+// =============================================================
+// GET CURRENT EMPLOYEE NAME
+// =============================================================
+
+function getCurrentEmployeeName(user) {
+
+    if (!user) {
+        return "";
+    }
+
+    return (
+        user.name ||
+        user.fullName ||
+        user.full_name ||
+        user.employeeName ||
+        user.username ||
+        ""
+    )
+    .toString()
+    .trim();
+
+}
+
+
+// =============================================================
+// DISPLAY EMPLOYEE PAGE
+// =============================================================
+
+function displayEmployeePage(
+    content,
+    user
+) {
+
+    const employeeName =
+        getCurrentEmployeeName(user);
+
+
+    const allTasks =
+        getHrTasks();
+
+
+    const employeeTasks =
+        allTasks.filter(
+            task => {
+
+                if (!task.employee) {
+                    return false;
+                }
+
+                return (
+                    String(task.employee)
+                        .trim()
+                        .toLowerCase() ===
+                    String(employeeName)
+                        .trim()
+                        .toLowerCase()
+                );
+
+            }
+        );
+
+
+    content.innerHTML = `
 
         <section class="content">
 
-            <div class="page-label">
-                MY WORKSPACE / TASKS
+            <div class="title-row">
+
+                <div>
+
+                    <h1>
+                        My tasks
+                    </h1>
+
+                </div>
+
+                <span class="sample-data">
+                    ${employeeTasks.length}
+                    task${employeeTasks.length === 1 ? "" : "s"}
+                </span>
+
             </div>
 
-            <h1>My tasks</h1>
 
-            <p class="description">
-                View task information and submit your work.
-            </p>
-
-
-            <!-- FILTER TABS -->
+            <!-- =================================================
+                 TABS
+            ================================================== -->
 
             <div class="tabs">
 
-                <button class="tab active">
-                    All tasks (6)
+                <button
+                    type="button"
+                    class="tab active"
+                    data-status="All"
+                >
+                    All tasks (${employeeTasks.length})
                 </button>
 
-                <button class="tab">
+                <button
+                    type="button"
+                    class="tab"
+                    data-status="In progress"
+                >
                     In progress
                 </button>
 
-                <button class="tab">
+                <button
+                    type="button"
+                    class="tab"
+                    data-status="Pending"
+                >
                     Pending
                 </button>
 
-                <button class="tab">
+                <button
+                    type="button"
+                    class="tab"
+                    data-status="Submitted"
+                >
                     Submitted
                 </button>
 
-                <button class="tab">
+                <button
+                    type="button"
+                    class="tab"
+                    data-status="Completed"
+                >
                     Completed
                 </button>
 
             </div>
 
 
-            <!-- FILTERS -->
+            <!-- =================================================
+                 FILTERS
+            ================================================== -->
 
             <div class="filters">
 
-                <div class="search-box">
 
-                    <i class="bi bi-search"></i>
+                <select
+                    id="employeeSort"
+                >
 
-                    <input
-                        type="text"
-                        placeholder="Search your tasks..."
-                    >
-
-                </div>
-
-
-                <select>
-
-                    <option>
-                        All priorities
-                    </option>
-
-                    <option>
-                        High priority
-                    </option>
-
-                    <option>
-                        Medium priority
-                    </option>
-
-                    <option>
-                        Low priority
-                    </option>
-
-                </select>
-
-
-                <select>
-
-                    <option>
-                        Sort by due date
-                    </option>
-
-                    <option>
+                    <option value="newest">
                         Newest
                     </option>
 
-                    <option>
+                    <option value="oldest">
                         Oldest
+                    </option>
+
+                    <option value="title">
+                        Title
                     </option>
 
                 </select>
@@ -110,368 +260,177 @@ function displayTask() {
             </div>
 
 
-            <!-- FEATURED TASK -->
+            <!-- =================================================
+                 TASK CONTAINER
+            ================================================== -->
 
-            <div class="featured-task">
-
-                <div class="task-left">
-
-                    <span class="priority high">
-                        HIGH PRIORITY
-                    </span>
-
-                    <h2>
-                        Prepare onboarding checklist
-                    </h2>
-
-                    <p class="task-description">
-                        Create a checklist for new team members.
-                    </p>
-
-                    <div class="task-meta">
-
-                        <span>
-                            Due: Oct 02, 2026
-                        </span>
-
-                        <span>
-                            • Assigned by HR
-                        </span>
-
-                    </div>
-
-                </div>
+            <div
+                class="task-grid"
+                id="employeeTasksContainer"
+            ></div>
 
 
-                <span
-                    class="status in-progress"
-                    data-task-status="Prepare onboarding checklist"
+            <!-- =================================================
+                 VIEW TASK MODAL
+            ================================================== -->
+
+            <div
+                class="edit-modal"
+                id="viewTaskModal"
+            >
+
+                <div
+                    class="edit-modal-content"
+                    style="max-width:650px;"
                 >
-                    In Progress
-                </span>
+
+                    <div class="edit-modal-header">
+
+                        <div>
+
+                            <span class="edit-modal-label">
+                                TASK DETAILS
+                            </span>
+
+                            <h2 id="viewTaskTitle">
+                                Task
+                            </h2>
+
+                            <p>
+                                Details of your assigned task.
+                            </p>
+
+                        </div>
 
 
-                <div class="featured-actions">
+                        <button
+                            type="button"
+                            class="close-edit-modal"
+                            onclick="closeViewTaskModal()"
+                        >
+                            ×
+                        </button>
 
-                    <button class="btn secondary">
-                        View Task ↑
-                    </button>
+                    </div>
 
-                    <button
-                        class="btn primary submit-task-btn"
-                        onclick="openSubmitModal('Prepare onboarding checklist')"
+
+                    <div
+                        style="
+                            display:flex;
+                            flex-direction:column;
+                            gap:22px;
+                            padding-top:20px;
+                        "
                     >
-                        Submit
-                    </button>
 
-                </div>
+                        <div>
 
+                            <label
+                                style="
+                                    display:block;
+                                    font-weight:600;
+                                    margin-bottom:8px;
+                                "
+                            >
+                                Description
+                            </label>
 
-                <div class="task-details">
+                            <p
+                                id="viewTaskDescription"
+                                style="
+                                    margin:0;
+                                    line-height:1.7;
+                                "
+                            ></p>
 
-                    <span class="details-title">
-                        TASK INFORMATION
-                    </span>
-
-                    <p>
-                        Prepare a clear first-week checklist that helps new employees get started.
-                    </p>
-
-                    <ul>
-
-                        <li>
-                            01 List required documents and account setup steps.
-                        </li>
-
-                        <li>
-                            02 Include team introductions and company policies.
-                        </li>
-
-                        <li>
-                            03 Arrange the checklist in the order each step should be completed.
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            </div>
+                        </div>
 
 
-            <!-- TASK GRID -->
+                        <div>
 
-            <div class="task-grid">
+                            <label
+                                style="
+                                    display:block;
+                                    font-weight:600;
+                                    margin-bottom:8px;
+                                "
+                            >
+                                Assigned employee
+                            </label>
+
+                            <p
+                                id="viewTaskEmployee"
+                                style="
+                                    margin:0;
+                                "
+                            ></p>
+
+                        </div>
 
 
-                <!-- TASK 1 -->
+                        <div>
 
-                <div class="task-card">
+                            <label
+                                style="
+                                    display:block;
+                                    font-weight:600;
+                                    margin-bottom:8px;
+                                "
+                            >
+                                Status
+                            </label>
 
-                    <div class="card-header">
+                            <span
+                                id="viewTaskStatus"
+                                class="status pending"
+                            >
+                                Pending
+                            </span>
 
-                        <span class="priority medium">
-                            Medium priority
-                        </span>
+                        </div>
 
-                        <span
-                            class="status pending"
-                            data-task-status="Review attendance policy"
+
+                        <div>
+
+                            <label
+                                style="
+                                    display:block;
+                                    font-weight:600;
+                                    margin-bottom:8px;
+                                "
+                            >
+                                Created date
+                            </label>
+
+                            <p
+                                id="viewTaskCreatedAt"
+                                style="
+                                    margin:0;
+                                "
+                            >
+                                -
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:flex-end;
+                                margin-top:10px;
+                            "
                         >
-                            Pending
-                        </span>
 
-                    </div>
-
-                    <h3>
-                        Review attendance policy
-                    </h3>
-
-                    <p>
-                        Read the policy and prepare your notes.
-                    </p>
-
-                    <div class="card-meta">
-
-                        Due: Oct 03, 2026
-
-                        <br>
-
-                        Assigned by HR
-
-                    </div>
-
-                    <div class="card-actions">
-
-                        <button class="btn secondary">
-                            View Task
-                        </button>
-
-                        <button
-                            class="btn primary submit-task-btn"
-                            onclick="openSubmitModal('Review attendance policy')"
-                        >
-                            Submit
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- TASK 2 -->
-
-                <div class="task-card">
-
-                    <div class="card-header">
-
-                        <span class="priority medium">
-                            Medium priority
-                        </span>
-
-                        <span
-                            class="status in-progress"
-                            data-task-status="Update project documentation"
-                        >
-                            In Progress
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Update project documentation
-                    </h3>
-
-                    <p>
-                        Revise the setup and handover guide.
-                    </p>
-
-                    <div class="card-meta">
-
-                        Due: Oct 04, 2026
-
-                        <br>
-
-                        Assigned by HR
-
-                    </div>
-
-                    <div class="card-actions">
-
-                        <button class="btn secondary">
-                            View Task
-                        </button>
-
-                        <button
-                            class="btn primary submit-task-btn"
-                            onclick="openSubmitModal('Update project documentation')"
-                        >
-                            Submit
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- TASK 3 -->
-
-                <div class="task-card">
-
-                    <div class="card-header">
-
-                        <span class="priority high-text">
-                            High priority
-                        </span>
-
-                        <span
-                            class="status submitted"
-                            data-task-status="Submit monthly activity report"
-                        >
-                            Submitted
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Submit monthly activity report
-                    </h3>
-
-                    <p>
-                        Summarise completed work and updates.
-                    </p>
-
-                    <div class="card-meta">
-
-                        Due: Oct 05, 2026
-
-                        <br>
-
-                        Assigned by HR
-
-                    </div>
-
-                    <div class="card-actions">
-
-                        <button class="btn secondary">
-                            View Task
-                        </button>
-
-                        <button
-                            class="btn completed-btn"
-                            disabled
-                        >
-                            Submitted
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- TASK 4 -->
-
-                <div class="task-card">
-
-                    <div class="card-header">
-
-                        <span class="priority low">
-                            Low priority
-                        </span>
-
-                        <span
-                            class="status completed"
-                            data-task-status="Complete profile information"
-                        >
-                            Completed
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Complete profile information
-                    </h3>
-
-                    <p>
-                        Check your details and contact number.
-                    </p>
-
-                    <div class="card-meta">
-
-                        Due: Oct 06, 2026
-
-                        <br>
-
-                        Assigned by HR
-
-                    </div>
-
-                    <div class="card-actions">
-
-                        <button class="btn secondary">
-                            View Task
-                        </button>
-
-                        <button
-                            class="btn completed-btn"
-                            disabled
-                        >
-                            Completed
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- TASK 5 -->
-
-                <div class="task-card">
-
-                    <div class="card-header">
-
-                        <span class="priority low">
-                            Low priority
-                        </span>
-
-                        <span
-                            class="status completed"
-                            data-task-status="Review workplace guidelines"
-                        >
-                            Completed
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Review workplace guidelines
-                    </h3>
-
-                    <p>
-                        Read the team communication guidelines.
-                    </p>
-
-                    <div class="card-meta">
-
-                        Due: Oct 07, 2026
-
-                        <br>
-
-                        Assigned by HR
-
-                    </div>
-
-                    <div class="card-actions">
-
-                        <button class="btn secondary">
-                            View Task
-                        </button>
-
-                        <button
-                            class="btn completed-btn"
-                            disabled
-                        >
-                            Completed
-                        </button>
+                            <button
+                                type="button"
+                                class="cancel-edit-btn"
+                                onclick="closeViewTaskModal()"
+                            >
+                                Close
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -480,9 +439,9 @@ function displayTask() {
             </div>
 
 
-            <!-- ================================================= -->
-            <!-- SUBMIT MODAL -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 SUBMIT MODAL
+            ================================================== -->
 
             <div
                 class="submit-modal"
@@ -490,7 +449,6 @@ function displayTask() {
             >
 
                 <div class="submit-modal-content">
-
 
                     <div class="submit-modal-header">
 
@@ -524,14 +482,12 @@ function displayTask() {
 
                     <form id="submitForm">
 
-
-                        <!-- FILE -->
-
                         <div class="submit-form-group">
 
                             <label>
                                 Upload your file
                             </label>
+
 
                             <div class="file-upload">
 
@@ -549,14 +505,13 @@ function displayTask() {
 
                             </div>
 
+
                             <small>
                                 Upload the file related to your task.
                             </small>
 
                         </div>
 
-
-                        <!-- DESCRIPTION -->
 
                         <div class="submit-form-group">
 
@@ -572,8 +527,6 @@ function displayTask() {
                         </div>
 
 
-                        <!-- ACTIONS -->
-
                         <div class="submit-modal-actions">
 
                             <button
@@ -583,6 +536,7 @@ function displayTask() {
                             >
                                 Cancel
                             </button>
+
 
                             <button
                                 type="submit"
@@ -601,29 +555,719 @@ function displayTask() {
 
         </section>
 
-        `;
+    `;
 
 
-        restoreSubmittedTasks();
+    // =========================================================
+    // RENDER TASKS
+    // =========================================================
+
+    renderEmployeeTasks(
+        employeeTasks
+    );
+
+
+    // =========================================================
+    // STATUS SELECT FILTER
+    // =========================================================
+
+    const statusFilter =
+        document.getElementById(
+            "employeeStatusFilter"
+        );
+
+
+    if (statusFilter) {
+
+        statusFilter.addEventListener(
+            "change",
+            function () {
+
+                filterEmployeeTasks(
+                    employeeTasks
+                );
+
+            }
+        );
 
     }
 
 
     // =========================================================
-    // HR
+    // SORT
     // =========================================================
 
-    else if (role === "hr") {
+    const sortSelect =
+        document.getElementById(
+            "employeeSort"
+        );
 
-        content.innerHTML = `
 
-        <section class="content">
+    if (sortSelect) {
+
+        sortSelect.addEventListener(
+            "change",
+            function () {
+
+                filterEmployeeTasks(
+                    employeeTasks
+                );
+
+            }
+        );
+
+    }
 
 
-            <div class="page-label">
-                SERVICES / TASK MANAGEMENT
+    // =========================================================
+    // TABS
+    // =========================================================
+
+    const tabs =
+        document.querySelectorAll(
+            ".tabs .tab"
+        );
+
+
+    tabs.forEach(
+        tab => {
+
+            tab.addEventListener(
+                "click",
+                function () {
+
+                    tabs.forEach(
+                        item => {
+                            item.classList.remove(
+                                "active"
+                            );
+                        }
+                    );
+
+
+                    tab.classList.add(
+                        "active"
+                    );
+
+
+                    const selectedStatus =
+                        tab.dataset.status ||
+                        "All";
+
+
+                    if (statusFilter) {
+
+                        statusFilter.value =
+                            selectedStatus;
+
+                    }
+
+
+                    filterEmployeeTasks(
+                        employeeTasks
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    // =========================================================
+    // RESTORE SUBMISSIONS
+    // =========================================================
+
+    restoreSubmittedTasks();
+
+}
+
+
+// =============================================================
+// FILTER EMPLOYEE TASKS
+// =============================================================
+
+function filterEmployeeTasks(
+    originalTasks
+) {
+
+    const searchInput =
+        document.getElementById(
+            "employeeTaskSearch"
+        );
+
+
+    const statusFilter =
+        document.getElementById(
+            "employeeStatusFilter"
+        );
+
+
+    const sortSelect =
+        document.getElementById(
+            "employeeSort"
+        );
+
+
+    const search =
+        searchInput
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
+            : "";
+
+
+    const status =
+        statusFilter
+            ? statusFilter.value
+            : "All";
+
+
+    const sort =
+        sortSelect
+            ? sortSelect.value
+            : "newest";
+
+
+    let filtered =
+        [...originalTasks];
+
+
+    // SEARCH
+
+    if (search) {
+
+        filtered =
+            filtered.filter(
+                task => {
+
+                    const title =
+                        String(
+                            task.title || ""
+                        )
+                        .toLowerCase();
+
+
+                    const description =
+                        String(
+                            task.description || ""
+                        )
+                        .toLowerCase();
+
+
+                    return (
+                        title.includes(search) ||
+                        description.includes(search)
+                    );
+
+                }
+            );
+
+    }
+
+
+    // STATUS
+
+    if (
+        status &&
+        status !== "All"
+    ) {
+
+        filtered =
+            filtered.filter(
+                task => {
+
+                    return (
+                        String(
+                            task.status || ""
+                        )
+                        .toLowerCase() ===
+                        status.toLowerCase()
+                    );
+
+                }
+            );
+
+    }
+
+
+    // SORT
+
+    if (sort === "newest") {
+
+        filtered.sort(
+            (a, b) => {
+
+                return (
+                    new Date(
+                        b.createdAt || 0
+                    ) -
+                    new Date(
+                        a.createdAt || 0
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    if (sort === "oldest") {
+
+        filtered.sort(
+            (a, b) => {
+
+                return (
+                    new Date(
+                        a.createdAt || 0
+                    ) -
+                    new Date(
+                        b.createdAt || 0
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    if (sort === "title") {
+
+        filtered.sort(
+            (a, b) => {
+
+                return String(
+                    a.title || ""
+                )
+                .localeCompare(
+                    String(
+                        b.title || ""
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    renderEmployeeTasks(
+        filtered
+    );
+
+}
+
+
+// =============================================================
+// RENDER EMPLOYEE TASKS
+// =============================================================
+
+function renderEmployeeTasks(
+    tasks
+) {
+
+    const container =
+        document.getElementById(
+            "employeeTasksContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (
+        !tasks ||
+        tasks.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div
+                class="task-card"
+                style="
+                    grid-column:1 / -1;
+                    text-align:center;
+                    padding:50px 20px;
+                "
+            >
+
+                <i
+                    class="bi bi-clipboard-x"
+                    style="
+                        font-size:45px;
+                        display:block;
+                        margin-bottom:15px;
+                    "
+                ></i>
+
+                <h3>
+                    No tasks found
+                </h3>
+
+                <p>
+                    There are no tasks matching your filter.
+                </p>
+
             </div>
 
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    tasks.forEach(
+        task => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "task-card";
+
+
+            const status =
+                task.status ||
+                "Pending";
+
+
+            const statusClass =
+                getStatusClass(
+                    status
+                );
+
+
+            const created =
+                task.createdAt
+                    ? formatTaskDate(
+                        task.createdAt
+                    )
+                    : "-";
+
+
+            let actionButton = "";
+
+
+            // =================================================
+            // COMPLETED
+            // =================================================
+
+            if (
+                status === "Completed"
+            ) {
+
+                actionButton = `
+
+                    <button
+                        type="button"
+                        class="btn completed-btn"
+                        disabled
+                    >
+                        Completed
+                    </button>
+
+                `;
+
+            }
+
+
+            // =================================================
+            // SUBMITTED
+            // =================================================
+
+            else if (
+                status === "Submitted"
+            ) {
+
+                actionButton = `
+
+                    <button
+                        type="button"
+                        class="btn completed-btn"
+                        disabled
+                    >
+                        Submitted
+                    </button>
+
+                `;
+
+            }
+
+
+            // =================================================
+            // OTHER STATUS
+            // =================================================
+
+            else {
+
+                actionButton = `
+
+                    <button
+                        type="button"
+                        class="btn primary submit-task-btn"
+                        onclick="openSubmitModal(
+                            '${escapeJs(task.id)}',
+                            '${escapeJs(task.title)}'
+                        )"
+                    >
+                        Submit
+                    </button>
+
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <div class="card-header">
+
+                    <span class="priority medium">
+                        TASK
+                    </span>
+
+
+                    <span
+                        class="status ${statusClass}"
+                    >
+                        ${escapeHtml(status)}
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(task.title)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(task.description)}
+                </p>
+
+
+                <div class="card-meta">
+
+                    Assigned to:
+                    ${escapeHtml(task.employee)}
+
+                    <br>
+
+                    Created:
+                    ${created}
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button
+                        type="button"
+                        class="btn secondary"
+                        onclick="openViewTaskModal(
+                            '${escapeJs(task.id)}'
+                        )"
+                    >
+                        View Task
+                    </button>
+
+
+                    ${actionButton}
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+// =============================================================
+// OPEN VIEW TASK MODAL
+// =============================================================
+
+function openViewTaskModal(
+    taskId
+) {
+
+    const tasks =
+        getHrTasks();
+
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(taskId)
+        );
+
+
+    if (!task) {
+
+        alert(
+            "Task not found."
+        );
+
+        return;
+    }
+
+
+    const modal =
+        document.getElementById(
+            "viewTaskModal"
+        );
+
+
+    if (!modal) {
+
+        console.error(
+            "viewTaskModal not found."
+        );
+
+        return;
+    }
+
+
+    const title =
+        document.getElementById(
+            "viewTaskTitle"
+        );
+
+
+    const description =
+        document.getElementById(
+            "viewTaskDescription"
+        );
+
+
+    const employee =
+        document.getElementById(
+            "viewTaskEmployee"
+        );
+
+
+    const status =
+        document.getElementById(
+            "viewTaskStatus"
+        );
+
+
+    const created =
+        document.getElementById(
+            "viewTaskCreatedAt"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            task.title || "-";
+
+    }
+
+
+    if (description) {
+
+        description.textContent =
+            task.description || "-";
+
+    }
+
+
+    if (employee) {
+
+        employee.textContent =
+            task.employee || "-";
+
+    }
+
+
+    if (status) {
+
+        status.textContent =
+            task.status || "Pending";
+
+
+        status.className =
+            "status " +
+            getStatusClass(
+                task.status
+            );
+
+    }
+
+
+    if (created) {
+
+        created.textContent =
+            task.createdAt
+                ? formatTaskDate(
+                    task.createdAt
+                )
+                : "-";
+
+    }
+
+
+    modal.classList.add(
+        "active"
+    );
+
+}
+
+
+// =============================================================
+// CLOSE VIEW TASK MODAL
+// =============================================================
+
+function closeViewTaskModal() {
+
+    const modal =
+        document.getElementById(
+            "viewTaskModal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+}
+
+
+// =============================================================
+// DISPLAY HR PAGE
+// =============================================================
+
+function displayHrPage(
+    content
+) {
+
+    content.innerHTML = `
+
+        <section class="content">
 
             <div class="title-row">
 
@@ -633,26 +1277,16 @@ function displayTask() {
                         Task management
                     </h1>
 
-                    <p>
-                        Create tasks, assign an employee and keep work up to date.
-                    </p>
-
                 </div>
-
-
-                <span class="sample-data">
-                    Sample data
-                </span>
 
             </div>
 
 
-            <!-- TASK AREA -->
-
             <div class="task-layout">
 
-
-                <!-- CREATE TASK -->
+                <!-- =================================================
+                     CREATE TASK
+                ================================================== -->
 
                 <div class="card create-card">
 
@@ -662,16 +1296,10 @@ function displayTask() {
                             Create task
                         </h2>
 
-                        <p>
-                            Add the details and choose an employee.
-                        </p>
-
                     </div>
 
 
-                    <form>
-
-                        <!-- TITLE -->
+                    <form id="createTaskForm">
 
                         <div class="form-group">
 
@@ -683,12 +1311,11 @@ function displayTask() {
                                 type="text"
                                 id="taskTitle"
                                 placeholder="Enter task title"
+                                required
                             >
 
                         </div>
 
-
-                        <!-- DESCRIPTION -->
 
                         <div class="form-group">
 
@@ -699,12 +1326,11 @@ function displayTask() {
                             <textarea
                                 id="description"
                                 placeholder="Describe the work to be done..."
+                                required
                             ></textarea>
 
                         </div>
 
-
-                        <!-- EMPLOYEE -->
 
                         <div class="form-group">
 
@@ -714,22 +1340,13 @@ function displayTask() {
 
                             <div class="select-wrapper">
 
-                                <select id="employee">
+                                <select
+                                    id="employee"
+                                    required
+                                >
 
                                     <option value="">
                                         Select employee
-                                    </option>
-
-                                    <option value="Lujain Okour">
-                                        Lujain Okour
-                                    </option>
-
-                                    <option value="Haya Ahmed">
-                                        Haya Ahmed
-                                    </option>
-
-                                    <option value="Rana Saleh">
-                                        Rana Saleh
                                     </option>
 
                                 </select>
@@ -738,8 +1355,6 @@ function displayTask() {
 
                         </div>
 
-
-                        <!-- STATUS -->
 
                         <div class="form-group">
 
@@ -763,6 +1378,10 @@ function displayTask() {
                                         Completed
                                     </option>
 
+                                    <option value="Blocked">
+                                        Blocked
+                                    </option>
+
                                 </select>
 
                             </div>
@@ -774,13 +1393,9 @@ function displayTask() {
                             type="submit"
                             class="create-btn"
                         >
-
                             <span>
                                 Create Task
                             </span>
-
-                            <i class="bi bi-arrow-right"></i>
-
                         </button>
 
                     </form>
@@ -788,10 +1403,11 @@ function displayTask() {
                 </div>
 
 
-                <!-- ALL TASKS -->
+                <!-- =================================================
+                     ALL TASKS
+                ================================================== -->
 
                 <div class="card tasks-card">
-
 
                     <div class="tasks-header">
 
@@ -807,169 +1423,29 @@ function displayTask() {
 
                         </div>
 
-                        <span class="task-count">
-                            3 tasks
+
+                        <span
+                            class="task-count"
+                            id="taskCount"
+                        >
+                            0 tasks
                         </span>
 
                     </div>
 
 
-                    <!-- TASK 1 -->
-
-                    <div class="task-item">
-
-                        <div class="task-info">
-
-                            <h3>
-                                Update employee handbook
-                            </h3>
-
-                            <p>
-                                Review and update the handbook.
-                            </p>
-
-                            <span class="assigned">
-                                Assigned to: Lujain Okour
-                            </span>
-
-                            <span class="status in-progress">
-                                In progress
-                            </span>
-
-                        </div>
-
-
-                        <div class="task-actions">
-
-                            <button class="block-btn">
-                                Block
-                            </button>
-
-                            <button
-                                class="edit-btn"
-                                onclick="openEditTaskModal(
-                                    'Update employee handbook',
-                                    'Review and update the handbook.',
-                                    'Lujain Okour',
-                                    'In progress'
-                                )"
-                            >
-                                Edit
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- TASK 2 -->
-
-                    <div class="task-item">
-
-                        <div class="task-info">
-
-                            <h3>
-                                Prepare welcome materials
-                            </h3>
-
-                            <p>
-                                Prepare resources for new employees.
-                            </p>
-
-                            <span class="assigned">
-                                Assigned to: Haya Ahmed
-                            </span>
-
-                            <span class="status pending">
-                                Pending
-                            </span>
-
-                        </div>
-
-
-                        <div class="task-actions">
-
-                            <button class="block-btn">
-                                Block
-                            </button>
-
-                            <button
-                                class="edit-btn"
-                                onclick="openEditTaskModal(
-                                    'Prepare welcome materials',
-                                    'Prepare resources for new employees.',
-                                    'Haya Ahmed',
-                                    'Pending'
-                                )"
-                            >
-                                Edit
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- TASK 3 -->
-
-                    <div class="task-item">
-
-                        <div class="task-info">
-
-                            <h3>
-                                Update contact directory
-                            </h3>
-
-                            <p>
-                                Check the team contact information.
-                            </p>
-
-                            <span class="assigned">
-                                Assigned to: Rana Saleh
-                            </span>
-
-                            <span class="status completed">
-                                Completed
-                            </span>
-
-                        </div>
-
-
-                        <div class="task-actions">
-
-                            <button class="block-btn">
-                                Block
-                            </button>
-
-                            <button
-                                class="edit-btn"
-                                onclick="openEditTaskModal(
-                                    'Update contact directory',
-                                    'Check the team contact information.',
-                                    'Rana Saleh',
-                                    'Completed'
-                                )"
-                            >
-                                Edit
-                            </button>
-
-                        </div>
-
-                    </div>
+                    <div
+                        id="tasksContainer"
+                    ></div>
 
                 </div>
 
             </div>
 
 
-            <div class="footer-text">
-                HR Management System
-            </div>
-
-
-            <!-- ================================================= -->
-            <!-- EDIT TASK MODAL -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 EDIT MODAL
+            ================================================== -->
 
             <div
                 class="edit-modal"
@@ -977,9 +1453,6 @@ function displayTask() {
             >
 
                 <div class="edit-modal-content">
-
-
-                    <!-- HEADER -->
 
                     <div class="edit-modal-header">
 
@@ -1011,12 +1484,9 @@ function displayTask() {
                     </div>
 
 
-                    <!-- FORM -->
-
-                    <form id="editTaskForm">
-
-
-                        <!-- TASK TITLE -->
+                    <form
+                        id="editTaskForm"
+                    >
 
                         <div class="edit-form-group">
 
@@ -1027,14 +1497,11 @@ function displayTask() {
                             <input
                                 type="text"
                                 id="editTaskTitle"
-                                placeholder="Enter task title"
                                 required
                             >
 
                         </div>
 
-
-                        <!-- DESCRIPTION -->
 
                         <div class="edit-form-group">
 
@@ -1044,14 +1511,11 @@ function displayTask() {
 
                             <textarea
                                 id="editTaskDescription"
-                                placeholder="Describe the work to be done..."
                                 required
                             ></textarea>
 
                         </div>
 
-
-                        <!-- ASSIGNED EMPLOYEE -->
 
                         <div class="edit-form-group">
 
@@ -1061,28 +1525,15 @@ function displayTask() {
 
                             <div class="edit-select-wrapper">
 
-                                <select id="editTaskEmployee">
-
-                                    <option value="Lujain Okour">
-                                        Lujain Okour
-                                    </option>
-
-                                    <option value="Haya Ahmed">
-                                        Haya Ahmed
-                                    </option>
-
-                                    <option value="Rana Saleh">
-                                        Rana Saleh
-                                    </option>
-
-                                </select>
+                                <select
+                                    id="editTaskEmployee"
+                                    required
+                                ></select>
 
                             </div>
 
                         </div>
 
-
-                        <!-- STATUS -->
 
                         <div class="edit-form-group">
 
@@ -1092,7 +1543,9 @@ function displayTask() {
 
                             <div class="edit-select-wrapper">
 
-                                <select id="editTaskStatus">
+                                <select
+                                    id="editTaskStatus"
+                                >
 
                                     <option value="Pending">
                                         Pending
@@ -1106,14 +1559,20 @@ function displayTask() {
                                         Completed
                                     </option>
 
+                                    <option value="Blocked">
+                                        Blocked
+                                    </option>
+
+                                    <option value="Submitted">
+                                        Submitted
+                                    </option>
+
                                 </select>
 
                             </div>
 
                         </div>
 
-
-                        <!-- ACTIONS -->
 
                         <div class="edit-modal-actions">
 
@@ -1124,6 +1583,7 @@ function displayTask() {
                             >
                                 Cancel
                             </button>
+
 
                             <button
                                 type="submit"
@@ -1140,14 +1600,407 @@ function displayTask() {
 
             </div>
 
-
         </section>
+
+    `;
+
+
+    // =========================================================
+    // LOAD EMPLOYEES
+    // =========================================================
+
+    loadEmployeesForTasks();
+
+
+    // =========================================================
+    // DISPLAY TASKS
+    // =========================================================
+
+    renderHrTasks();
+
+
+    // =========================================================
+    // CREATE TASK FORM
+    // =========================================================
+
+    const createForm =
+        document.getElementById(
+            "createTaskForm"
+        );
+
+
+    if (createForm) {
+
+        createForm.addEventListener(
+            "submit",
+            function (e) {
+
+                e.preventDefault();
+
+
+                const title =
+                    document
+                        .getElementById(
+                            "taskTitle"
+                        )
+                        .value
+                        .trim();
+
+
+                const description =
+                    document
+                        .getElementById(
+                            "description"
+                        )
+                        .value
+                        .trim();
+
+
+                const employee =
+                    document
+                        .getElementById(
+                            "employee"
+                        )
+                        .value;
+
+
+                const status =
+                    document
+                        .getElementById(
+                            "status"
+                        )
+                        .value;
+
+
+                if (!title) {
+
+                    alert(
+                        "Please enter task title."
+                    );
+
+                    return;
+                }
+
+
+                if (!description) {
+
+                    alert(
+                        "Please enter task description."
+                    );
+
+                    return;
+                }
+
+
+                if (!employee) {
+
+                    alert(
+                        "Please select an employee."
+                    );
+
+                    return;
+                }
+
+
+                const tasks =
+                    getHrTasks();
+
+
+                const newTask = {
+
+                    id:
+                        Date.now().toString(),
+
+                    title:
+                        title,
+
+                    description:
+                        description,
+
+                    employee:
+                        employee,
+
+                    status:
+                        status,
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                tasks.push(
+                    newTask
+                );
+
+
+                localStorage.setItem(
+                    "hrTasks",
+                    JSON.stringify(
+                        tasks
+                    )
+                );
+
+
+                renderHrTasks();
+
+
+                createForm.reset();
+
+
+                alert(
+                    "Task created successfully."
+                );
+
+            }
+        );
+
+    }
+
+}
+
+
+// =============================================================
+// GET HR TASKS
+// =============================================================
+
+function getHrTasks() {
+
+    try {
+
+        return (
+            JSON.parse(
+                localStorage.getItem(
+                    "hrTasks"
+                )
+            ) || []
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Could not read hrTasks:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+// =============================================================
+// LOAD EMPLOYEES
+// =============================================================
+
+function loadEmployeesForTasks() {
+
+    const employeeSelect =
+        document.getElementById(
+            "employee"
+        );
+
+
+    const editEmployeeSelect =
+        document.getElementById(
+            "editTaskEmployee"
+        );
+
+
+    if (
+        !employeeSelect &&
+        !editEmployeeSelect
+    ) {
+
+        return;
+    }
+
+
+    let employees = [];
+
+
+    const storedEmployees =
+        localStorage.getItem(
+            "employees"
+        );
+
+
+    if (storedEmployees) {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    storedEmployees
+                );
+
+
+            if (
+                Array.isArray(parsed)
+            ) {
+
+                employees =
+                    parsed;
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Could not read employees:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // FALLBACK EMPLOYEES
+
+    if (
+        employees.length === 0
+    ) {
+
+        employees = [
+
+            {
+                name:
+                    "Lujain Okour"
+            },
+
+            {
+                name:
+                    "Haya Ahmed"
+            },
+
+            {
+                name:
+                    "Rana Saleh"
+            }
+
+        ];
+
+    }
+
+
+    function getEmployeeName(
+        employee
+    ) {
+
+        if (
+            typeof employee ===
+            "string"
+        ) {
+
+            return employee;
+        }
+
+
+        return (
+            employee.name ||
+            employee.fullName ||
+            employee.full_name ||
+            employee.employeeName ||
+            employee.firstName ||
+            ""
+        );
+
+    }
+
+
+    const names =
+        employees
+            .map(
+                getEmployeeName
+            )
+            .filter(
+                name => name
+            )
+            .filter(
+                (
+                    name,
+                    index,
+                    array
+                ) =>
+                    array.indexOf(
+                        name
+                    ) === index
+            );
+
+
+    // CREATE SELECT
+
+    if (employeeSelect) {
+
+        employeeSelect.innerHTML = `
+
+            <option value="">
+                Select employee
+            </option>
 
         `;
 
 
-        // Restore HR task edits after page is created
-        restoreEditedTasks();
+        names.forEach(
+            name => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    name;
+
+
+                option.textContent =
+                    name;
+
+
+                employeeSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    // EDIT SELECT
+
+    if (editEmployeeSelect) {
+
+        editEmployeeSelect.innerHTML =
+            "";
+
+
+        names.forEach(
+            name => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    name;
+
+
+                option.textContent =
+                    name;
+
+
+                editEmployeeSelect.appendChild(
+                    option
+                );
+
+            }
+        );
 
     }
 
@@ -1155,404 +2008,189 @@ function displayTask() {
 
 
 // =============================================================
-// SUBMIT MODAL
+// RENDER HR TASKS
 // =============================================================
 
-let selectedTaskName = "";
+function renderHrTasks() {
+
+    const container =
+        document.getElementById(
+            "tasksContainer"
+        );
 
 
-// =============================================================
-// OPEN SUBMIT MODAL
-// =============================================================
-
-function openSubmitModal(taskName) {
-
-    selectedTaskName = taskName;
+    const countElement =
+        document.getElementById(
+            "taskCount"
+        );
 
 
-    const modal =
-        document.getElementById("submitModal");
-
-
-    const taskNameElement =
-        document.getElementById("submitTaskName");
-
-
-    if (!modal) {
+    if (!container) {
         return;
     }
 
 
-    if (taskNameElement) {
-
-        taskNameElement.textContent =
-            "Submit your work for: " + taskName;
-
-    }
-
-
-    modal.classList.add("active");
-
-
-    setTimeout(() => {
-
-        const description =
-            document.getElementById("submitDescription");
-
-
-        if (description) {
-
-            description.focus();
-
-        }
-
-    }, 100);
-
-}
-
-
-// =============================================================
-// CLOSE SUBMIT MODAL
-// =============================================================
-
-function closeSubmitModal() {
-
-    const modal =
-        document.getElementById("submitModal");
-
-
-    if (!modal) {
-        return;
-    }
-
-
-    modal.classList.remove("active");
-
-
-    const form =
-        document.getElementById("submitForm");
-
-
-    if (form) {
-
-        form.reset();
-
-    }
-
-
-    const fileName =
-        document.getElementById("fileName");
-
-
-    if (fileName) {
-
-        fileName.textContent =
-            "Click to upload your file";
-
-    }
-
-
-    selectedTaskName = "";
-
-}
-
-
-// =============================================================
-// SHOW SELECTED FILE
-// =============================================================
-
-function showSelectedFile() {
-
-    const fileInput =
-        document.getElementById("submitFile");
-
-
-    const fileName =
-        document.getElementById("fileName");
-
-
-    if (!fileInput || !fileName) {
-
-        return;
-
-    }
-
-
-    if (fileInput.files.length > 0) {
-
-        fileName.textContent =
-            fileInput.files[0].name;
-
-    }
-
-    else {
-
-        fileName.textContent =
-            "Click to upload your file";
-
-    }
-
-}
-
-
-// =============================================================
-// SUBMIT EMPLOYEE WORK
-// =============================================================
-
-document.addEventListener(
-    "submit",
-    function (e) {
-
-        if (e.target.id !== "submitForm") {
-
-            return;
-
-        }
-
-
-        e.preventDefault();
-
-
-        const fileInput =
-            document.getElementById("submitFile");
-
-
-        const description =
-            document
-                .getElementById("submitDescription")
-                .value
-                .trim();
-
-
-        if (
-            !fileInput ||
-            fileInput.files.length === 0
-        ) {
-
-            alert(
-                "Please upload a file."
-            );
-
-            return;
-
-        }
-
-
-        if (!description) {
-
-            alert(
-                "Please write a short description."
-            );
-
-            return;
-
-        }
-
-
-        const file =
-            fileInput.files[0];
-
-
-        const submission = {
-
-            taskName:
-                selectedTaskName,
-
-            fileName:
-                file.name,
-
-            fileType:
-                file.type,
-
-            fileSize:
-                file.size,
-
-            description:
-                description,
-
-            submittedAt:
-                new Date().toISOString(),
-
-            status:
-                "Submitted"
-
-        };
-
-
-        let submissions =
-            JSON.parse(
-                localStorage.getItem(
-                    "taskSubmissions"
-                )
-            ) || [];
-
-
-        const alreadySubmitted =
-            submissions.some(
-                item =>
-                    item.taskName ===
-                    selectedTaskName
-            );
-
-
-        if (alreadySubmitted) {
-
-            alert(
-                "This task has already been submitted."
-            );
-
-            closeSubmitModal();
-
-            return;
-
-        }
-
-
-        submissions.push(
-            submission
-        );
-
-
-        localStorage.setItem(
-            "taskSubmissions",
-            JSON.stringify(
-                submissions
-            )
-        );
-
-
-        updateTaskStatus(
-            selectedTaskName
-        );
-
-
-        closeSubmitModal();
-
-
-        alert(
-            "Your work has been submitted successfully."
-        );
-
-    }
-);
-
-
-// =============================================================
-// UPDATE EMPLOYEE TASK STATUS
-// =============================================================
-
-function updateTaskStatus(taskName) {
-
-    const allTasks =
-        document.querySelectorAll(
-            ".featured-task, .task-card"
-        );
-
-
-    allTasks.forEach(task => {
-
-        const title =
-            task.querySelector(
-                "h2, h3"
-            );
-
-
-        if (!title) {
-            return;
-        }
-
-
-        const currentTaskName =
-            title.textContent.trim();
-
-
-        if (
-            currentTaskName !==
-            taskName
-        ) {
-
-            return;
-
-        }
-
-
-        const status =
-            task.querySelector(
-                ".status"
-            );
-
-
-        if (status) {
-
-            status.textContent =
-                "Submitted";
-
-
-            status.className =
-                "status submitted";
-
-        }
-
-
-        const submitButton =
-            task.querySelector(
-                ".submit-task-btn"
-            );
-
-
-        if (submitButton) {
-
-            submitButton.textContent =
-                "Submitted";
-
-
-            submitButton.className =
-                "btn completed-btn";
-
-
-            submitButton.disabled =
-                true;
-
-
-            submitButton.removeAttribute(
-                "onclick"
-            );
-
-        }
-
-    });
-
-}
-
-
-// =============================================================
-// RESTORE SUBMITTED TASKS
-// =============================================================
-
-function restoreSubmittedTasks() {
-
-    const submissions =
-        JSON.parse(
-            localStorage.getItem(
-                "taskSubmissions"
-            )
-        ) || [];
+    const tasks =
+        getHrTasks();
 
 
     if (
-        submissions.length === 0
+        tasks.length === 0
     ) {
 
+        container.innerHTML = `
+
+            <div
+                class="task-item"
+                style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    min-height:100px;
+                "
+            >
+
+                <div class="task-info">
+
+                    <h3>
+                        No tasks yet
+                    </h3>
+
+                    <p>
+                        Create a task using the form.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        if (countElement) {
+
+            countElement.textContent =
+                "0 tasks";
+
+        }
+
+
         return;
+    }
+
+
+    if (countElement) {
+
+        countElement.textContent =
+            tasks.length +
+            (
+                tasks.length === 1
+                    ? " task"
+                    : " tasks"
+            );
 
     }
 
 
-    submissions.forEach(
-        submission => {
+    container.innerHTML =
+        "";
 
-            updateTaskStatus(
-                submission.taskName
+
+    tasks.forEach(
+        task => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "task-item";
+
+
+            const status =
+                task.status ||
+                "Pending";
+
+
+            const statusClass =
+                getStatusClass(
+                    status
+                );
+
+
+            item.innerHTML = `
+
+                <div class="task-info">
+
+                    <h3>
+                        ${escapeHtml(
+                            task.title
+                        )}
+                    </h3>
+
+
+                    <p>
+                        ${escapeHtml(
+                            task.description
+                        )}
+                    </p>
+
+
+                    <span class="assigned">
+                        Assigned to:
+                        ${escapeHtml(
+                            task.employee
+                        )}
+                    </span>
+
+
+                    <span
+                        class="status ${statusClass}"
+                    >
+                        ${escapeHtml(
+                            status
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="task-actions">
+
+                    <button
+                        type="button"
+                        class="edit-btn"
+                        onclick="openEditTaskModal(
+                            '${escapeJs(task.id)}'
+                        )"
+                    >
+                        Edit
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="edit-btn"
+                        onclick="blockTask(
+                            '${escapeJs(task.id)}'
+                        )"
+                    >
+                        ${
+                            status === "Blocked"
+                                ? "Unblock"
+                                : "Block"
+                        }
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                item
             );
 
         }
@@ -1562,29 +2200,93 @@ function restoreSubmittedTasks() {
 
 
 // =============================================================
-// EDIT TASK MODAL
+// GET STATUS CLASS
 // =============================================================
 
-let currentEditingTask = null;
-
-
-// =============================================================
-// OPEN EDIT TASK MODAL
-// =============================================================
-
-function openEditTaskModal(
-    title,
-    description,
-    employee,
+function getStatusClass(
     status
 ) {
 
-    currentEditingTask = {
+    const value =
+        String(
+            status || ""
+        )
+        .toLowerCase();
 
-        oldTitle:
-            title
 
-    };
+    if (
+        value === "in progress"
+    ) {
+
+        return "in-progress";
+
+    }
+
+
+    if (
+        value === "completed"
+    ) {
+
+        return "completed";
+
+    }
+
+
+    if (
+        value === "submitted"
+    ) {
+
+        return "submitted";
+
+    }
+
+
+    if (
+        value === "blocked"
+    ) {
+
+        return "blocked";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+// =============================================================
+// OPEN EDIT MODAL
+// =============================================================
+
+function openEditTaskModal(
+    taskId
+) {
+
+    currentEditingTaskId =
+        String(taskId);
+
+
+    const tasks =
+        getHrTasks();
+
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(taskId)
+        );
+
+
+    if (!task) {
+
+        alert(
+            "Task not found."
+        );
+
+        return;
+    }
 
 
     const modal =
@@ -1595,97 +2297,263 @@ function openEditTaskModal(
 
     if (!modal) {
 
-        return;
+        alert(
+            "Edit modal was not found."
+        );
 
+        return;
     }
 
 
-    // Fill title
+    loadEmployeesForTasks();
 
-    const titleInput =
+
+    const title =
         document.getElementById(
             "editTaskTitle"
         );
 
 
-    if (titleInput) {
+    if (title) {
 
-        titleInput.value =
-            title;
+        title.value =
+            task.title || "";
 
     }
 
 
-    // Fill description
-
-    const descriptionInput =
+    const description =
         document.getElementById(
             "editTaskDescription"
         );
 
 
-    if (descriptionInput) {
+    if (description) {
 
-        descriptionInput.value =
-            description;
+        description.value =
+            task.description || "";
 
     }
 
 
-    // Fill employee
-
-    const employeeSelect =
+    const employee =
         document.getElementById(
             "editTaskEmployee"
         );
 
 
-    if (employeeSelect) {
+    if (employee) {
 
-        employeeSelect.value =
-            employee;
+        employee.value =
+            task.employee || "";
 
     }
 
 
-    // Fill status
-
-    const statusSelect =
+    const status =
         document.getElementById(
             "editTaskStatus"
         );
 
 
-    if (statusSelect) {
+    if (status) {
 
-        statusSelect.value =
-            status;
+        status.value =
+            task.status || "Pending";
 
     }
 
-
-    // Show modal
 
     modal.classList.add(
         "active"
     );
 
+}
 
-    setTimeout(() => {
 
-        if (titleInput) {
+// =============================================================
+// SAVE EDITED TASK
+// =============================================================
 
-            titleInput.focus();
+function saveEditedTask() {
 
-        }
+    if (
+        !currentEditingTaskId
+    ) {
 
-    }, 100);
+        alert(
+            "No task selected."
+        );
+
+        return;
+    }
+
+
+    const title =
+        document
+            .getElementById(
+                "editTaskTitle"
+            )
+            ?.value
+            .trim();
+
+
+    const description =
+        document
+            .getElementById(
+                "editTaskDescription"
+            )
+            ?.value
+            .trim();
+
+
+    const employee =
+        document
+            .getElementById(
+                "editTaskEmployee"
+            )
+            ?.value;
+
+
+    const status =
+        document
+            .getElementById(
+                "editTaskStatus"
+            )
+            ?.value;
+
+
+    if (!title) {
+
+        alert(
+            "Please enter task title."
+        );
+
+        return;
+    }
+
+
+    if (!description) {
+
+        alert(
+            "Please enter task description."
+        );
+
+        return;
+    }
+
+
+    if (!employee) {
+
+        alert(
+            "Please select an employee."
+        );
+
+        return;
+    }
+
+
+    if (!status) {
+
+        alert(
+            "Please select a status."
+        );
+
+        return;
+    }
+
+
+    const tasks =
+        getHrTasks();
+
+
+    const index =
+        tasks.findIndex(
+            task =>
+                String(task.id) ===
+                String(
+                    currentEditingTaskId
+                )
+        );
+
+
+    if (
+        index === -1
+    ) {
+
+        alert(
+            "Task not found in localStorage."
+        );
+
+        return;
+    }
+
+
+    tasks[index].title =
+        title;
+
+
+    tasks[index].description =
+        description;
+
+
+    tasks[index].employee =
+        employee;
+
+
+    tasks[index].status =
+        status;
+
+
+    localStorage.setItem(
+        "hrTasks",
+        JSON.stringify(
+            tasks
+        )
+    );
+
+
+    renderHrTasks();
+
+
+    closeEditTaskModal();
+
+
+    alert(
+        "Task updated successfully."
+    );
 
 }
 
 
 // =============================================================
-// CLOSE EDIT TASK MODAL
+// EDIT FORM SUBMIT
+// =============================================================
+
+document.addEventListener(
+    "submit",
+    function (e) {
+
+        if (
+            e.target.id !==
+            "editTaskForm"
+        ) {
+
+            return;
+        }
+
+
+        e.preventDefault();
+
+
+        saveEditedTask();
+
+    }
+);
+
+
+// =============================================================
+// CLOSE EDIT MODAL
 // =============================================================
 
 function closeEditTaskModal() {
@@ -1697,9 +2565,7 @@ function closeEditTaskModal() {
 
 
     if (!modal) {
-
         return;
-
     }
 
 
@@ -1708,7 +2574,7 @@ function closeEditTaskModal() {
     );
 
 
-    currentEditingTask =
+    currentEditingTaskId =
         null;
 
 
@@ -1728,7 +2594,233 @@ function closeEditTaskModal() {
 
 
 // =============================================================
-// SAVE EDITED TASK
+// BLOCK / UNBLOCK
+// =============================================================
+
+function blockTask(
+    taskId
+) {
+
+    const tasks =
+        getHrTasks();
+
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(taskId)
+        );
+
+
+    if (!task) {
+        return;
+    }
+
+
+    if (
+        task.status === "Blocked"
+    ) {
+
+        task.status =
+            "Pending";
+
+    } else {
+
+        task.status =
+            "Blocked";
+
+    }
+
+
+    localStorage.setItem(
+        "hrTasks",
+        JSON.stringify(
+            tasks
+        )
+    );
+
+
+    renderHrTasks();
+
+}
+
+
+// =============================================================
+// OPEN SUBMIT MODAL
+// =============================================================
+
+function openSubmitModal(
+    taskId,
+    taskName
+) {
+
+    selectedTaskId =
+        String(taskId);
+
+
+    selectedTaskName =
+        taskName;
+
+
+    const modal =
+        document.getElementById(
+            "submitModal"
+        );
+
+
+    const taskNameElement =
+        document.getElementById(
+            "submitTaskName"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    if (taskNameElement) {
+
+        taskNameElement.textContent =
+            "Submit your work for: " +
+            taskName;
+
+    }
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    setTimeout(
+        function () {
+
+            const description =
+                document.getElementById(
+                    "submitDescription"
+                );
+
+
+            if (description) {
+
+                description.focus();
+
+            }
+
+        },
+        100
+    );
+
+}
+
+
+// =============================================================
+// CLOSE SUBMIT MODAL
+// =============================================================
+
+function closeSubmitModal() {
+
+    const modal =
+        document.getElementById(
+            "submitModal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    const form =
+        document.getElementById(
+            "submitForm"
+        );
+
+
+    if (form) {
+
+        form.reset();
+
+    }
+
+
+    const fileName =
+        document.getElementById(
+            "fileName"
+        );
+
+
+    if (fileName) {
+
+        fileName.textContent =
+            "Click to upload your file";
+
+    }
+
+
+    selectedTaskName =
+        "";
+
+
+    selectedTaskId =
+        null;
+
+}
+
+
+// =============================================================
+// SHOW SELECTED FILE
+// =============================================================
+
+function showSelectedFile() {
+
+    const fileInput =
+        document.getElementById(
+            "submitFile"
+        );
+
+
+    const fileName =
+        document.getElementById(
+            "fileName"
+        );
+
+
+    if (
+        !fileInput ||
+        !fileName
+    ) {
+
+        return;
+    }
+
+
+    if (
+        fileInput.files.length > 0
+    ) {
+
+        fileName.textContent =
+            fileInput.files[0].name;
+
+    } else {
+
+        fileName.textContent =
+            "Click to upload your file";
+
+    }
+
+}
+
+
+// =============================================================
+// SUBMIT EMPLOYEE WORK
 // =============================================================
 
 document.addEventListener(
@@ -1737,62 +2829,32 @@ document.addEventListener(
 
         if (
             e.target.id !==
-            "editTaskForm"
+            "submitForm"
         ) {
 
             return;
-
         }
 
 
         e.preventDefault();
 
 
-        if (
-            !currentEditingTask
-        ) {
-
-            return;
-
-        }
+        const fileInput =
+            document.getElementById(
+                "submitFile"
+            );
 
 
-        // =====================================================
-        // GET VALUES
-        // =====================================================
-
-        const newTitle =
-            document
-                .getElementById(
-                    "editTaskTitle"
-                )
-                .value
-                .trim();
+        const descriptionInput =
+            document.getElementById(
+                "submitDescription"
+            );
 
 
-        const newDescription =
-            document
-                .getElementById(
-                    "editTaskDescription"
-                )
-                .value
-                .trim();
-
-
-        const newEmployee =
-            document
-                .getElementById(
-                    "editTaskEmployee"
-                )
-                .value;
-
-
-        const newStatus =
-            document
-                .getElementById(
-                    "editTaskStatus"
-                )
-                .value;
+        const description =
+            descriptionInput
+                ? descriptionInput.value.trim()
+                : "";
 
 
         // =====================================================
@@ -1800,198 +2862,345 @@ document.addEventListener(
         // =====================================================
 
         if (
-            !newTitle ||
-            !newDescription ||
-            !newEmployee ||
-            !newStatus
+            !fileInput ||
+            fileInput.files.length === 0
         ) {
 
             alert(
-                "Please fill all fields."
+                "Please upload a file."
             );
 
             return;
+        }
 
+
+        if (!description) {
+
+            alert(
+                "Please write a short description."
+            );
+
+            return;
+        }
+
+
+        if (!selectedTaskId) {
+
+            alert(
+                "Task not found."
+            );
+
+            return;
+        }
+
+
+        const file =
+            fileInput.files[0];
+
+
+        // =====================================================
+        // GET TASKS
+        // =====================================================
+
+        let tasks =
+            getHrTasks();
+
+
+        // =====================================================
+        // FIND TASK BY ID
+        // =====================================================
+
+        const taskIndex =
+            tasks.findIndex(
+                task =>
+                    String(task.id) ===
+                    String(selectedTaskId)
+            );
+
+
+        if (
+            taskIndex === -1
+        ) {
+
+            alert(
+                "Task not found in localStorage."
+            );
+
+            return;
         }
 
 
         // =====================================================
-        // FIND TASK
+        // CHECK TASK STATUS
         // =====================================================
 
-        const taskItems =
-            document.querySelectorAll(
-                ".task-item"
+        if (
+            tasks[taskIndex].status ===
+            "Submitted"
+        ) {
+
+            alert(
+                "This task has already been submitted."
             );
 
+            closeSubmitModal();
 
-        taskItems.forEach(
-            task => {
+            return;
+        }
 
-                const titleElement =
-                    task.querySelector(
-                        ".task-info h3"
+
+        // =====================================================
+        // READ FILE
+        // =====================================================
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function () {
+
+                // =============================================
+                // CREATE SUBMISSION
+                // =============================================
+
+                const submission = {
+
+                    taskId:
+                        selectedTaskId,
+
+                    taskName:
+                        selectedTaskName,
+
+                    fileName:
+                        file.name,
+
+                    fileType:
+                        file.type,
+
+                    fileSize:
+                        file.size,
+
+                    fileData:
+                        reader.result,
+
+                    description:
+                        description,
+
+                    submittedAt:
+                        new Date()
+                            .toISOString(),
+
+                    status:
+                        "Submitted"
+
+                };
+
+
+                // =============================================
+                // GET OLD SUBMISSIONS
+                // =============================================
+
+                let submissions = [];
+
+
+                try {
+
+                    submissions =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "taskSubmissions"
+                            )
+                        ) || [];
+
+                } catch (error) {
+
+                    submissions = [];
+
+                }
+
+
+                // =============================================
+                // CHECK DUPLICATE BY TASK ID
+                // =============================================
+
+                const alreadySubmitted =
+                    submissions.some(
+                        item =>
+                            String(
+                                item.taskId
+                            ) ===
+                            String(
+                                selectedTaskId
+                            )
                     );
 
 
-                if (!titleElement) {
+                if (
+                    alreadySubmitted
+                ) {
+
+                    alert(
+                        "This task has already been submitted."
+                    );
+
+                    closeSubmitModal();
 
                     return;
-
                 }
 
 
-                const currentTitle =
-                    titleElement
-                        .textContent
-                        .trim();
+                // =============================================
+                // SAVE SUBMISSION
+                // =============================================
+
+                submissions.push(
+                    submission
+                );
 
 
-                if (
-                    currentTitle !==
-                    currentEditingTask.oldTitle
-                ) {
+                try {
+
+                    localStorage.setItem(
+                        "taskSubmissions",
+                        JSON.stringify(
+                            submissions
+                        )
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Could not save submission:",
+                        error
+                    );
+
+
+                    alert(
+                        "The file is too large to save in localStorage."
+                    );
 
                     return;
-
                 }
 
 
-                // =================================================
-                // UPDATE TITLE
-                // =================================================
+                // =============================================
+                // IMPORTANT:
+                // UPDATE THE REAL TASK STATUS
+                // =============================================
 
-                titleElement.textContent =
-                    newTitle;
+                tasks[taskIndex].status =
+                    "Submitted";
 
 
-                // =================================================
-                // UPDATE DESCRIPTION
-                // =================================================
+                tasks[taskIndex].submittedAt =
+                    submission.submittedAt;
 
-                const descriptionElement =
-                    task.querySelector(
-                        ".task-info p"
+
+                // =============================================
+                // SAVE UPDATED TASKS
+                // =============================================
+
+                try {
+
+                    localStorage.setItem(
+                        "hrTasks",
+                        JSON.stringify(
+                            tasks
+                        )
                     );
+
+                } catch (error) {
+
+                    console.error(
+                        "Could not update hrTasks:",
+                        error
+                    );
+
+                    return;
+                }
+
+
+                // =============================================
+                // CLOSE MODAL
+                // =============================================
+
+                closeSubmitModal();
+
+
+                // =============================================
+                // REFRESH EMPLOYEE PAGE
+                // =============================================
+
+                const content =
+                    document.getElementById(
+                        "content"
+                    );
+
+
+                let user = null;
+
+
+                try {
+
+                    user =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "loggedInUser"
+                            )
+                        );
+
+                } catch (error) {
+
+                    user = null;
+
+                }
 
 
                 if (
-                    descriptionElement
+                    content &&
+                    user
                 ) {
 
-                    descriptionElement.textContent =
-                        newDescription;
+                    displayEmployeePage(
+                        content,
+                        user
+                    );
 
                 }
 
 
-                // =================================================
-                // UPDATE EMPLOYEE
-                // =================================================
+                // =============================================
+                // SUCCESS
+                // =============================================
 
-                const assignedElement =
-                    task.querySelector(
-                        ".assigned"
-                    );
+                alert(
+                    "Your work has been submitted successfully."
+                );
 
-
-                if (
-                    assignedElement
-                ) {
-
-                    assignedElement.textContent =
-                        "Assigned to: " +
-                        newEmployee;
-
-                }
-
-
-                // =================================================
-                // UPDATE STATUS
-                // =================================================
-
-                const statusElement =
-                    task.querySelector(
-                        ".status"
-                    );
-
-
-                if (
-                    statusElement
-                ) {
-
-                    statusElement.textContent =
-                        newStatus;
-
-
-                    statusElement.classList.remove(
-                        "pending",
-                        "in-progress",
-                        "completed"
-                    );
-
-
-                    if (
-                        newStatus ===
-                        "Pending"
-                    ) {
-
-                        statusElement.classList.add(
-                            "pending"
-                        );
-
-                    }
-
-                    else if (
-                        newStatus ===
-                        "In progress"
-                    ) {
-
-                        statusElement.classList.add(
-                            "in-progress"
-                        );
-
-                    }
-
-                    else if (
-                        newStatus ===
-                        "Completed"
-                    ) {
-
-                        statusElement.classList.add(
-                            "completed"
-                        );
-
-                    }
-
-                }
-
-            }
-        );
+            };
 
 
         // =====================================================
-        // SAVE TO LOCAL STORAGE
+        // FILE READER ERROR
         // =====================================================
 
-        saveEditedTask(
-            currentEditingTask.oldTitle,
-            newTitle,
-            newDescription,
-            newEmployee,
-            newStatus
-        );
+        reader.onerror =
+            function () {
+
+                alert(
+                    "Could not read the selected file."
+                );
+
+            };
 
 
         // =====================================================
-        // CLOSE MODAL
+        // READ FILE AS BASE64
         // =====================================================
 
-        closeEditTaskModal();
-
-
-        alert(
-            "Task updated successfully."
+        reader.readAsDataURL(
+            file
         );
 
     }
@@ -1999,245 +3208,69 @@ document.addEventListener(
 
 
 // =============================================================
-// SAVE EDITED TASK TO LOCAL STORAGE
+// UPDATE EMPLOYEE TASK STATUS
 // =============================================================
 
-function saveEditedTask(
-    oldTitle,
-    title,
-    description,
-    employee,
-    status
+function updateTaskStatus(
+    taskId
 ) {
 
-    let editedTasks =
-        JSON.parse(
-            localStorage.getItem(
-                "editedTasks"
-            )
-        ) || [];
-
-
-    const existingIndex =
-        editedTasks.findIndex(
-            task =>
-                task.oldTitle ===
-                oldTitle
-        );
-
-
-    const editedTask = {
-
-        oldTitle:
-            oldTitle,
-
-        title:
-            title,
-
-        description:
-            description,
-
-        employee:
-            employee,
-
-        status:
-            status
-
-    };
-
-
-    if (
-        existingIndex !== -1
-    ) {
-
-        editedTasks[
-            existingIndex
-        ] = editedTask;
-
-    }
-
-    else {
-
-        editedTasks.push(
-            editedTask
-        );
-
-    }
-
-
-    localStorage.setItem(
-        "editedTasks",
-        JSON.stringify(
-            editedTasks
-        )
-    );
-
-}
-
-
-// =============================================================
-// RESTORE EDITED TASKS
-// =============================================================
-
-function restoreEditedTasks() {
-
-    const editedTasks =
-        JSON.parse(
-            localStorage.getItem(
-                "editedTasks"
-            )
-        ) || [];
-
-
-    if (
-        editedTasks.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    const taskItems =
+    const cards =
         document.querySelectorAll(
-            ".task-item"
+            ".task-card"
         );
 
 
-    editedTasks.forEach(
-        editedTask => {
+    cards.forEach(
+        card => {
 
-            taskItems.forEach(
-                task => {
-
-                    const titleElement =
-                        task.querySelector(
-                            ".task-info h3"
-                        );
+            const button =
+                card.querySelector(
+                    ".submit-task-btn"
+                );
 
 
-                    if (!titleElement) {
-
-                        return;
-
-                    }
+            if (!button) {
+                return;
+            }
 
 
-                    if (
-                        titleElement
-                            .textContent
-                            .trim() !==
-                        editedTask.oldTitle
-                    ) {
+            // This function is mainly kept for compatibility.
+            // The real task status is now saved in hrTasks.
 
-                        return;
-
-                    }
+            button.textContent =
+                "Submitted";
 
 
-                    // TITLE
-
-                    titleElement.textContent =
-                        editedTask.title;
+            button.className =
+                "btn completed-btn";
 
 
-                    // DESCRIPTION
-
-                    const descriptionElement =
-                        task.querySelector(
-                            ".task-info p"
-                        );
+            button.disabled =
+                true;
 
 
-                    if (
-                        descriptionElement
-                    ) {
-
-                        descriptionElement.textContent =
-                            editedTask.description;
-
-                    }
-
-
-                    // EMPLOYEE
-
-                    const assignedElement =
-                        task.querySelector(
-                            ".assigned"
-                        );
-
-
-                    if (
-                        assignedElement
-                    ) {
-
-                        assignedElement.textContent =
-                            "Assigned to: " +
-                            editedTask.employee;
-
-                    }
-
-
-                    // STATUS
-
-                    const statusElement =
-                        task.querySelector(
-                            ".status"
-                        );
-
-
-                    if (
-                        statusElement
-                    ) {
-
-                        statusElement.textContent =
-                            editedTask.status;
-
-
-                        statusElement.classList.remove(
-                            "pending",
-                            "in-progress",
-                            "completed"
-                        );
-
-
-                        if (
-                            editedTask.status ===
-                            "Pending"
-                        ) {
-
-                            statusElement.classList.add(
-                                "pending"
-                            );
-
-                        }
-
-                        else if (
-                            editedTask.status ===
-                            "In progress"
-                        ) {
-
-                            statusElement.classList.add(
-                                "in-progress"
-                            );
-
-                        }
-
-                        else if (
-                            editedTask.status ===
-                            "Completed"
-                        ) {
-
-                            statusElement.classList.add(
-                                "completed"
-                            );
-
-                        }
-
-                    }
-
-                }
+            button.removeAttribute(
+                "onclick"
             );
+
+
+            const status =
+                card.querySelector(
+                    ".status"
+                );
+
+
+            if (status) {
+
+                status.textContent =
+                    "Submitted";
+
+
+                status.className =
+                    "status submitted";
+
+            }
 
         }
     );
@@ -2246,12 +3279,171 @@ function restoreEditedTasks() {
 
 
 // =============================================================
-// CLOSE SUBMIT MODAL WHEN CLICKING OUTSIDE
+// RESTORE SUBMITTED TASKS
+// =============================================================
+
+function restoreSubmittedTasks() {
+
+    /*
+        The task status is now stored directly inside hrTasks.
+
+        So we do not need to change only the visual card.
+        displayEmployeePage() reads the updated hrTasks
+        and automatically displays Submitted.
+    */
+
+    const tasks =
+        getHrTasks();
+
+
+    const submittedTasks =
+        tasks.filter(
+            task =>
+                task.status ===
+                "Submitted"
+        );
+
+
+    if (
+        submittedTasks.length === 0
+    ) {
+
+        return;
+    }
+
+
+    // Nothing else is required here because
+    // renderEmployeeTasks() reads task.status.
+}
+
+
+// =============================================================
+// FORMAT DATE
+// =============================================================
+
+function formatTaskDate(
+    dateValue
+) {
+
+    if (!dateValue) {
+
+        return "-";
+    }
+
+
+    const date =
+        new Date(
+            dateValue
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return String(
+            dateValue
+        );
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            year:
+                "numeric",
+
+            month:
+                "short",
+
+            day:
+                "numeric"
+        }
+    );
+
+}
+
+
+// =============================================================
+// ESCAPE HTML
+// =============================================================
+
+function escapeHtml(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        value || "";
+
+
+    return div.innerHTML;
+
+}
+
+
+// =============================================================
+// ESCAPE JAVASCRIPT
+// =============================================================
+
+function escapeJs(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    )
+    .replace(
+        /"/g,
+        '\\"'
+    )
+    .replace(
+        /\n/g,
+        "\\n"
+    )
+    .replace(
+        /\r/g,
+        "\\r"
+    );
+
+}
+
+
+// =============================================================
+// CLOSE MODALS WHEN CLICKING OUTSIDE
 // =============================================================
 
 document.addEventListener(
     "click",
     function (e) {
+
+        const editModal =
+            document.getElementById(
+                "editTaskModal"
+            );
+
+
+        const viewModal =
+            document.getElementById(
+                "viewTaskModal"
+            );
+
 
         const submitModal =
             document.getElementById(
@@ -2259,21 +3451,7 @@ document.addEventListener(
             );
 
 
-        if (
-            submitModal &&
-            e.target === submitModal
-        ) {
-
-            closeSubmitModal();
-
-        }
-
-
-        const editModal =
-            document.getElementById(
-                "editTaskModal"
-            );
-
+        // EDIT
 
         if (
             editModal &&
@@ -2284,12 +3462,36 @@ document.addEventListener(
 
         }
 
+
+        // VIEW
+
+        if (
+            viewModal &&
+            e.target === viewModal
+        ) {
+
+            closeViewTaskModal();
+
+        }
+
+
+        // SUBMIT
+
+        if (
+            submitModal &&
+            e.target === submitModal
+        ) {
+
+            closeSubmitModal();
+
+        }
+
     }
 );
 
 
 // =============================================================
-// ESC KEY
+// ESCAPE KEY
 // =============================================================
 
 document.addEventListener(
@@ -2302,8 +3504,19 @@ document.addEventListener(
         ) {
 
             return;
-
         }
+
+
+        const editModal =
+            document.getElementById(
+                "editTaskModal"
+            );
+
+
+        const viewModal =
+            document.getElementById(
+                "viewTaskModal"
+            );
 
 
         const submitModal =
@@ -2311,6 +3524,36 @@ document.addEventListener(
                 "submitModal"
             );
 
+
+        // EDIT
+
+        if (
+            editModal &&
+            editModal.classList.contains(
+                "active"
+            )
+        ) {
+
+            closeEditTaskModal();
+
+        }
+
+
+        // VIEW
+
+        if (
+            viewModal &&
+            viewModal.classList.contains(
+                "active"
+            )
+        ) {
+
+            closeViewTaskModal();
+
+        }
+
+
+        // SUBMIT
 
         if (
             submitModal &&
@@ -2323,23 +3566,19 @@ document.addEventListener(
 
         }
 
-
-        const editModal =
-            document.getElementById(
-                "editTaskModal"
-            );
+    }
+);
 
 
-        if (
-            editModal &&
-            editModal.classList.contains(
-                "active"
-            )
-        ) {
+// =============================================================
+// START
+// =============================================================
 
-            closeEditTaskModal();
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-        }
+        displayTask();
 
     }
 );

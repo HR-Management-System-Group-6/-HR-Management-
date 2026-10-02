@@ -1,87 +1,240 @@
 function displayLeave() {
 
-    let content = document.getElementById("content");
+    const content = document.getElementById("content");
 
-    // =========================================
-    // GET LOGGED-IN USER
-    // =========================================
+    if (!content) {
+        console.error("Element #content not found.");
+        return;
+    }
 
-    let user = JSON.parse(
-        localStorage.getItem("loggedInUser")
-    );
+    // =====================================================
+    // GET LOGGED IN USER
+    // =====================================================
 
-    // =========================================
-    // GET USER ROLE
-    // =========================================
+    let user = {};
 
-    let role = user?.role?.toLowerCase();
+    try {
+        user =
+            JSON.parse(
+                localStorage.getItem("loggedInUser")
+            ) || {};
+    } catch (error) {
+        console.error(
+            "Error reading loggedInUser:",
+            error
+        );
+    }
+
+    const role =
+        String(user?.role || "").toLowerCase();
 
 
     // =====================================================
+    // COMMON HELPERS
     // =====================================================
-    // ===================== EMPLOYEE =======================
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function getInitials(name) {
+
+        const parts =
+            String(name || "Employee")
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+
+        if (parts.length === 0) {
+            return "EM";
+        }
+
+        if (parts.length === 1) {
+            return parts[0]
+                .substring(0, 2)
+                .toUpperCase();
+        }
+
+        return (
+            parts[0][0] +
+            parts[parts.length - 1][0]
+        ).toUpperCase();
+    }
+
+
+    function formatDate(dateString) {
+
+        if (!dateString) {
+            return "-";
+        }
+
+        const date =
+            new Date(
+                dateString + "T00:00:00"
+            );
+
+        if (isNaN(date.getTime())) {
+            return "-";
+        }
+
+        return date.toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+                day: "2-digit",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    function formatDateRange(
+        startDate,
+        endDate
+    ) {
+
+        if (!startDate || !endDate) {
+            return "-";
+        }
+
+        if (startDate === endDate) {
+            return formatDate(startDate);
+        }
+
+        const start =
+            new Date(
+                startDate + "T00:00:00"
+            );
+
+        const end =
+            new Date(
+                endDate + "T00:00:00"
+            );
+
+        if (
+            start.getFullYear() ===
+            end.getFullYear()
+        ) {
+
+            const startText =
+                start.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "short",
+                        day: "2-digit"
+                    }
+                );
+
+            const endText =
+                end.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric"
+                    }
+                );
+
+            return `${startText} – ${endText}`;
+        }
+
+        return (
+            `${formatDate(startDate)} – ${formatDate(endDate)}`
+        );
+    }
+
+
+    function calculateDays(
+        startDate,
+        endDate
+    ) {
+
+        if (!startDate || !endDate) {
+            return 0;
+        }
+
+        const start =
+            new Date(
+                startDate + "T00:00:00"
+            );
+
+        const end =
+            new Date(
+                endDate + "T00:00:00"
+            );
+
+        if (
+            isNaN(start.getTime()) ||
+            isNaN(end.getTime())
+        ) {
+            return 0;
+        }
+
+        const difference =
+            end - start;
+
+        return (
+            Math.floor(
+                difference /
+                (1000 * 60 * 60 * 24)
+            ) + 1
+        );
+    }
+
+
     // =====================================================
+    // EMPLOYEE
     // =====================================================
 
     if (role === "employee") {
 
-        // =========================================
-        // USER INFORMATION
-        // =========================================
-
-        let userKey =
+        const userKey =
             user?.id ||
             user?.email ||
             user?.name ||
             "employee";
 
-
-        // Each employee has his own storage key
-        let storageKey =
+        const storageKey =
             `leaveRequests_${userKey}`;
 
 
-        // =========================================
-        // INITIAL REQUESTS
-        // =========================================
+        // =================================================
+        // GET EMPLOYEE REQUESTS
+        // =================================================
 
-        let initialRequests = [
+        let requests = [];
 
+        try {
 
+            requests =
+                JSON.parse(
+                    localStorage.getItem(storageKey)
+                ) || [];
 
+        } catch (error) {
 
-        ];
-
-
-        // =========================================
-        // GET REQUESTS FROM LOCAL STORAGE
-        // =========================================
-
-        let requests = JSON.parse(
-            localStorage.getItem(storageKey)
-        );
-
-        if (!requests) {
+            console.error(
+                "Error reading employee leave requests:",
+                error
+            );
 
             requests = [];
-
-            localStorage.setItem(
-                storageKey,
-                JSON.stringify(requests)
-            );
         }
 
 
-        // =========================================
-        // MIGRATE OLD REQUESTS
-        // =========================================
-        // If old requests don't have employee
-        // information, add it automatically.
-        // =========================================
+        // =================================================
+        // NORMALIZE REQUEST DATA
+        // =================================================
 
-        if (requests) {
-
-            requests = requests.map(request => {
+        requests =
+            requests.map(request => {
 
                 return {
 
@@ -101,225 +254,402 @@ function displayLeave() {
                     employeeEmail:
                         request.employeeEmail ||
                         user?.email ||
-                        ""
+                        "",
 
+                    status:
+                        request.status ||
+                        "Pending"
                 };
-
             });
 
 
-            // Save migrated requests
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(requests)
+        );
 
-            localStorage.setItem(
-                storageKey,
-                JSON.stringify(requests)
-            );
+
+        // =================================================
+        // STATUS COUNT
+        // =================================================
+
+        function countStatus(status) {
+
+            return requests.filter(
+                request =>
+                    String(
+                        request.status || ""
+                    ).toLowerCase() ===
+                    status.toLowerCase()
+            ).length;
         }
 
 
-        // =========================================
-        // FIRST TIME
-        // =========================================
-
-        if (!requests) {
-
-            requests = initialRequests;
-
-
-            localStorage.setItem(
-
-                storageKey,
-
-                JSON.stringify(requests)
-
-            );
-        }
-
-
-        // =========================================
-        // DISPLAY EMPLOYEE PAGE
-        // =========================================
+        // =================================================
+        // EMPLOYEE HTML
+        // =================================================
 
         content.innerHTML = `
 
-            <section class="content">
+            <section class="leave-page">
 
-                <div class="page-heading">
+                <!-- HERO -->
+                <div class="leave-hero">
 
-                    <span class="small-title">
-                        MY WORKSPACE / LEAVE
-                    </span>
+                    <div class="hero-background-circle"></div>
 
-                    <h1>
-                        Leave requests
-                    </h1>
+                    <div class="hero-content">
 
-                    <p>
-                        Request time off or an early departure
-                        and track your requests.
-                    </p>
-
-                </div>
-
-
-                <!-- ================= CARDS ================= -->
-
-                <div class="cards-container">
-
-
-                    <!-- ================= NEW REQUEST ================= -->
-
-                    <div class="card request-card">
-
-                        <h2>
-                            New request
-                        </h2>
-
-
-                        <!-- Leave Type -->
-
-                        <div class="form-group">
-
-                            <label>
-                                Leave type
-                            </label>
-
-                            <div class="select-wrapper">
-
-                                <select id="leaveType">
-
-                                    <option>
-                                        Annual leave
-                                    </option>
-
-                                    <option>
-                                        Sick leave
-                                    </option>
-
-                                    <option>
-                                        Emergency leave
-                                    </option>
-
-                                    <option>
-                                        Unpaid leave
-                                    </option>
-
-                                </select>
-
-                                <i class="bi bi-chevron-down"></i>
-
-                            </div>
-
+                        <div class="hero-label">
+                            <i class="bi bi-calendar-check"></i>
+                            MY WORKSPACE / LEAVE
                         </div>
 
+                        <h1>
+                            Leave requests
+                        </h1>
 
-                        <!-- Dates -->
-
-                        <div class="date-row">
-
-                            <div class="form-group">
-
-                                <label>
-                                    Start date
-                                </label>
-
-                                <div class="input-icon">
-
-                                    <input
-                                        type="date"
-                                        id="startDate"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label>
-                                    End date
-                                </label>
-
-                                <div class="input-icon">
-
-                                    <input
-                                        type="date"
-                                        id="endDate"
-                                    >
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- Reason -->
-
-                        <div class="form-group">
-
-                            <label>
-                                Reason
-                            </label>
-
-                            <textarea
-                                id="reason"
-                                placeholder="Write a short reason..."
-                            ></textarea>
-
-                        </div>
-
-
-                        <!-- Submit -->
-
-                        <button
-                            class="submit-btn"
-                            id="submitRequest"
-                        >
-                            Submit request
-                        </button>
+                        <p>
+                            Request time off, manage your leave
+                            and track every request in one place.
+                        </p>
 
                     </div>
 
 
-                    <!-- ================= MY REQUESTS ================= -->
+                    <div class="hero-user">
 
-                    <div class="card requests-card">
+                        <div class="hero-avatar">
+                            ${getInitials(user?.name)}
+                        </div>
 
-                        <div class="requests-header">
+                        <div class="hero-user-info">
 
-                            <h2>
-                                My requests
-                            </h2>
+                            <strong>
+                                ${escapeHtml(
+                                    user?.name ||
+                                    "Employee"
+                                )}
+                            </strong>
 
-                            <span id="requestCount">
-                                ${requests.length} requests
+                            <span>
+                                Employee
                             </span>
 
                         </div>
 
+                        <i class="bi bi-person-check"></i>
 
-                        <div class="table-header">
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+
+                <div class="leave-stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            <i class="bi bi-files"></i>
+                        </div>
+
+                        <div class="stat-info">
 
                             <span>
-                                REQUEST
+                                Total requests
                             </span>
 
-                            <span>
-                                DATES
-                            </span>
+                            <strong id="totalRequests">
+                                ${requests.length}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+
+                        <div class="stat-info">
 
                             <span>
-                                STATUS
+                                Pending
                             </span>
+
+                            <strong id="pendingRequests">
+                                ${countStatus("Pending")}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Approved
+                            </span>
+
+                            <strong id="approvedRequests">
+                                ${countStatus("Approved")}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN CONTENT -->
+
+                <div class="leave-layout">
+
+
+                    <!-- NEW REQUEST -->
+
+                    <div class="leave-card request-card">
+
+                        <div class="card-top">
+
+                            <div>
+
+                                <span class="card-label">
+                                    REQUEST TIME OFF
+                                </span>
+
+                                <h2>
+                                    New request
+                                </h2>
+
+                                <p>
+                                    Fill in the information below
+                                    to submit a leave request.
+                                </p>
+
+                            </div>
+
+                            <div class="card-icon">
+                                <i class="bi bi-calendar-plus"></i>
+                            </div>
 
                         </div>
 
 
-                        <div id="requestsContainer">
+                        <form id="leaveRequestForm">
 
-                            ${renderEmployeeRequests(requests)}
+                            <!-- LEAVE TYPE -->
+
+                            <div class="form-group">
+
+                                <label for="leaveType">
+                                    Leave type
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <select id="leaveType">
+
+                                        <option value="Annual leave">
+                                            Annual leave
+                                        </option>
+
+                                        <option value="Sick leave">
+                                            Sick leave
+                                        </option>
+
+                                        <option value="Emergency leave">
+                                            Emergency leave
+                                        </option>
+
+                                        <option value="Unpaid leave">
+                                            Unpaid leave
+                                        </option>
+
+                                    </select>
+
+                                    <i class="bi bi-chevron-down arrow"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DATES -->
+
+                            <div class="date-grid">
+
+                                <div class="form-group">
+
+                                    <label for="startDate">
+                                        Start date
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <input
+                                            type="date"
+                                            id="startDate"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="endDate">
+                                        End date
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <input
+                                            type="date"
+                                            id="endDate"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- REASON -->
+
+                            <div class="form-group">
+
+                                <div class="reason-label">
+
+                                    <label for="reason">
+                                        Reason
+                                    </label>
+
+                                    <span>
+                                        Optional
+                                    </span>
+
+                                </div>
+
+                                <textarea
+                                    id="reason"
+                                    placeholder="Write a short reason..."
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- INFO -->
+
+                            <div class="request-info">
+
+                                <i class="bi bi-info-circle"></i>
+
+                                <span>
+                                    Your request will be saved
+                                    with <strong>Pending</strong>
+                                    status until HR reviews it.
+                                </span>
+
+                            </div>
+
+
+                            <!-- BUTTON -->
+
+                            <button
+                                type="submit"
+                                id="submitRequest"
+                                class="submit-btn"
+                            >
+
+                                <span>
+                                    Submit request
+                                </span>
+
+                                <i class="bi bi-arrow-right"></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- MY REQUESTS -->
+
+                    <div class="leave-card requests-card">
+
+                        <div class="card-top requests-top">
+
+                            <div>
+
+                                <span class="card-label">
+                                    REQUEST HISTORY
+                                </span>
+
+                                <h2>
+                                    My requests
+                                </h2>
+
+                                <p>
+                                    Track the status of your
+                                    submitted leave requests.
+                                </p>
+
+                            </div>
+
+                            <div
+                                class="request-count"
+                                id="requestCount"
+                            >
+                                ${requests.length}
+                                ${
+                                    requests.length === 1
+                                        ? "request"
+                                        : "requests"
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div class="requests-table">
+
+                            <div class="table-head">
+
+                                <span>
+                                    REQUEST
+                                </span>
+
+                                <span>
+                                    DATES
+                                </span>
+
+                                <span>
+                                    STATUS
+                                </span>
+
+                            </div>
+
+
+                            <div id="requestsContainer">
+                                ${renderEmployeeRequests(requests)}
+                            </div>
 
                         </div>
 
@@ -328,66 +658,337 @@ function displayLeave() {
                 </div>
 
             </section>
-
         `;
 
 
-        // =========================================
+        // =================================================
+        // RENDER EMPLOYEE REQUESTS
+        // =================================================
+
+        function renderEmployeeRequests(
+            requestList
+        ) {
+
+            if (
+                !requestList ||
+                requestList.length === 0
+            ) {
+
+                return `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            <i class="bi bi-calendar-x"></i>
+                        </div>
+
+                        <h3>
+                            No requests yet
+                        </h3>
+
+                        <p>
+                            Your leave requests will
+                            appear here.
+                        </p>
+
+                    </div>
+
+                `;
+            }
+
+
+            return requestList
+                .slice()
+                .reverse()
+                .map(request => {
+
+                    const status =
+                        request.status ||
+                        "Pending";
+
+                    const statusClass =
+                        status.toLowerCase();
+
+                    let statusIcon =
+                        "bi-clock-fill";
+
+                    if (status === "Approved") {
+
+                        statusIcon =
+                            "bi-check-circle-fill";
+                    }
+
+                    if (status === "Rejected") {
+
+                        statusIcon =
+                            "bi-x-circle-fill";
+                    }
+
+
+                    const days =
+                        calculateDays(
+                            request.startDate,
+                            request.endDate
+                        );
+
+
+                    return `
+
+                        <div class="request-row">
+
+                            <div class="request-info-cell">
+
+                                <div class="request-icon">
+                                    <i class="bi bi-calendar-event"></i>
+                                </div>
+
+                                <div class="request-text">
+
+                                    <strong>
+                                        ${escapeHtml(
+                                            request.leaveType ||
+                                            "-"
+                                        )}
+                                    </strong>
+
+                                    <span>
+                                        ${escapeHtml(
+                                            request.reason ||
+                                            "No reason provided"
+                                        )}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="date-cell">
+
+                                <strong>
+                                    ${formatDateRange(
+                                        request.startDate,
+                                        request.endDate
+                                    )}
+                                </strong>
+
+                                <span>
+                                    ${days}
+                                    ${
+                                        days === 1
+                                            ? "day"
+                                            : "days"
+                                    }
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <span
+                                    class="status ${statusClass}"
+                                >
+
+                                    <i
+                                        class="bi ${statusIcon}"
+                                    ></i>
+
+                                    ${escapeHtml(status)}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                })
+                .join("");
+        }
+
+
+        // =================================================
+        // UPDATE EMPLOYEE STATS
+        // =================================================
+
+        function updateStats() {
+
+            const total =
+                document.getElementById(
+                    "totalRequests"
+                );
+
+            const pending =
+                document.getElementById(
+                    "pendingRequests"
+                );
+
+            const approved =
+                document.getElementById(
+                    "approvedRequests"
+                );
+
+            const count =
+                document.getElementById(
+                    "requestCount"
+                );
+
+
+            if (total) {
+
+                total.textContent =
+                    requests.length;
+            }
+
+
+            if (pending) {
+
+                pending.textContent =
+                    countStatus("Pending");
+            }
+
+
+            if (approved) {
+
+                approved.textContent =
+                    countStatus("Approved");
+            }
+
+
+            if (count) {
+
+                count.textContent =
+                    `${requests.length} ${
+                        requests.length === 1
+                            ? "request"
+                            : "requests"
+                    }`;
+            }
+        }
+
+
+        // =================================================
+        // TOAST
+        // =================================================
+
+        function showToast() {
+
+            const old =
+                document.querySelector(
+                    ".leave-toast"
+                );
+
+            if (old) {
+                old.remove();
+            }
+
+
+            const toast =
+                document.createElement("div");
+
+            toast.className =
+                "leave-toast";
+
+
+            toast.innerHTML = `
+
+                <div class="toast-icon">
+                    <i class="bi bi-check2"></i>
+                </div>
+
+                <div class="toast-content">
+
+                    <strong>
+                        Request submitted
+                    </strong>
+
+                    <span>
+                        Your request was saved successfully.
+                    </span>
+
+                </div>
+
+            `;
+
+
+            document.body.appendChild(toast);
+
+
+            setTimeout(() => {
+
+                toast.classList.add("show");
+
+            }, 20);
+
+
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+                setTimeout(() => {
+
+                    toast.remove();
+
+                }, 300);
+
+            }, 3000);
+        }
+
+
+        // =================================================
         // SUBMIT REQUEST
-        // =========================================
+        // =================================================
 
-        document
-            .getElementById("submitRequest")
-            .addEventListener(
-                "click",
-                function () {
+        const form =
+            document.getElementById(
+                "leaveRequestForm"
+            );
 
-                    let leaveType =
-                        document
-                            .getElementById("leaveType")
-                            .value;
+        if (form) {
 
+            form.addEventListener(
+                "submit",
+                function (event) {
 
-                    let startDate =
-                        document
-                            .getElementById("startDate")
-                            .value;
+                    event.preventDefault();
 
 
-                    let endDate =
-                        document
-                            .getElementById("endDate")
-                            .value;
+                    const leaveType =
+                        document.getElementById(
+                            "leaveType"
+                        ).value;
 
 
-                    let reason =
-                        document
-                            .getElementById("reason")
-                            .value
-                            .trim();
+                    const startDate =
+                        document.getElementById(
+                            "startDate"
+                        ).value;
 
 
-                    // =================================
-                    // VALIDATION
-                    // =================================
+                    const endDate =
+                        document.getElementById(
+                            "endDate"
+                        ).value;
 
-                    if (
-                        !startDate ||
-                        !endDate ||
-                        !reason
-                    ) {
+
+                    const reason =
+                        document.getElementById(
+                            "reason"
+                        ).value.trim();
+
+
+                    // Validation
+
+                    if (!startDate || !endDate) {
 
                         alert(
-                            "Please fill in all fields."
+                            "Please select start and end dates."
                         );
 
                         return;
                     }
 
-
-                    // =================================
-                    // DATE VALIDATION
-                    // =================================
 
                     if (endDate < startDate) {
 
@@ -399,11 +1000,9 @@ function displayLeave() {
                     }
 
 
-                    // =================================
-                    // CREATE NEW REQUEST
-                    // =================================
+                    // Create request
 
-                    let newRequest = {
+                    const newRequest = {
 
                         id: Date.now(),
 
@@ -430,391 +1029,101 @@ function displayLeave() {
                             endDate,
 
                         reason:
-                            reason,
+                            reason ||
+                            "No reason provided.",
 
                         status:
                             "Pending"
-
                     };
 
 
-                    // =================================
-                    // ADD REQUEST
-                    // =================================
+                    // Add request
 
                     requests.push(
                         newRequest
                     );
 
 
-                    // =================================
-                    // SAVE
-                    // =================================
+                    // Save request
 
                     localStorage.setItem(
-
                         storageKey,
-
                         JSON.stringify(requests)
-
                     );
 
 
-                    // =================================
-                    // UPDATE REQUESTS UI
-                    // =================================
+                    // Refresh requests
 
-                    document
-                        .getElementById(
+                    const container =
+                        document.getElementById(
                             "requestsContainer"
-                        )
-                        .innerHTML =
-                        renderEmployeeRequests(
-                            requests
                         );
 
+                    if (container) {
 
-                    // =================================
-                    // UPDATE COUNT
-                    // =================================
-
-                    document
-                        .getElementById(
-                            "requestCount"
-                        )
-                        .textContent =
-                        `${requests.length} requests`;
-
-
-                    // =================================
-                    // CLEAR FORM
-                    // =================================
-
-                    document
-                        .getElementById(
-                            "startDate"
-                        )
-                        .value = "";
-
-
-                    document
-                        .getElementById(
-                            "endDate"
-                        )
-                        .value = "";
-
-
-                    document
-                        .getElementById(
-                            "reason"
-                        )
-                        .value = "";
-
-
-                    alert(
-                        "Request submitted successfully!"
-                    );
-
-                }
-            );
-
-
-        // =========================================
-        // EMPLOYEE REQUEST RENDER
-        // =========================================
-
-        function renderEmployeeRequests(
-            requestList
-        ) {
-
-            if (
-                !requestList ||
-                requestList.length === 0
-            ) {
-
-                return `
-
-                    <div
-                        style="
-                            padding:30px;
-                            text-align:center;
-                            color:#7892a8;
-                        "
-                    >
-                        No requests yet.
-                    </div>
-
-                `;
-            }
-
-
-            return requestList
-                .map(
-                    function (
-                        request,
-                        index
-                    ) {
-
-                        let dates =
-                            formatDateRange(
-                                request.startDate,
-                                request.endDate
+                        container.innerHTML =
+                            renderEmployeeRequests(
+                                requests
                             );
-
-
-                        let days =
-                            calculateDays(
-                                request.startDate,
-                                request.endDate
-                            );
-
-
-                        let statusClass =
-                            request.status
-                                .toLowerCase();
-
-
-                        let lastClass =
-                            index ===
-                            requestList.length - 1
-                                ? "last"
-                                : "";
-
-
-                        return `
-
-                            <div
-                                class="request-row ${lastClass}"
-                            >
-
-                                <div
-                                    class="request-name"
-                                >
-
-                                    <strong>
-                                        ${request.leaveType}
-                                    </strong>
-
-                                    <span>
-                                        ${request.reason}
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="request-date"
-                                >
-
-                                    <strong>
-                                        ${dates}
-                                    </strong>
-
-                                    <span>
-
-                                        ${
-                                            request.time
-                                            ? request.time
-                                            : `${days} ${
-                                                days === 1
-                                                    ? "day"
-                                                    : "days"
-                                            }`
-                                        }
-
-                                    </span>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span
-                                        class="status ${statusClass}"
-                                    >
-                                        ${request.status}
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
                     }
-                )
-                .join("");
-        }
 
 
-        // =========================================
-        // FORMAT DATE
-        // =========================================
-
-        function formatDate(
-            dateString
-        ) {
-
-            let date =
-                new Date(
-                    dateString +
-                    "T00:00:00"
-                );
+                    updateStats();
 
 
-            return date.toLocaleDateString(
-                "en-US",
-                {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric"
+                    // Clear form
+
+                    form.reset();
+
+
+                    // Toast
+
+                    showToast();
+
                 }
             );
-
-        }
-
-
-        // =========================================
-        // FORMAT DATE RANGE
-        // =========================================
-
-        function formatDateRange(
-            startDate,
-            endDate
-        ) {
-
-            let start =
-                new Date(
-                    startDate +
-                    "T00:00:00"
-                );
-
-
-            let end =
-                new Date(
-                    endDate +
-                    "T00:00:00"
-                );
-
-
-            // Same day
-
-            if (
-                startDate ===
-                endDate
-            ) {
-
-                return formatDate(
-                    startDate
-                );
-            }
-
-
-            // Same year
-
-            if (
-                start.getFullYear() ===
-                end.getFullYear()
-            ) {
-
-                let startText =
-                    start.toLocaleDateString(
-                        "en-US",
-                        {
-                            month: "short",
-                            day: "2-digit"
-                        }
-                    );
-
-
-                let endText =
-                    end.toLocaleDateString(
-                        "en-US",
-                        {
-                            month: "short",
-                            day: "2-digit",
-                            year: "numeric"
-                        }
-                    );
-
-
-                return (
-                    `${startText} – ${endText}`
-                );
-            }
-
-
-            return (
-                `${formatDate(startDate)} – ${formatDate(endDate)}`
-            );
-
-        }
-
-
-        // =========================================
-        // CALCULATE DAYS
-        // =========================================
-
-        function calculateDays(
-            startDate,
-            endDate
-        ) {
-
-            let start =
-                new Date(
-                    startDate +
-                    "T00:00:00"
-                );
-
-
-            let end =
-                new Date(
-                    endDate +
-                    "T00:00:00"
-                );
-
-
-            let difference =
-                end - start;
-
-
-            let days =
-                Math.floor(
-                    difference /
-                    (
-                        1000 *
-                        60 *
-                        60 *
-                        24
-                    )
-                ) + 1;
-
-
-            return days;
         }
 
     }
 
 
     // =====================================================
-    // =====================================================
-    // ======================== HR ==========================
-    // =====================================================
+    // HR
     // =====================================================
 
     else if (role === "hr") {
 
+        let allRequests = [];
 
-        // =========================================
-        // GET ALL EMPLOYEE REQUESTS
-        // =========================================
+        let selectedRequestKey = null;
+
+
+        // =================================================
+        // GET ALL LEAVE REQUESTS
+        // =================================================
 
         function getAllRequests() {
 
-            let allRequests = [];
+            const result = [];
 
 
-            // Loop through localStorage
+            /*
+                IMPORTANT:
+
+                Every employee stores requests like:
+
+                leaveRequests_employee@example.com
+                leaveRequests_ahmad@example.com
+                leaveRequests_sara@example.com
+
+                We read ALL keys that start with:
+
+                leaveRequests_
+
+                Then combine all requests
+                into one array for HR.
+            */
+
 
             for (
                 let i = 0;
@@ -822,908 +1131,1178 @@ function displayLeave() {
                 i++
             ) {
 
-                let key =
+                const key =
                     localStorage.key(i);
 
 
-                // Only employee leave requests
-
                 if (
-                    key &&
-                    key.startsWith(
+                    !key ||
+                    !key.startsWith(
                         "leaveRequests_"
                     )
                 ) {
+                    continue;
+                }
 
-                    let employeeRequests =
+
+                let employeeRequests = [];
+
+
+                try {
+
+                    employeeRequests =
                         JSON.parse(
                             localStorage.getItem(key)
                         ) || [];
 
+                } catch (error) {
 
-                    employeeRequests.forEach(
-                        function (request) {
-
-                            /*
-                             * IMPORTANT:
-                             *
-                             * Every request gets
-                             * a unique key.
-                             *
-                             * This prevents two
-                             * employees having the
-                             * same request id from
-                             * causing conflicts.
-                             */
-
-                            allRequests.push({
-
-                                ...request,
-
-                                storageKey:
-                                    key,
-
-                                requestKey:
-                                    `${key}_${request.id}`
-
-                            });
-
-                        }
+                    console.error(
+                        "Error reading:",
+                        key,
+                        error
                     );
 
+                    employeeRequests = [];
                 }
+
+
+                if (
+                    !Array.isArray(
+                        employeeRequests
+                    )
+                ) {
+                    continue;
+                }
+
+
+                employeeRequests.forEach(
+                    request => {
+
+                        if (!request) {
+                            return;
+                        }
+
+
+                        /*
+                            Create unique key.
+
+                            This is important because
+                            different employees can have
+                            the same request id.
+                        */
+
+                        const requestId =
+                            request.id ||
+                            Date.now();
+
+
+                        result.push({
+
+                            ...request,
+
+                            id:
+                                requestId,
+
+                            employeeName:
+                                request.employeeName ||
+                                "Unknown Employee",
+
+                            employeeEmail:
+                                request.employeeEmail ||
+                                "",
+
+                            employeeId:
+                                request.employeeId ||
+                                key.replace(
+                                    "leaveRequests_",
+                                    ""
+                                ),
+
+                            status:
+                                request.status ||
+                                "Pending",
+
+                            storageKey:
+                                key,
+
+                            requestKey:
+                                `${key}_${requestId}`
+
+                        });
+
+                    }
+                );
 
             }
 
 
-            return allRequests;
+            /*
+                Sort newest first
+            */
+
+            result.sort(
+                (a, b) =>
+                    Number(b.id || 0) -
+                    Number(a.id || 0)
+            );
+
+
+            return result;
         }
 
 
-        // =========================================
-        // GET ALL REQUESTS
-        // =========================================
+        // =================================================
+        // LOAD ALL REQUESTS
+        // =================================================
 
-        let allRequests =
+        allRequests =
             getAllRequests();
 
 
-        // =========================================
-        // SELECT FIRST REQUEST
-        // =========================================
+        if (allRequests.length > 0) {
 
-        let selectedRequestKey =
-            allRequests.length > 0
-                ? allRequests[0].requestKey
-                : null;
+            selectedRequestKey =
+                allRequests[0].requestKey;
+        }
 
 
-        // =========================================
-        // DISPLAY HR PAGE
-        // =========================================
+        // =================================================
+        // HR HTML
+        // =================================================
 
-        content.innerHTML = `
+content.innerHTML = `
 
-            <section class="content">
+    <section class="hr-leave-page">
 
-                <div class="page-label">
-                    HR / LEAVE REQUESTS
-                </div>
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
 
+        <div class="hr-heading">
 
-                <h1>
-                    Leave requests
-                </h1>
+            <span>
+                HR / LEAVE MANAGEMENT
+            </span>
 
+            <h1>
+                Leave requests
+            </h1>
 
-                <p class="description">
-                    Review employee leave requests
-                    and update their status.
-                </p>
+            <p>
+                Review employee leave requests, check details,
+                and manage approval status from one place.
+            </p>
 
-
-                <!-- ================= FILTERS ================= -->
-
-                <div class="filters">
-
-                    <div class="search-box">
-
-                        <i class="bi bi-search"></i>
-
-                        <input
-                            type="text"
-                            id="employeeSearch"
-                            placeholder="Search by employee name..."
-                        >
-
-                    </div>
+        </div>
 
 
-                    <div class="status-filter">
+        <!-- =========================================
+             FILTERS
+        ========================================== -->
 
-                        <select
-                            id="statusFilter"
-                        >
+        <div class="hr-filters">
 
-                            <option value="All">
-                                All statuses
-                            </option>
+            <div class="hr-search">
 
-                            <option value="Pending">
-                                Pending
-                            </option>
+                <i class="bi bi-search"></i>
 
-                            <option value="Approved">
-                                Approved
-                            </option>
-
-                            <option value="Rejected">
-                                Rejected
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ================= REQUESTS TABLE ================= -->
-
-                <div class="card requests-card">
-
-                    <div class="card-header">
-
-                        <h2>
-                            Employee requests
-                        </h2>
-
-                        <span id="requestCount">
-                            ${allRequests.length} requests
-                        </span>
-
-                    </div>
-
-
-                    <div class="table-container">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        EMPLOYEE
-                                    </th>
-
-                                    <th>
-                                        LEAVE TYPE
-                                    </th>
-
-                                    <th>
-                                        DATES
-                                    </th>
-
-                                    <th>
-                                        STATUS
-                                    </th>
-
-                                    <th>
-                                        ACTION
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody
-                                id="requestsTableBody"
-                            >
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ================= REQUEST DETAILS ================= -->
-
-                <div
-                    class="card details-card"
-                    id="detailsCard"
+                <input
+                    id="employeeSearch"
+                    type="text"
+                    placeholder="Search by employee, email or leave type..."
                 >
 
-                    <div class="details-header">
-
-                        <h2>
-                            Request details
-                        </h2>
-
-                        <span
-                            class="details-status"
-                            id="detailsStatus"
-                        >
-                            -
-                        </span>
-
-                    </div>
+            </div>
 
 
-                    <div class="details-grid">
+            <select id="statusFilter">
 
-                        <div class="detail-item">
+                <option value="All">
+                    All statuses
+                </option>
 
-                            <label>
-                                EMPLOYEE
-                            </label>
+                <option value="Pending">
+                    Pending
+                </option>
 
-                            <strong
-                                id="detailEmployee"
-                            >
-                                -
-                            </strong>
+                <option value="Approved">
+                    Approved
+                </option>
 
-                        </div>
+                <option value="Rejected">
+                    Rejected
+                </option>
 
+            </select>
 
-                        <div class="detail-item">
-
-                            <label>
-                                LEAVE TYPE
-                            </label>
-
-                            <strong
-                                id="detailLeaveType"
-                            >
-                                -
-                            </strong>
-
-                        </div>
+        </div>
 
 
-                        <div class="detail-item">
+        <!-- =========================================
+             REQUESTS TABLE
+        ========================================== -->
 
-                            <label>
-                                START DATE
-                            </label>
+        <div class="hr-table-card">
 
-                            <strong
-                                id="detailStartDate"
-                            >
-                                -
-                            </strong>
+            <div class="hr-card-header">
 
-                        </div>
+                <div>
 
+                    <span>
+                        EMPLOYEE LEAVE MANAGEMENT
+                    </span>
 
-                        <div class="detail-item">
-
-                            <label>
-                                END DATE
-                            </label>
-
-                            <strong
-                                id="detailEndDate"
-                            >
-                                -
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="reason">
-
-                        <label>
-                            REASON
-                        </label>
-
-                        <p id="detailReason">
-                            -
-                        </p>
-
-                    </div>
-
-
-                    <div class="actions">
-
-                        <button
-                            class="reject-btn"
-                            id="rejectBtn"
-                        >
-                            Reject
-                        </button>
-
-
-                        <button
-                            class="approve-btn"
-                            id="approveBtn"
-                        >
-                            Approve
-                        </button>
-
-                    </div>
+                    <h2>
+                        All leave requests
+                    </h2>
 
                 </div>
 
-            </section>
 
-        `;
+                <strong id="requestCount">
+                    ${allRequests.length}
+                    ${
+                        allRequests.length === 1
+                            ? "request"
+                            : "requests"
+                    }
+                </strong>
+
+            </div>
 
 
-        // =========================================
+            <div class="hr-table-wrapper">
+
+                <table class="hr-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Employee
+                            </th>
+
+                            <th>
+                                Leave type
+                            </th>
+
+                            <th>
+                                Dates
+                            </th>
+
+                            <th>
+                                Days
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="requestsTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             REQUEST DETAILS
+        ========================================== -->
+
+        <div
+            class="hr-details"
+            id="detailsCard"
+        >
+
+            <div class="details-heading">
+
+                <div>
+
+                    <span>
+                        REQUEST DETAILS
+                    </span>
+
+                    <h2>
+                        Leave information
+                    </h2>
+
+                </div>
+
+
+                <span
+                    id="detailsStatus"
+                    class="status pending"
+                >
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+                <div>
+
+                    <span>
+                        EMPLOYEE
+                    </span>
+
+                    <strong id="detailEmployee">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        EMAIL
+                    </span>
+
+                    <strong id="detailEmail">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        LEAVE TYPE
+                    </span>
+
+                    <strong id="detailLeaveType">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        START DATE
+                    </span>
+
+                    <strong id="detailStartDate">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        END DATE
+                    </span>
+
+                    <strong id="detailEndDate">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TOTAL DAYS
+                    </span>
+
+                    <strong id="detailDays">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-reason">
+
+                <span>
+                    REASON
+                </span>
+
+                <p id="detailReason">
+                    No reason provided.
+                </p>
+
+            </div>
+
+
+            <div class="hr-actions">
+
+                <button
+                    id="rejectBtn"
+                    class="reject-btn"
+                >
+
+                    <i class="bi bi-x-lg"></i>
+
+                    Reject
+
+                </button>
+
+
+                <button
+                    id="approveBtn"
+                    class="approve-btn"
+                >
+
+                    <i class="bi bi-check-lg"></i>
+
+                    Approve
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+`;
+
+        // =================================================
+        // FILTER REQUESTS
+        // =================================================
+
+        function getFilteredRequests() {
+
+            const searchInput =
+                document.getElementById(
+                    "employeeSearch"
+                );
+
+            const statusInput =
+                document.getElementById(
+                    "statusFilter"
+                );
+
+
+            const search =
+                searchInput
+                    ? searchInput.value
+                        .toLowerCase()
+                        .trim()
+                    : "";
+
+
+            const status =
+                statusInput
+                    ? statusInput.value
+                    : "All";
+
+
+            return allRequests.filter(
+                request => {
+
+                    const name =
+                        String(
+                            request.employeeName ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const email =
+                        String(
+                            request.employeeEmail ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const leaveType =
+                        String(
+                            request.leaveType ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const matchesSearch =
+                        name.includes(search) ||
+                        email.includes(search) ||
+                        leaveType.includes(search);
+
+
+                    const matchesStatus =
+                        status === "All" ||
+                        String(
+                            request.status ||
+                            "Pending"
+                        ).toLowerCase() ===
+                        status.toLowerCase();
+
+
+                    return (
+                        matchesSearch &&
+                        matchesStatus
+                    );
+                }
+            );
+        }
+
+
+        // =================================================
         // RENDER TABLE
-        // =========================================
+        // =================================================
 
-        function renderTable(
-            requestList
-        ) {
+        function renderTable(list) {
 
-            let tbody =
+            const tbody =
                 document.getElementById(
                     "requestsTableBody"
                 );
 
 
-            // No requests
+            const count =
+                document.getElementById(
+                    "requestCount"
+                );
 
-            if (
-                !requestList ||
-                requestList.length === 0
-            ) {
+
+            if (!tbody) {
+                return;
+            }
+
+
+            if (count) {
+
+                count.textContent =
+                    `${list.length} ${
+                        list.length === 1
+                            ? "request"
+                            : "requests"
+                    }`;
+            }
+
+
+            if (list.length === 0) {
 
                 tbody.innerHTML = `
 
                     <tr>
 
                         <td
-                            colspan="5"
-                            style="
-                                text-align:center;
-                                padding:30px;
-                                color:#7592ad;
-                            "
+                            colspan="6"
+                            class="hr-empty"
                         >
-                            No requests found.
+
+                            <div class="empty-icon">
+                                <i class="bi bi-calendar-x"></i>
+                            </div>
+
+                            <strong>
+                                No leave requests found
+                            </strong>
+
+                            <span>
+                                There are no requests
+                                matching your filters.
+                            </span>
+
                         </td>
 
                     </tr>
 
                 `;
 
-
-                document
-                    .getElementById(
-                        "requestCount"
-                    )
-                    .textContent =
-                    "0 requests";
-
-
                 return;
             }
 
 
-            // =====================================
-            // COUNT
-            // =====================================
-
-            document
-                .getElementById(
-                    "requestCount"
-                )
-                .textContent =
-                `${requestList.length} requests`;
-
-
-            // =====================================
-            // TABLE
-            // =====================================
-
             tbody.innerHTML =
-                requestList
-                    .map(
-                        function (request) {
+                list.map(request => {
 
-                            let selectedClass =
-                                request.requestKey ===
-                                selectedRequestKey
-                                    ? "selected"
-                                    : "";
+                    const selected =
+                        request.requestKey ===
+                        selectedRequestKey
+                            ? "selected"
+                            : "";
 
 
-                            let statusClass =
-                                request.status
-                                    .toLowerCase();
+                    const status =
+                        request.status ||
+                        "Pending";
 
 
-                            return `
-
-                                <tr
-                                    class="${selectedClass}"
-                                >
-
-                                    <td>
-
-                                        <strong>
-                                            ${
-                                                request.employeeName ||
-                                                "Unknown Employee"
-                                            }
-                                        </strong>
-
-                                    </td>
+                    const statusClass =
+                        status.toLowerCase();
 
 
-                                    <td>
-                                        ${request.leaveType}
-                                    </td>
-
-
-                                    <td>
-
-                                        ${
-                                            formatDateRange(
-                                                request.startDate,
-                                                request.endDate
-                                            )
-                                        }
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <span
-                                            class="status ${statusClass}"
-                                        >
-                                            ${request.status}
-                                        </span>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <button
-                                            class="view-btn"
-                                            data-request-key="${request.requestKey}"
-                                        >
-
-                                            View
-
-                                            <i
-                                                class="bi bi-arrow-right"
-                                            ></i>
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-                            `;
-
-                        }
-                    )
-                    .join("");
-
-
-            // =====================================
-            // VIEW BUTTONS
-            // =====================================
-
-            document
-                .querySelectorAll(
-                    ".view-btn"
-                )
-                .forEach(
-                    function (button) {
-
-                        button.addEventListener(
-                            "click",
-                            function () {
-
-                                let requestKey =
-                                    this.dataset
-                                        .requestKey;
-
-
-                                selectedRequestKey =
-                                    requestKey;
-
-
-                                let request =
-                                    allRequests.find(
-                                        function (
-                                            req
-                                        ) {
-
-                                            return (
-                                                req.requestKey ===
-                                                requestKey
-                                            );
-
-                                        }
-                                    );
-
-
-                                if (request) {
-
-                                    showRequestDetails(
-                                        request
-                                    );
-
-
-                                    renderTable(
-                                        getFilteredRequests()
-                                    );
-
-                                }
-
-                            }
+                    const days =
+                        calculateDays(
+                            request.startDate,
+                            request.endDate
                         );
 
-                    }
-                );
 
+                    return `
+
+                        <tr
+                            class="${selected}"
+                        >
+
+                            <!-- EMPLOYEE -->
+
+                            <td>
+
+                                <div
+                                    class="employee-cell"
+                                >
+
+                                    <div
+                                        class="employee-avatar"
+                                    >
+                                        ${getInitials(
+                                            request.employeeName
+                                        )}
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            ${escapeHtml(
+                                                request.employeeName ||
+                                                "Unknown Employee"
+                                            )}
+                                        </strong>
+
+                                        <span>
+                                            ${escapeHtml(
+                                                request.employeeEmail ||
+                                                ""
+                                            )}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- LEAVE TYPE -->
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        request.leaveType ||
+                                        "-"
+                                    )}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- DATES -->
+
+                            <td>
+
+                                <span>
+                                    ${formatDateRange(
+                                        request.startDate,
+                                        request.endDate
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <!-- DAYS -->
+
+                            <td>
+
+                                <span>
+                                    ${days}
+                                    ${
+                                        days === 1
+                                            ? " day"
+                                            : " days"
+                                    }
+                                </span>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span
+                                    class="status ${statusClass}"
+                                >
+                                    ${escapeHtml(status)}
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <button
+                                    class="view-btn"
+                                    data-key="${escapeHtml(
+                                        request.requestKey
+                                    )}"
+                                >
+
+                                    View
+
+                                    <i
+                                        class="bi bi-arrow-right"
+                                    ></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }).join("");
+
+
+            // =================================================
+            // VIEW BUTTONS
+            // =================================================
+
+            document
+                .querySelectorAll(".view-btn")
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            selectedRequestKey =
+                                this.dataset.key;
+
+
+                            const request =
+                                allRequests.find(
+                                    item =>
+                                        item.requestKey ===
+                                        selectedRequestKey
+                                );
+
+
+                            if (request) {
+
+                                showDetails(
+                                    request
+                                );
+
+
+                                renderTable(
+                                    getFilteredRequests()
+                                );
+                            }
+
+                        }
+                    );
+
+                });
         }
 
 
-        // =========================================
-        // SHOW REQUEST DETAILS
-        // =========================================
+        // =================================================
+        // SHOW DETAILS
+        // =================================================
 
-        function showRequestDetails(
-            request
-        ) {
+        function showDetails(request) {
 
-            document
-                .getElementById(
+            if (!request) {
+                return;
+            }
+
+
+            const employee =
+                document.getElementById(
                     "detailEmployee"
-                )
-                .textContent =
-                request.employeeName ||
-                "Unknown Employee";
+                );
 
+            const email =
+                document.getElementById(
+                    "detailEmail"
+                );
 
-            document
-                .getElementById(
+            const leaveType =
+                document.getElementById(
                     "detailLeaveType"
-                )
-                .textContent =
-                request.leaveType;
+                );
 
-
-            document
-                .getElementById(
+            const start =
+                document.getElementById(
                     "detailStartDate"
-                )
-                .textContent =
-                formatDate(
-                    request.startDate
                 );
 
-
-            document
-                .getElementById(
+            const end =
+                document.getElementById(
                     "detailEndDate"
-                )
-                .textContent =
-                formatDate(
-                    request.endDate
+                );
+
+            const days =
+                document.getElementById(
+                    "detailDays"
+                );
+
+            const reason =
+                document.getElementById(
+                    "detailReason"
+                );
+
+            const statusElement =
+                document.getElementById(
+                    "detailsStatus"
                 );
 
 
-            document
-                .getElementById(
-                    "detailReason"
-                )
-                .textContent =
-                request.reason;
+            if (employee) {
+
+                employee.textContent =
+                    request.employeeName ||
+                    "Unknown Employee";
+            }
 
 
-            document
-                .getElementById(
-                    "detailsStatus"
-                )
-                .textContent =
-                request.status;
+            if (email) {
+
+                email.textContent =
+                    request.employeeEmail ||
+                    "-";
+            }
 
 
-            // =====================================
-            // BUTTONS
-            // =====================================
+            if (leaveType) {
 
-            let approveBtn =
+                leaveType.textContent =
+                    request.leaveType ||
+                    "-";
+            }
+
+
+            if (start) {
+
+                start.textContent =
+                    formatDate(
+                        request.startDate
+                    );
+            }
+
+
+            if (end) {
+
+                end.textContent =
+                    formatDate(
+                        request.endDate
+                    );
+            }
+
+
+            if (days) {
+
+                const totalDays =
+                    calculateDays(
+                        request.startDate,
+                        request.endDate
+                    );
+
+                days.textContent =
+                    totalDays > 0
+                        ? `${totalDays} ${
+                            totalDays === 1
+                                ? "day"
+                                : "days"
+                        }`
+                        : "-";
+            }
+
+
+            if (reason) {
+
+                reason.textContent =
+                    request.reason ||
+                    "No reason provided.";
+            }
+
+
+            if (statusElement) {
+
+                const status =
+                    request.status ||
+                    "Pending";
+
+
+                statusElement.textContent =
+                    status;
+
+
+                statusElement.className =
+                    `status ${
+                        status.toLowerCase()
+                    }`;
+            }
+
+
+            // =================================================
+            // BUTTON STATES
+            // =================================================
+
+            const approve =
                 document.getElementById(
                     "approveBtn"
                 );
 
-
-            let rejectBtn =
+            const reject =
                 document.getElementById(
                     "rejectBtn"
                 );
 
 
-            if (
-                request.status ===
-                "Approved"
-            ) {
+            if (approve) {
 
-                approveBtn.disabled =
-                    true;
-
-                rejectBtn.disabled =
-                    false;
-
+                approve.disabled =
+                    request.status ===
+                    "Approved";
             }
 
-            else if (
-                request.status ===
-                "Rejected"
-            ) {
 
-                approveBtn.disabled =
-                    false;
+            if (reject) {
 
-                rejectBtn.disabled =
-                    true;
-
+                reject.disabled =
+                    request.status ===
+                    "Rejected";
             }
-
-            else {
-
-                approveBtn.disabled =
-                    false;
-
-                rejectBtn.disabled =
-                    false;
-
-            }
-
         }
 
 
-        // =========================================
-        // APPROVE BUTTON
-        // =========================================
-
-        document
-            .getElementById(
-                "approveBtn"
-            )
-            .addEventListener(
-                "click",
-                function () {
-
-                    updateRequestStatus(
-                        selectedRequestKey,
-                        "Approved"
-                    );
-
-                }
-            );
-
-
-        // =========================================
-        // REJECT BUTTON
-        // =========================================
-
-        document
-            .getElementById(
-                "rejectBtn"
-            )
-            .addEventListener(
-                "click",
-                function () {
-
-                    updateRequestStatus(
-                        selectedRequestKey,
-                        "Rejected"
-                    );
-
-                }
-            );
-
-
-        // =========================================
+        // =================================================
         // UPDATE REQUEST STATUS
-        // =========================================
+        // =================================================
 
         function updateRequestStatus(
-            requestKey,
             newStatus
         ) {
 
-            // Find selected request
+            if (!selectedRequestKey) {
 
-            let request =
+                alert(
+                    "Please select a leave request first."
+                );
+
+                return;
+            }
+
+
+            const request =
                 allRequests.find(
-                    function (req) {
-
-                        return (
-                            req.requestKey ===
-                            requestKey
-                        );
-
-                    }
+                    item =>
+                        item.requestKey ===
+                        selectedRequestKey
                 );
 
 
             if (!request) {
 
+                alert(
+                    "Request not found."
+                );
+
                 return;
             }
 
 
-            // =====================================
-            // GET EMPLOYEE REQUESTS
-            // =====================================
+            // =================================================
+            // READ EMPLOYEE REQUESTS
+            // =================================================
 
-            let employeeRequests =
-                JSON.parse(
-                    localStorage.getItem(
-                        request.storageKey
-                    )
-                ) || [];
+            let employeeRequests = [];
 
 
-            // =====================================
-            // FIND REQUEST INSIDE STORAGE
-            // =====================================
+            try {
 
-            let requestIndex =
-                employeeRequests.findIndex(
-                    function (req) {
+                employeeRequests =
+                    JSON.parse(
+                        localStorage.getItem(
+                            request.storageKey
+                        )
+                    ) || [];
 
-                        return (
-                            String(req.id) ===
-                            String(request.id)
-                        );
+            } catch (error) {
 
-                    }
+                console.error(
+                    "Error reading employee requests:",
+                    error
                 );
+
+                employeeRequests = [];
+            }
 
 
             if (
-                requestIndex === -1
+                !Array.isArray(
+                    employeeRequests
+                )
             ) {
+
+                employeeRequests = [];
+            }
+
+
+            // =================================================
+            // FIND REQUEST
+            // =================================================
+
+            const index =
+                employeeRequests.findIndex(
+                    item =>
+                        String(item.id) ===
+                        String(request.id)
+                );
+
+
+            if (index === -1) {
+
+                alert(
+                    "Original request was not found."
+                );
 
                 return;
             }
 
 
-            // =====================================
+            // =================================================
             // UPDATE STATUS
-            // =====================================
+            // =================================================
 
-            employeeRequests[
-                requestIndex
-            ].status =
+            employeeRequests[index].status =
                 newStatus;
 
 
-            // =====================================
-            // SAVE TO LOCAL STORAGE
-            // =====================================
+            // =================================================
+            // SAVE BACK TO EMPLOYEE STORAGE
+            // =================================================
 
             localStorage.setItem(
-
                 request.storageKey,
-
                 JSON.stringify(
                     employeeRequests
                 )
-
             );
 
 
-            // =====================================
-            // UPDATE CURRENT REQUEST
-            // =====================================
+            // =================================================
+            // UPDATE CURRENT ARRAY
+            // =================================================
 
             request.status =
                 newStatus;
 
 
-            // =====================================
-            // SHOW DETAILS
-            // =====================================
+            // =================================================
+            // REFRESH EVERYTHING
+            // =================================================
 
-            showRequestDetails(
+            showDetails(
                 request
             );
 
 
-            // =====================================
-            // REFRESH TABLE
-            // =====================================
-
             renderTable(
                 getFilteredRequests()
             );
-
         }
 
 
-        // =========================================
-        // GET FILTERED REQUESTS
-        // =========================================
+        // =================================================
+        // APPROVE BUTTON
+        // =================================================
 
-        function getFilteredRequests() {
-
-            let search =
-                document
-                    .getElementById(
-                        "employeeSearch"
-                    )
-                    .value
-                    .toLowerCase()
-                    .trim();
+        const approveBtn =
+            document.getElementById(
+                "approveBtn"
+            );
 
 
-            let status =
-                document
-                    .getElementById(
-                        "statusFilter"
-                    )
-                    .value;
+        if (approveBtn) {
 
+            approveBtn.addEventListener(
+                "click",
+                function () {
 
-            return allRequests.filter(
-                function (request) {
-
-                    let employeeName =
-                        (
-                            request.employeeName ||
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    let matchesName =
-                        employeeName.includes(
-                            search
-                        );
-
-
-                    let matchesStatus =
-                        status === "All" ||
-                        request.status ===
-                        status;
-
-
-                    return (
-                        matchesName &&
-                        matchesStatus
+                    updateRequestStatus(
+                        "Approved"
                     );
 
                 }
             );
-
         }
 
 
-        // =========================================
-        // SEARCH
-        // =========================================
+        // =================================================
+        // REJECT BUTTON
+        // =================================================
 
-        document
-            .getElementById(
+        const rejectBtn =
+            document.getElementById(
+                "rejectBtn"
+            );
+
+
+        if (rejectBtn) {
+
+            rejectBtn.addEventListener(
+                "click",
+                function () {
+
+                    updateRequestStatus(
+                        "Rejected"
+                    );
+
+                }
+            );
+        }
+
+
+        // =================================================
+        // SEARCH
+        // =================================================
+
+        const search =
+            document.getElementById(
                 "employeeSearch"
-            )
-            .addEventListener(
+            );
+
+
+        if (search) {
+
+            search.addEventListener(
                 "input",
                 function () {
 
-                    let filtered =
+                    const filtered =
                         getFilteredRequests();
 
 
@@ -1733,21 +2312,26 @@ function displayLeave() {
 
                 }
             );
+        }
 
 
-        // =========================================
+        // =================================================
         // STATUS FILTER
-        // =========================================
+        // =================================================
 
-        document
-            .getElementById(
+        const statusFilter =
+            document.getElementById(
                 "statusFilter"
-            )
-            .addEventListener(
+            );
+
+
+        if (statusFilter) {
+
+            statusFilter.addEventListener(
                 "change",
                 function () {
 
-                    let filtered =
+                    const filtered =
                         getFilteredRequests();
 
 
@@ -1757,132 +2341,25 @@ function displayLeave() {
 
                 }
             );
-
-
-        // =========================================
-        // FORMAT DATE
-        // =========================================
-
-        function formatDate(
-            dateString
-        ) {
-
-            let date =
-                new Date(
-                    dateString +
-                    "T00:00:00"
-                );
-
-
-            return date.toLocaleDateString(
-                "en-US",
-                {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric"
-                }
-            );
-
         }
 
 
-        // =========================================
-        // FORMAT DATE RANGE
-        // =========================================
-
-        function formatDateRange(
-            startDate,
-            endDate
-        ) {
-
-            let start =
-                new Date(
-                    startDate +
-                    "T00:00:00"
-                );
-
-
-            let end =
-                new Date(
-                    endDate +
-                    "T00:00:00"
-                );
-
-
-            // Same date
-
-            if (
-                startDate ===
-                endDate
-            ) {
-
-                return formatDate(
-                    startDate
-                );
-
-            }
-
-
-            // Same year
-
-            if (
-                start.getFullYear() ===
-                end.getFullYear()
-            ) {
-
-                let startText =
-                    start.toLocaleDateString(
-                        "en-US",
-                        {
-                            month: "short",
-                            day: "2-digit"
-                        }
-                    );
-
-
-                let endText =
-                    end.toLocaleDateString(
-                        "en-US",
-                        {
-                            month: "short",
-                            day: "2-digit",
-                            year: "numeric"
-                        }
-                    );
-
-
-                return (
-                    `${startText} – ${endText}`
-                );
-
-            }
-
-
-            return (
-                `${formatDate(startDate)} – ${formatDate(endDate)}`
-            );
-
-        }
-
-
-        // =========================================
+        // =================================================
         // INITIAL TABLE
-        // =========================================
+        // =================================================
 
         renderTable(
             allRequests
         );
 
 
-        // =========================================
+        // =================================================
         // INITIAL DETAILS
-        // =========================================
+        // =================================================
 
-        if (
-            allRequests.length > 0
-        ) {
+        if (allRequests.length > 0) {
 
-            showRequestDetails(
+            showDetails(
                 allRequests[0]
             );
 
@@ -1892,7 +2369,7 @@ function displayLeave() {
 
 
     // =====================================================
-    // ===================== NO ROLE ========================
+    // NO ROLE
     // =====================================================
 
     else {
@@ -1903,7 +2380,6 @@ function displayLeave() {
 
         window.location.href =
             "login.html";
-
     }
 
 }

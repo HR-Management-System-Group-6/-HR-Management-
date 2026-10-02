@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HR Management - About</title>
+    <title>HR Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         rel="stylesheet"
@@ -14,25 +17,15 @@
     <link rel="stylesheet" href="/eyadWork/css/dashBoard.css">
     <link rel="stylesheet" href="/eyadWork/css/leaveRequest.css">
     <link rel="stylesheet" href="/eyadWork/css/leaveView.css">
-    <link rel="stylesheet" href="/eyadWork//css/taskEmployee.css">
+    <link rel="stylesheet" href="/eyadWork/css/taskEmployee.css">
     <link rel="stylesheet" href="/eyadWork/css/taskHr.css">
     <link rel="stylesheet" href="/eyadWork/css/addEmployee.css">
-
     <link rel="stylesheet" href="/lujain/css/hrEmployees.css">
-
-     <link rel="stylesheet" href="/Haya_Work/css/profile.css">
-
-
-     <link rel="stylesheet" href="/Haya_Work/css/profile.css">
-
     <link rel="stylesheet" href="/eyadWork/css/viewEmployee.css">
     <link rel="stylesheet" href="/eyadWork/css/viewEmployeeDetail.css">
-
-    <link rel="stylesheet" href="/eyadWork/css/viewEmployee.css">
-    <link rel="stylesheet" href="/eyadWork/css/viewEmployeeDetail.css">
-    <link rel="stylesheet" href="/Haya_Work/css/profile.css"/>
-
-
+    <link rel="stylesheet" href="/Haya_Work/css/profile.css">
+    <link rel="stylesheet" href="/sara-work/css/feedback.css">
+    <link rel="stylesheet" href="/eyadWork/css/meeting.css">
 </head>
 
 <body>
@@ -43,10 +36,17 @@
     <aside class="sidebar">
 
         <div class="logo-section">
-            <div class="logo">HR</div>
+            <div class="logo">            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 50 L18 28 L28 38 L40 22 L52 38 L62 28 L62 50 Z" 
+                  fill="none" stroke="#c9a961" stroke-width="3" stroke-linejoin="round"/>
+            <rect x="18" y="50" width="44" height="6" fill="#c9a961"/>
+            <circle cx="18" cy="26" r="3" fill="#c9a961"/>
+            <circle cx="40" cy="20" r="3" fill="#c9a961"/>
+            <circle cx="62" cy="26" r="3" fill="#c9a961"/>
+        </svg></div>
 
             <div>
-                <h2>HR Management</h2>
+                <h2>Crown Financial</h2>
                 <span>SYSTEM</span>
             </div>
         </div>
@@ -55,24 +55,13 @@
 
         <nav class="navigation">
 
-            <a href="#" class="nav-item">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-
             <a href="#" class="nav-item" onclick="displayProfile()">
-                <i class="bi bi-calendar3"></i>
+                <i class="bi bi-person-circle"></i>
                 <span>Profile</span>
             </a>
 
-
-            <a href="#" class="nav-item" onclick="displayEmployees()">
-                <i class="bi bi-people"></i>
-                <span>Employees</span>
-            </a>
-
             <a href="#" class="nav-item" onclick="displayTask()">
-                <i class="bi bi-clipboard"></i>
+                <i class="bi bi-clipboard-check"></i>
                 <span>My Tasks</span>
             </a>
 
@@ -81,31 +70,25 @@
                 <span>Leave Requests</span>
             </a>
 
-            <a href="#" class="nav-item">
-                <i class="bi bi-file-earmark-text"></i>
-                <span>Policies</span>
-            </a>
 
             <a href="#" class="nav-item" onclick="displayFeedback()">
-                <i class="bi bi-chat-square"></i>
+                <i class="bi bi-chat-square-text"></i>
                 <span>Feedback</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="displayMeeting()">
                 <i class="bi bi-camera-video"></i>
                 <span>Meetings</span>
             </a>
 
-
-            <a href="#" class="nav-item" onclick="displayAddEmployee()">
-                 <i class="bi bi-person"></i>
+            <a href="#" id="addEmployeeNav" class="nav-item" onclick="displayAddEmployee()">
+                <i class="bi bi-person-plus"></i>
                 <span>Add Employee</span>
             </a>
 
-
             <a href="#" class="nav-item" onclick="displayViewEmployee()">
-                 <i class="bi bi-person"></i>
-                <span>view Employee</span>
+                <i class="bi bi-people"></i>
+                <span>View Employees</span>
             </a>
 
         </nav>
@@ -128,8 +111,6 @@
         <!-- HEADER -->
         <header class="header">
 
-
-
             <div class="user-profile">
                 <div class="user-avatar">
                     LO
@@ -139,9 +120,6 @@
                     <strong id="user">Lujain Okour</strong>
                     <span id="role">Employee</span>
                 </div>
-
-                
-
             </div>
 
         </header>
@@ -150,26 +128,33 @@
         <!-- CONTENT -->
         <section id="content">
 
-
         </section>
 
     </main>
 
 </div>
+
 <script src="/sara-work/js/feedback.js"></script>
 <script src="/eyadWork/js/leave.js"></script>
 <script src="/eyadWork/js/login.js"></script>
 <script src="/eyadWork/js/dashBoard.js"></script>
 <script src="/eyadWork/js/taskManagment.js"></script>
 <script src="/eyadWork/js/addEmployee.js"></script>
-
-<script src="/lujain/js/viewEmployee.js"></script>
-
-<script src="/Haya_Work/js/Profile.js"></script>
-
 <script src="/eyadWork/js/viewEmployee.js"></script>
 <script src="/Haya_Work/js/Profile.js"></script>
+<script src="/eyadWork/js/meeting.js"></script>
 
+<!-- Highlight the page you are on (logout is excluded) -->
+<script>
+    document.querySelectorAll(".navigation .nav-item").forEach(function (item) {
+        item.addEventListener("click", function (e) {
+            e.preventDefault();
+            document.querySelectorAll(".navigation .nav-item")
+                .forEach(function (i) { i.classList.remove("active"); });
+            item.classList.add("active");
+        });
+    });
+</script>
 
 </body>
 </html>

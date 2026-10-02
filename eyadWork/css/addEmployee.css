@@ -1,261 +1,432 @@
-/* =========================
-   CONTENT / SECTION
-========================= */
+/* =========================================================
+   ADD EMPLOYEE - MODERN HR DESIGN
+========================================================= */
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --navy: #102a43;
+    --text: #243b53;
+    --muted: #6b8299;
+    --light-text: #94a9bd;
+
+    --bg: #f5f8fc;
+    --white: #ffffff;
+
+    --border: #dbe5ef;
+    --border-light: #e9eff5;
+
+    --success: #10b981;
+    --success-light: #ecfdf5;
+
+    --shadow-sm: 0 2px 8px rgba(16, 42, 67, 0.05);
+    --shadow-md: 0 10px 30px rgba(16, 42, 67, 0.08);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
 .content {
-    padding: 24px 20px;
-    background: #f3f7fb;
     min-height: calc(100vh - 57px);
+    padding: 34px 42px 50px;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(37, 99, 235, 0.04),
+            transparent 32%
+        ),
+        var(--bg);
+
+    color: var(--text);
 }
 
 
-/* =========================
+/* =========================================================
    PAGE LABEL
-========================= */
+========================================================= */
 
 .page-label {
-    color: #46749c;
-    font-size: 6px;
-    font-weight: bold;
-    margin-bottom: 9px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 10px;
+
+    color: #6c8eae;
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.page-label::before {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: var(--primary);
+
+    box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.1);
 }
 
 
-/* =========================
+/* =========================================================
    TITLE ROW
-========================= */
+========================================================= */
 
 .title-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 22px;
+
+    gap: 25px;
+    margin-bottom: 30px;
 }
 
 .title-row h1 {
-    color: #1c3858;
-    font-size: 21px;
+    margin: 0 0 7px;
+
+    color: var(--navy);
+
+    font-size: 32px;
+    font-weight: 750;
     line-height: 1.2;
-    margin-bottom: 5px;
+
+    letter-spacing: -0.7px;
 }
 
 .title-row p {
-    color: #66829d;
-    font-size: 8px;
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
-/* =========================
+/* =========================================================
    BACK BUTTON
-========================= */
+========================================================= */
 
 .back-btn {
-    height: 28px;
-    padding: 0 13px;
+    height: 42px;
 
-    background: #ffffff;
-    border: 1px solid #7fa7ce;
-    border-radius: 6px;
-
-    color: #1d3b5b;
-
-    font-size: 8px;
-    font-weight: 600;
+    padding: 0 18px;
 
     display: flex;
     align-items: center;
-    gap: 7px;
+    justify-content: center;
+    gap: 9px;
+
+    border: 1px solid #cbdceb;
+    border-radius: 9px;
+
+    background: var(--white);
+    color: #315d82;
+
+    font-size: 13px;
+    font-weight: 650;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .back-btn i {
-    font-size: 11px;
+    font-size: 15px;
 }
 
 .back-btn:hover {
-    background: #f0f7fc;
+    background: #f8fbff;
+    border-color: #9fc0df;
+    color: var(--primary);
+
+    transform: translateX(-2px);
+
+    box-shadow: var(--shadow-sm);
 }
 
 
-/* =========================
+/* =========================================================
    EMPLOYEE AREA
-========================= */
+========================================================= */
 
 .employee-area {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 16px;
+
+
+   
+
+    gap: 24px;
+
+    align-items: start;
 }
 
 
-/* =========================
+/* =========================================================
    PHOTO SECTION
-========================= */
+========================================================= */
 
 .photo-section h3 {
-    color: #1d3958;
-    font-size: 14px;
-    margin-bottom: 10px;
+    margin: 0 0 12px;
+
+    color: var(--navy);
+
+    font-size: 16px;
+    font-weight: 700;
 }
 
+
+/* =========================================================
+   PHOTO CARD
+========================================================= */
+
 .photo-card {
-    height: 225px;
+    min-height: 285px;
 
-    background: #ffffff;
-
-    border: 1px solid #e1e9f0;
-    border-radius: 9px;
+    padding: 32px 24px 24px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
-    padding: 38px 15px 15px;
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.photo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 
-/* =========================
+/* =========================================================
    AVATAR
-========================= */
+========================================================= */
 
 .avatar-placeholder {
-    width: 85px;
-    height: 85px;
+    width: 112px;
+    height: 112px;
 
-    background: #eef5fb;
-    border: 1px dashed #b7d0e6;
-
-    border-radius: 50%;
+    position: relative;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    position: relative;
+    background:
+        linear-gradient(
+            145deg,
+            #eff6ff,
+            #e3f0ff
+        );
 
-    color: #76a2c7;
+    border: 2px dashed #a9c7e5;
+    border-radius: 50%;
+
+    color: #78a5cf;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.avatar-placeholder:hover {
+    border-color: var(--primary);
+    transform: scale(1.03);
 }
 
 .avatar-placeholder > i {
-    font-size: 48px;
+    font-size: 55px;
 }
 
 
-/* Plus button */
+/* =========================================================
+   PLUS BUTTON
+========================================================= */
 
 .plus-btn {
     position: absolute;
 
     right: -4px;
-    bottom: -1px;
+    bottom: 2px;
 
-    width: 24px;
-    height: 24px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: #173b60;
-    color: #ffffff;
+    width: 34px;
+    height: 34px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 4px solid var(--white);
+    border-radius: 50%;
+
+    background: var(--primary);
+    color: var(--white);
+
     cursor: pointer;
+
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.28);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.plus-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.08);
 }
 
 .plus-btn i {
-    font-size: 13px;
+    font-size: 15px;
 }
 
 
-/* =========================
+/* =========================================================
    UPLOAD BUTTON
-========================= */
+========================================================= */
 
 .upload-btn {
-    margin-top: 22px;
+    width: 100%;
+    max-width: 190px;
+    height: 42px;
 
-    width: 165px;
-    height: 32px;
-
-    border: 1px solid #7ba5ce;
-    border-radius: 6px;
-
-    background: #ffffff;
-    color: #21405f;
-
-    font-size: 9px;
-    font-weight: 600;
+    margin-top: 24px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 9px;
+
+    border: 1px solid #b7cfe6;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #315d82;
+
+    font-size: 13px;
+    font-weight: 650;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .upload-btn i {
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .upload-btn:hover {
-    background: #f3f8fc;
+    background: var(--primary-light);
+    border-color: #8bb4dc;
+    color: var(--primary);
+
+    transform: translateY(-1px);
 }
 
 
-/* Photo hint */
+/* =========================================================
+   PHOTO HINT
+========================================================= */
 
 .photo-hint {
-    margin-top: 9px;
+    margin-top: 10px;
 
-    color: #8ca1b5;
-    font-size: 7px;
+    color: var(--light-text);
+
+    font-size: 11px;
 }
 
 
-/* =========================
+/* =========================================================
    DETAILS SECTION
-========================= */
+========================================================= */
 
 .details-section {
-    background: #ffffff;
+    min-width: 0;
 
-    border: 1px solid #e0e8ef;
-    border-radius: 9px;
+    padding: 28px 30px 25px;
 
-    padding: 17px 20px 14px;
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
 }
 
 
-/* Header */
+/* =========================================================
+   DETAILS HEADER
+========================================================= */
 
 .details-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid var(--border-light);
 }
 
 .details-header h3 {
-    color: #1d3958;
-    font-size: 14px;
     margin: 0;
+
+    color: var(--navy);
+
+    font-size: 19px;
+    font-weight: 750;
 }
 
 .details-header span {
-    font-size: 7px;
-    color: #69839c;
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    background: #f7faff;
+
+    color: #7891a8;
+
+    font-size: 11px;
 }
 
 
-/* =========================
+/* =========================================================
    FORM
-========================= */
+========================================================= */
 
 .employee-form {
     width: 100%;
@@ -263,70 +434,89 @@
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
 
-    margin-bottom: 11px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+    margin-bottom: 19px;
 }
 
 .form-group {
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
 }
 
 .form-group label {
-    font-size: 8px;
-    font-weight: 600;
+    margin-bottom: 8px;
 
-    color: #26435f;
+    color: #344f69;
 
-    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 650;
 }
 
 .form-group label span {
-    color: #477aa5;
+    color: #ef4444;
 }
 
 
-/* =========================
-   INPUTS
-========================= */
+/* =========================================================
+   INPUTS / SELECT
+========================================================= */
 
 .form-group input,
 .form-group select {
     width: 100%;
-    height: 34px;
+    height: 46px;
 
-    border: 1px solid #cbdce9;
-    border-radius: 6px;
+    box-sizing: border-box;
 
-    background: #ffffff;
-
-    padding: 0 11px;
+    padding: 0 14px;
 
     outline: none;
 
+    border: 1px solid #cfdeea;
+    border-radius: 9px;
+
+    background: #ffffff;
+
     color: #29435c;
 
-    font-size: 8px;
+    font-family: inherit;
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
-.form-group input::placeholder {
-    color: #8da4b8;
+.form-group input:hover,
+.form-group select:hover {
+    border-color: #adc6dd;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #6c9bc4;
+    border-color: var(--primary);
 
     box-shadow:
-        0 0 0 2px rgba(80, 137, 183, 0.08);
+        0 0 0 4px rgba(37, 99, 235, 0.09);
+
+    background: #fcfdff;
+}
+
+.form-group input::placeholder {
+    color: #9aafc1;
 }
 
 
-/* =========================
+/* =========================================================
    SELECT
-========================= */
+========================================================= */
 
 .select-wrapper {
     position: relative;
@@ -336,119 +526,156 @@
     appearance: none;
     -webkit-appearance: none;
 
-    padding-right: 35px;
+    padding-right: 45px;
 
-    color: #8da4b8;
+    cursor: pointer;
 }
 
 .select-wrapper i {
     position: absolute;
 
-    right: 11px;
+    right: 15px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    font-size: 9px;
+    color: #7692aa;
 
-    color: #52718e;
+    font-size: 14px;
 
     pointer-events: none;
 }
 
 
-/* =========================
-   DATE
-========================= */
+/* =========================================================
+   DATE INPUT
+========================================================= */
 
 .input-icon {
     position: relative;
 }
 
 .input-icon input {
-    padding-right: 35px;
+    padding-right: 45px;
 }
 
 .input-icon i {
     position: absolute;
 
-    right: 11px;
+    right: 14px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    font-size: 11px;
+    color: #7894ac;
 
-    color: #6d8ba5;
+    font-size: 15px;
 
     pointer-events: none;
 }
 
 
-/* =========================
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-active {
+    background: var(--success-light) !important;
+
+    border-color: #b7ead8 !important;
+
+    color: #059669 !important;
+
+    font-weight: 650;
+}
+
+
+/* =========================================================
    PASSWORD
-========================= */
+========================================================= */
 
 .password-wrapper {
     position: relative;
 }
 
 .password-wrapper input {
-    padding-right: 35px;
+    padding-right: 45px;
 }
 
 .password-wrapper i {
     position: absolute;
 
-    right: 11px;
+    right: 15px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    color: #66839d;
-    font-size: 11px;
+    color: #7893aa;
+
+    font-size: 15px;
 
     cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.password-wrapper i:hover {
+    color: var(--primary);
 }
 
 .form-group small {
-    color: #8198ad;
+    margin-top: 7px;
 
-    font-size: 6px;
+    color: #91a5b6;
 
+    font-size: 10px;
     line-height: 1.5;
-
-    margin-top: 5px;
 }
 
 
-/* =========================
+/* =========================================================
    FORM ACTIONS
-========================= */
+========================================================= */
 
 .form-actions {
-    border-top: 1px solid #e5edf3;
-
-    margin-top: 18px;
-    padding-top: 17px;
-
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 28px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border-light);
 }
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .cancel-btn,
 .create-btn {
-    height: 34px;
+    height: 44px;
 
-    border-radius: 6px;
+    padding: 0 23px;
 
-    padding: 0 22px;
+    border-radius: 9px;
 
-    font-size: 8px;
-    font-weight: 600;
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 650;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
@@ -457,34 +684,122 @@
 .cancel-btn {
     background: #ffffff;
 
-    border: 1px solid #aac2d7;
+    border: 1px solid #c8d7e4;
 
-    color: #23415e;
+    color: #47647e;
 }
 
 .cancel-btn:hover {
-    background: #f5f8fb;
+    background: #f7faff;
+
+    border-color: #a9bfd2;
+
+    transform: translateY(-1px);
 }
 
 
 /* Create */
 
 .create-btn {
-    background: #193b5d;
+    min-width: 160px;
 
-    border: 1px solid #193b5d;
+    border: 1px solid var(--primary);
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
 
     color: #ffffff;
+
+    box-shadow:
+        0 7px 16px rgba(37, 99, 235, 0.2);
 }
 
 .create-btn:hover {
-    background: #234d75;
+    background: linear-gradient(
+        135deg,
+        #1d4ed8,
+        #1e40af
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(37, 99, 235, 0.28);
+}
+
+.create-btn:active,
+.cancel-btn:active,
+.back-btn:active {
+    transform: translateY(0);
 }
 
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* =========================================================
+   INPUT VALIDATION
+========================================================= */
+
+.form-group input:invalid:not(:placeholder-shown) {
+    border-color: #f0a5a5;
+}
+
+.form-group input:valid:not(:placeholder-shown) {
+    border-color: #b8dcca;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.content::-webkit-scrollbar {
+    width: 7px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #cbd9e6;
+    border-radius: 20px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: #aebfd0;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .content {
+        padding: 28px 25px 45px;
+    }
+
+    .employee-area {
+        grid-template-columns: 210px minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .details-section {
+        padding: 25px 22px;
+    }
+
+    .form-row {
+        gap: 15px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 900px
+========================================================= */
 
 @media (max-width: 900px) {
 
@@ -492,48 +807,133 @@
         grid-template-columns: 1fr;
     }
 
+    .photo-section {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+
+        gap: 18px;
+
+        align-items: start;
+    }
+
+    .photo-section h3 {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+    }
+
     .photo-card {
-        height: 220px;
+        min-height: 220px;
+
+        grid-column: 1 / -1;
+    }
+
+    .avatar-placeholder {
+        width: 95px;
+        height: 95px;
+    }
+
+    .avatar-placeholder > i {
+        font-size: 47px;
     }
 }
 
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
 
     .content {
-        padding: 18px 12px;
+        padding: 22px 16px 35px;
+    }
+
+    .page-label {
+        font-size: 10px;
     }
 
     .title-row {
         align-items: flex-start;
-        gap: 15px;
+
+        flex-direction: column;
+
+        margin-bottom: 24px;
     }
 
     .title-row h1 {
-        font-size: 18px;
+        font-size: 27px;
+    }
+
+    .title-row p {
+        font-size: 13px;
+    }
+
+    .back-btn {
+        width: 100%;
     }
 
     .form-row {
         grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        margin-bottom: 18px;
+    }
+
+    .details-section {
+        padding: 22px 17px;
+    }
+
+    .details-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-btn,
+    .create-btn {
+        width: 100%;
     }
 }
 
 
-@media (max-width: 500px) {
+/* =========================================================
+   RESPONSIVE - SMALL MOBILE
+========================================================= */
 
-    .title-row {
-        flex-direction: column;
+@media (max-width: 450px) {
+
+    .content {
+        padding: 18px 12px 30px;
     }
 
-    .back-btn {
-        align-self: flex-start;
-    }
-
-    .employee-area {
-        grid-template-columns: 1fr;
+    .title-row h1 {
+        font-size: 24px;
     }
 
     .photo-card {
-        height: 200px;
+        min-height: 240px;
+
+        padding: 25px 15px;
+    }
+
+    .avatar-placeholder {
+        width: 90px;
+        height: 90px;
+    }
+
+    .details-section {
+        border-radius: 12px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 44px;
     }
 }

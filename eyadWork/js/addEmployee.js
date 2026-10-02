@@ -5,24 +5,17 @@ function displayAddEmployee() {
     content.innerHTML = `
         <section class="content">
 
-            <div class="page-label">
-                HR WORKSPACE / EMPLOYEES / ADD EMPLOYEE
-            </div>
+
 
             <div class="title-row">
 
                 <div>
                     <h1>Add Employee</h1>
 
-                    <p>
-                        Create an employee account. The employee logs in with these details.
-                    </p>
+
                 </div>
 
-                <button class="back-btn" type="button" onclick="displayEmployees()">
-                    <i class="bi bi-arrow-left"></i>
-                    Back to Employees
-                </button>
+
 
             </div>
 
@@ -31,35 +24,7 @@ function displayAddEmployee() {
 
             <div class="employee-area">
 
-                <!-- PROFILE PHOTO -->
-                <div class="photo-section">
 
-                    <h3>Profile photo</h3>
-
-                    <div class="photo-card">
-
-                        <div class="avatar-placeholder">
-
-                            <i class="bi bi-person"></i>
-
-                            <button class="plus-btn" type="button">
-                                <i class="bi bi-plus"></i>
-                            </button>
-
-                        </div>
-
-                        <button class="upload-btn" type="button">
-                            <i class="bi bi-upload"></i>
-                            Upload photo
-                        </button>
-
-                        <span class="photo-hint">
-                            JPG or PNG image.
-                        </span>
-
-                    </div>
-
-                </div>
 
 
                 <!-- EMPLOYEE DETAILS -->
@@ -173,20 +138,20 @@ function displayAddEmployee() {
                                             Select department
                                         </option>
 
-                                        <option value="IT">
-                                            IT
-                                        </option>
-
-                                        <option value="HR">
-                                            HR
-                                        </option>
-
                                         <option value="Finance">
                                             Finance
                                         </option>
 
-                                        <option value="Marketing">
-                                            Marketing
+                                        <option value="Accounting">
+                                            Accounting
+                                        </option>
+
+                                        <option value="Sales">
+                                            Sales
+                                        </option>
+
+                                        <option value="Internal Audit">
+                                            Internal Audit
                                         </option>
 
                                     </select>
@@ -234,7 +199,7 @@ function displayAddEmployee() {
                                 <input
                                     type="text"
                                     id="employeeStatus"
-                                    value="Active"
+                                    value="New"
                                     readonly
                                     class="status-active"
                                 >
@@ -278,13 +243,6 @@ function displayAddEmployee() {
 
                         <div class="form-actions">
 
-                            <button
-                                type="button"
-                                class="cancel-btn"
-                                id="cancelEmployee"
-                            >
-                                Cancel
-                            </button>
 
                             <button
                                 type="submit"
@@ -482,18 +440,5 @@ function displayAddEmployee() {
     });
 
 
-    // ==========================================
-    // CANCEL BUTTON
-    // ==========================================
-
-    document
-        .getElementById("cancelEmployee")
-        .addEventListener("click", function () {
-
-            form.reset();
-
-            document.getElementById("employeeStatus").value = "Active";
-
-        });
 
 }
