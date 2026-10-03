@@ -198,15 +198,9 @@ body {
 
     color: #0b2948;
 
-    background:
-        linear-gradient(
-            135deg,
-            #dff4ff,
-            #9edcff
-        );
+    background:#1b3554;
 
-    box-shadow:
-        0 8px 25px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18);
 
     font-size: 20px;
 }

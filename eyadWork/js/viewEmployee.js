@@ -81,7 +81,7 @@ function displayViewEmployee() {
 
         let currentPage = 1;
 
-        const employeesPerPage = 6;
+        const employeesPerPage = 100;
 
         let searchValue = "";
 
@@ -229,7 +229,7 @@ function displayViewEmployee() {
 
 
                     <div class="table-wrapper">
-
+                        <div class="table-scroll">
                         <table>
 
                             <thead>
@@ -266,6 +266,7 @@ function displayViewEmployee() {
                             ></tbody>
 
                         </table>
+                        </div>
 
                     </div>
 
@@ -2363,17 +2364,6 @@ function displayViewEmployee() {
                             </h3>
 
 
-                            <button
-                                type="button"
-                                class="profile-menu-btn"
-                                aria-label="Profile options"
-                            >
-
-                                <i
-                                    class="bi bi-three-dots-vertical"
-                                ></i>
-
-                            </button>
 
                         </div>
 

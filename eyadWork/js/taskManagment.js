@@ -1032,14 +1032,11 @@ function renderEmployeeTasks(
 
                 <div class="card-header">
 
-                    <span class="priority medium">
-                        TASK
+                    <span class="priority ${String(task.priority || "Medium").toLowerCase()}">
+                        ${escapeHtml(task.priority || "Medium")}
                     </span>
 
-
-                    <span
-                        class="status ${statusClass}"
-                    >
+                    <span class="status ${statusClass}">
                         ${escapeHtml(status)}
                     </span>
 
@@ -1331,6 +1328,34 @@ function displayHrPage(
 
                         </div>
 
+                <div class="form-group">
+
+                    <label for="priority">
+                        Priority
+                    </label>
+
+                    <div class="select-wrapper">
+
+                        <select id="priority" required>
+
+                            <option value="Low">
+                                Low
+                            </option>
+
+                            <option value="Medium" selected>
+                                Medium
+                            </option>
+
+                            <option value="High">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
 
                         <div class="form-group">
 
@@ -1417,9 +1442,18 @@ function displayHrPage(
                                 All tasks
                             </h2>
 
-                            <p>
-                                View details or edit an existing task.
-                            </p>
+
+
+                    <div class="task-filter">
+                        <select id="taskStatusFilter" onchange="renderHrTasks()">
+                            <option value="All">All Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In progress">In progress</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Blocked">Blocked</option>
+                        </select>
+                    </div>
 
                         </div>
 
@@ -1671,6 +1705,11 @@ function displayHrPage(
                         )
                         .value;
 
+                 const priority =
+                    document
+                        .getElementById("priority")
+                        .value;
+
 
                 if (!title) {
 
@@ -1724,7 +1763,10 @@ function displayHrPage(
                         status,
 
                     createdAt:
-                        new Date().toISOString()
+                        new Date().toISOString(),
+
+                    priority:
+                         priority,
 
                 };
 
@@ -2030,8 +2072,22 @@ function renderHrTasks() {
     }
 
 
-    const tasks =
-        getHrTasks();
+const allTasks = getHrTasks();
+
+const filter =
+    document.getElementById("taskStatusFilter");
+
+const selectedStatus =
+    filter ? filter.value : "All";
+
+const tasks =
+    selectedStatus === "All"
+        ? allTasks
+        : allTasks.filter(task =>
+            String(task.status || "Pending")
+                .toLowerCase() ===
+            selectedStatus.toLowerCase()
+        );
 
 
     if (

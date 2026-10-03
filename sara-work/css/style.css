@@ -1012,3 +1012,28 @@ footer {
     }
 }
 
+.social-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.social-icons a {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: #9ab4ce;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #ffffff;
+    background: #294f7c;
+    border-color: #294f7c;
+    transform: translateY(-4px);
+}
