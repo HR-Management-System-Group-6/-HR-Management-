@@ -38,14 +38,7 @@ fetch("../data/companypolicy.json")
                         ${data[index].description}
                     </p>
 
-                    <div class="policy-footer">
-                        <span>
-                            <i class="fa-regular fa-file-lines"></i>
-                            Company Policy
-                        </span>
 
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
 
                 </div>
             `;

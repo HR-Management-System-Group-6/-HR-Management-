@@ -24,7 +24,7 @@
     "id": 4,
     "title": "Health and Safety Policy",
     "category": "Safety",
-    "description": "All employees must follow hotel health and safety procedures and report any hazards immediately.",
+    "description": "All employees must follow company health and safety procedures and report any hazards immediately.",
     "status": "Active"
   },
   {
@@ -52,7 +52,7 @@
     "id": 8,
     "title": "Emergency Procedures Policy",
     "category": "Emergency",
-    "description": "Employees must follow hotel emergency procedures and assist guests according to their assigned responsibilities.",
+    "description": "Employees must follow company emergency procedures and assist guests according to their assigned responsibilities.",
     "status": "Active"
   }
 ]

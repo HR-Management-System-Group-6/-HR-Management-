@@ -609,6 +609,12 @@ function updateAuthButton() {
 updateAuthButton();
 
 
+function navigateToLogin()
+{
+    window.location.href = "../../eyadWork/html/login.html"
+}
+
+
 /*  PRIMARY BUTTON */
 
 let primaryButton =

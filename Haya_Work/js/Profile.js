@@ -119,7 +119,12 @@ function enableEditProfile() {
                 <h2 class="profile-name">${user.name}</h2>
                 <span class="profile-role">${user.role}</span>
                 
-                <button type="button" class="map-open-btn" style="width: 100%; margin-top: 15px;">
+                <input type="file" id="photoInput" accept="image/png, image/jpeg" hidden
+                    onchange="changeProfilePhoto(event)">
+
+                <button type="button" class="map-open-btn"
+                        style="width: 100%; margin-top: 15px;"
+                        onclick="document.getElementById('photoInput').click()">
                     Change photo
                 </button>
                 <span class="photo-hint" style="margin-top: 5px; font-size: 12px; color: #666;">JPG or PNG 1MB max</span>
@@ -176,22 +181,70 @@ function enableEditProfile() {
 function saveProfileChanges(e) {
     e.preventDefault();
 
-    // جلب البيانات القديمة للاحتفاظ بالخصائص مثل (picture أو googleId إن وجدت)
-    const currentUser = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+    // المستخدم الحالي
+    const currentUser =
+        JSON.parse(localStorage.getItem("loggedInUser")) || {};
 
+    // البيانات الجديدة
     const updatedUser = {
         ...currentUser,
-        name: document.getElementById("editName").value,
-        email: document.getElementById("editEmail").value,
-        phone: document.getElementById("editPhone").value,
-        role: document.getElementById("editRole").value,
-        department: document.getElementById("editDept").value,
-        joiningDate: document.getElementById("editDate").value
+        name: document.getElementById("editName").value.trim(),
+        email: document.getElementById("editEmail").value.trim(),
+        phone: document.getElementById("editPhone").value.trim(),
+        role: document.getElementById("editRole").value.trim(),
+        department: document.getElementById("editDept").value.trim(),
+        joiningDate: document.getElementById("editDate").value.trim()
     };
 
-    // حفظ التعديلات تحت نفس المفتاح loggedInUser
-    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+    // ==========================================
+    // 1. تحديث loggedInUser
+    // ==========================================
+    localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify(updatedUser)
+    );
+
+
+    // ==========================================
+    // 2. تحديث المستخدم داخل employees
+    // ==========================================
+    let employees =
+        JSON.parse(localStorage.getItem("employees")) || [];
+
+    // البحث عن نفس الموظف
+    const employeeIndex = employees.findIndex(employee => {
+
+        // الأفضل استخدام ID إذا كان موجود
+        if (
+            currentUser.id !== undefined &&
+            employee.id !== undefined
+        ) {
+            return String(employee.id) === String(currentUser.id);
+        }
+
+        // fallback باستخدام email
+        return employee.email === currentUser.email;
+    });
+
+
+    // إذا وجدنا الموظف
+    if (employeeIndex !== -1) {
+
+        employees[employeeIndex] = {
+            ...employees[employeeIndex],
+            ...updatedUser
+        };
+
+        localStorage.setItem(
+            "employees",
+            JSON.stringify(employees)
+        );
+    }
+
+    // عرض البيانات الجديدة
     displayProfile();
+
+    alert("Profile updated successfully!");
 }
 
 /* Helper function */
@@ -203,4 +256,29 @@ function getInitials(name) {
         .slice(0, 2)
         .join("")
         .toUpperCase();
+}
+
+function changeProfilePhoto(event) {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+        alert("Image must be less than 1MB");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+        const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+
+        user.picture = reader.result;
+
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+        displayProfile();
+    };
+
+    reader.readAsDataURL(file);
 }

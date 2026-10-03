@@ -272,12 +272,7 @@ function displayViewEmployee() {
 
                     <div class="pagination-area">
 
-                        <span
-                            class="showing"
-                            id="showingEmployees"
-                        >
-                            Showing 0 employees
-                        </span>
+
 
 
                         <div

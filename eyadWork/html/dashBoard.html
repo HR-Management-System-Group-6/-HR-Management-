@@ -106,10 +106,14 @@
 
 
     <!-- ================= MAIN ================= -->
-    <main class="main">
+<main class="main">
 
         <!-- HEADER -->
         <header class="header">
+
+            <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Toggle Navigation">
+                <i class="bi bi-list"></i>
+            </button>
 
             <div class="user-profile">
                 <div class="user-avatar">
@@ -153,6 +157,36 @@
                 .forEach(function (i) { i.classList.remove("active"); });
             item.classList.add("active");
         });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const burgerBtn = document.getElementById("burgerMenuBtn");
+        const sidebar = document.querySelector(".sidebar");
+
+        if (burgerBtn && sidebar) {
+            burgerBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle("open");
+            });
+
+            document.addEventListener("click", (e) => {
+                if (window.innerWidth <= 768) {
+                    if (!sidebar.contains(e.target) && !burgerBtn.contains(e.target)) {
+                        sidebar.classList.remove("open");
+                    }
+                }
+            });
+
+            document.querySelectorAll(".navigation .nav-item").forEach(item => {
+                item.addEventListener("click", () => {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove("open");
+                    }
+                });
+            });
+        }
     });
 </script>
 

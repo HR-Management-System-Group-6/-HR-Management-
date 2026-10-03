@@ -365,3 +365,240 @@ body {
 .policy-card:hover .policy-footer > i {
     color: #5b86b6;
 }
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* Large tablets / small laptops */
+@media (max-width: 1100px) {
+
+    .policies {
+        padding: 45px 5%;
+    }
+
+    #policies-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .page-header {
+        padding: 55px 25px 40px;
+    }
+
+    .page-header h1 {
+        font-size: 38px;
+    }
+}
+
+
+/* Tablets */
+@media (max-width: 768px) {
+
+    .page-header {
+        padding: 45px 20px 35px;
+    }
+
+    .page-header small {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .page-header p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .policies {
+        padding: 40px 25px;
+    }
+
+    .title {
+        margin-bottom: 28px;
+    }
+
+    .title h2 {
+        font-size: 26px;
+    }
+
+    .title p {
+        font-size: 14px;
+    }
+
+    #policies-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .policy-card {
+        padding: 22px;
+    }
+
+    .policy-card h3 {
+        font-size: 18px;
+    }
+
+    .policy-card p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .policy-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .page-header {
+        padding: 40px 18px 30px;
+    }
+
+    .page-header small {
+        font-size: 10px;
+        letter-spacing: 1.2px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+        margin: 8px 0;
+    }
+
+    .page-header p {
+        font-size: 13px;
+        max-width: 330px;
+        margin: 0 auto;
+    }
+
+    .policies {
+        padding: 35px 18px;
+    }
+
+    .title {
+        margin-bottom: 25px;
+    }
+
+    .title h2 {
+        font-size: 24px;
+    }
+
+    .title p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* One card per row */
+    #policies-container {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .policy-card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .policy-top {
+        margin-bottom: 16px;
+    }
+
+    .policy-id {
+        font-size: 12px;
+    }
+
+    .status {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .policy-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .policy-card h3 {
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    .category {
+        font-size: 11px;
+        padding: 5px 9px;
+        margin-bottom: 12px;
+    }
+
+    .policy-card p {
+        font-size: 13px;
+        line-height: 1.65;
+        min-height: auto;
+    }
+
+    .policy-footer {
+        margin-top: 16px;
+        padding-top: 13px;
+        font-size: 11px;
+    }
+}
+
+
+/* Small phones */
+@media (max-width: 400px) {
+
+    .page-header {
+        padding: 35px 15px 28px;
+    }
+
+    .page-header h1 {
+        font-size: 25px;
+    }
+
+    .policies {
+        padding: 30px 14px;
+    }
+
+    .title h2 {
+        font-size: 22px;
+    }
+
+    .policy-card {
+        padding: 17px;
+    }
+
+    .policy-top {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .status {
+        white-space: nowrap;
+    }
+
+    .policy-card h3 {
+        font-size: 16px;
+    }
+
+    .policy-card p {
+        font-size: 12.5px;
+    }
+}
+
+
+/* Prevent horizontal overflow */
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
