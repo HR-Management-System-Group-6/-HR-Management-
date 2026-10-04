@@ -58,3 +58,11 @@ fetch("../data/companypolicy.json")
     //     document.getElementById
 
     // })
+
+
+
+function navigateToLogin()
+{
+    window.location.href = "../../eyadWork/html/login.html"
+}
+
