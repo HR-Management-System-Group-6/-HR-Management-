@@ -3,56 +3,48 @@
     "id": 1,
     "title": "Employee Attendance Policy",
     "category": "Attendance",
-    "description": "All employees must arrive on time and follow their assigned work schedule.",
-    "status": "Active"
+    "description": "All employees must arrive on time and follow their assigned work schedule."
   },
   {
     "id": 2,
     "title": "Guest Service Policy",
     "category": "Guest Service",
-    "description": "Employees must treat all guests with respect and provide professional and friendly service.",
-    "status": "Active"
+    "description": "Employees must treat all guests with respect and provide professional and friendly service."
   },
   {
     "id": 3,
     "title": "Uniform Policy",
     "category": "Appearance",
-    "description": "Employees must wear the approved hotel uniform during working hours and maintain a professional appearance.",
-    "status": "Active"
+    "description": "Employees must wear the approved hotel uniform during working hours and maintain a professional appearance."
   },
   {
     "id": 4,
     "title": "Health and Safety Policy",
     "category": "Safety",
-    "description": "All employees must follow company health and safety procedures and report any hazards immediately.",
-    "status": "Active"
+    "description": "All employees must follow company health and safety procedures and report any hazards immediately."
   },
   {
     "id": 5,
     "title": "Leave Policy",
     "category": "Leave",
-    "description": "Employees must submit leave requests in advance and receive approval from the responsible manager.",
-    "status": "Active"
+    "description": "Employees must submit leave requests in advance and receive approval from the responsible manager."
   },
   {
     "id": 6,
     "title": "Guest Privacy Policy",
     "category": "Privacy",
-    "description": "Employees must protect guest information and must not share personal or confidential guest details.",
-    "status": "Active"
+    "description": "Employees must protect guest information and must not share personal or confidential guest details."
   },
   {
     "id": 7,
     "title": "Employee Conduct Policy",
     "category": "Conduct",
-    "description": "Employees are expected to behave professionally and respectfully toward guests, colleagues, and management.",
-    "status": "Active"
+    "description": "Employees are expected to behave professionally and respectfully toward guests, colleagues, and management."
   },
   {
     "id": 8,
     "title": "Emergency Procedures Policy",
     "category": "Emergency",
-    "description": "Employees must follow company emergency procedures and assist guests according to their assigned responsibilities.",
-    "status": "Active"
+    "description": "Employees must follow company emergency procedures and assist guests according to their assigned responsibilities."
   }
 ]

@@ -657,6 +657,42 @@ function displayLeave() {
 
                 </div>
 
+                <!-- =================================================
+     LEAVE LIMIT MODAL
+     ================================================= -->
+
+<div class="leave-limit-overlay" id="leaveLimitModal">
+
+    <div class="leave-limit-modal">
+
+        <div class="leave-limit-icon">
+            <i class="bi bi-calendar-x"></i>
+        </div>
+
+        <h2>Leave limit reached</h2>
+
+        <p>
+            You have already submitted the maximum
+            of <strong>3 leave requests</strong>.
+        </p>
+
+        <span>
+            You cannot submit another leave request.
+        </span>
+
+        <button
+            type="button"
+            id="closeLeaveLimitModal"
+            class="leave-limit-btn"
+        >
+            <i class="bi bi-check-lg"></i>
+            Got it
+        </button>
+
+    </div>
+
+</div>
+
             </section>
         `;
 
@@ -936,6 +972,61 @@ function displayLeave() {
         }
 
 
+// =================================================
+// LEAVE LIMIT MODAL
+// =================================================
+
+function showLeaveLimitModal() {
+
+    const modal =
+        document.getElementById("leaveLimitModal");
+
+    if (!modal) {
+        console.error("Leave limit modal not found!");
+        return;
+    }
+
+    modal.style.display = "flex";
+
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
+}
+
+
+function closeLeaveLimitModal() {
+
+    const modal =
+        document.getElementById("leaveLimitModal");
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("show");
+
+    setTimeout(() => {
+
+        modal.style.display = "none";
+
+    }, 200);
+}
+
+
+const closeLeaveLimitBtn =
+    document.getElementById(
+        "closeLeaveLimitModal"
+    );
+
+
+if (closeLeaveLimitBtn) {
+
+    closeLeaveLimitBtn.addEventListener(
+        "click",
+        closeLeaveLimitModal
+    );
+}
+
         // =================================================
         // SUBMIT REQUEST
         // =================================================
@@ -953,6 +1044,42 @@ function displayLeave() {
 
                     event.preventDefault();
 
+
+             // =================================================
+            // CHECK LEAVE REQUEST LIMIT
+            // =================================================
+
+
+
+                const MAX_LEAVE_REQUESTS = 3;
+
+                // Read the latest requests directly from localStorage
+                let latestRequests = [];
+
+                try {
+                    latestRequests =
+                        JSON.parse(
+                            localStorage.getItem(storageKey)
+                        ) || [];
+                } catch (error) {
+                    latestRequests = [];
+                }
+
+                console.log(
+                    "Current leave requests:",
+                    latestRequests.length
+                );
+
+                // Stop the 4th request
+                if (latestRequests.length >= MAX_LEAVE_REQUESTS) {
+
+                    showLeaveLimitModal();
+
+                    return;
+                }
+
+                // Keep the main requests array synchronized
+                requests = latestRequests;
 
                     const leaveType =
                         document.getElementById(
@@ -1273,11 +1400,15 @@ function displayLeave() {
 
 content.innerHTML = `
 
-    <section class="hr-leave-page">
+<section class="hr-leave-page">
 
-        <!-- =========================================
-             PAGE HEADER
-        ========================================== -->
+    <!-- =========================================
+         REQUESTS PAGE
+    ========================================== -->
+
+    <div id="leaveRequestsPage">
+
+        <!-- PAGE HEADER -->
 
         <div class="hr-heading">
 
@@ -1297,9 +1428,7 @@ content.innerHTML = `
         </div>
 
 
-        <!-- =========================================
-             FILTERS
-        ========================================== -->
+        <!-- FILTERS -->
 
         <div class="hr-filters">
 
@@ -1339,9 +1468,7 @@ content.innerHTML = `
         </div>
 
 
-        <!-- =========================================
-             REQUESTS TABLE
-        ========================================== -->
+        <!-- REQUEST TABLE -->
 
         <div class="hr-table-card">
 
@@ -1417,15 +1544,40 @@ content.innerHTML = `
 
         </div>
 
+    </div>
 
-        <!-- =========================================
-             REQUEST DETAILS
-        ========================================== -->
 
-        <div
-            class="hr-details"
-            id="detailsCard"
+
+    <!-- =========================================
+         DETAILS PAGE
+    ========================================== -->
+
+    <div
+        id="leaveDetailsPage"
+        class="leave-details-page"
+        style="display: none;"
+    >
+
+        <!-- BACK BUTTON -->
+
+        <button
+            type="button"
+            id="backToRequests"
+            class="back-to-requests"
         >
+
+            <i class="bi bi-arrow-left"></i>
+
+            <span>
+                Back to requests
+            </span>
+
+        </button>
+
+
+        <!-- DETAILS CARD -->
+
+        <div class="hr-details">
 
             <div class="details-heading">
 
@@ -1534,6 +1686,8 @@ content.innerHTML = `
             </div>
 
 
+            <!-- REASON -->
+
             <div class="detail-reason">
 
                 <span>
@@ -1547,11 +1701,14 @@ content.innerHTML = `
             </div>
 
 
+            <!-- ACTIONS -->
+
             <div class="hr-actions">
 
                 <button
                     id="rejectBtn"
                     class="reject-btn"
+                    type="button"
                 >
 
                     <i class="bi bi-x-lg"></i>
@@ -1564,6 +1721,7 @@ content.innerHTML = `
                 <button
                     id="approveBtn"
                     class="approve-btn"
+                    type="button"
                 >
 
                     <i class="bi bi-check-lg"></i>
@@ -1576,7 +1734,9 @@ content.innerHTML = `
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 `;
 
@@ -1888,42 +2048,84 @@ content.innerHTML = `
             // VIEW BUTTONS
             // =================================================
 
-            document
-                .querySelectorAll(".view-btn")
-                .forEach(button => {
+// =================================================
+// VIEW BUTTONS
+// =================================================
 
-                    button.addEventListener(
-                        "click",
-                        function () {
+document
+    .querySelectorAll(".view-btn")
+    .forEach(button => {
 
-                            selectedRequestKey =
-                                this.dataset.key;
+        button.addEventListener(
+            "click",
+            function () {
 
-
-                            const request =
-                                allRequests.find(
-                                    item =>
-                                        item.requestKey ===
-                                        selectedRequestKey
-                                );
+                selectedRequestKey =
+                    this.dataset.key;
 
 
-                            if (request) {
-
-                                showDetails(
-                                    request
-                                );
-
-
-                                renderTable(
-                                    getFilteredRequests()
-                                );
-                            }
-
-                        }
+                const request =
+                    allRequests.find(
+                        item =>
+                            item.requestKey ===
+                            selectedRequestKey
                     );
 
-                });
+
+                if (request) {
+
+                    // Show selected request details
+                    showDetails(request);
+
+                    // Hide requests page
+                    const requestsPage =
+                        document.getElementById(
+                            "leaveRequestsPage"
+                        );
+
+                    if (requestsPage) {
+
+                        requestsPage.style.display =
+                            "none";
+                    }
+
+
+                    // Show details page
+                    const detailsPage =
+                        document.getElementById(
+                            "leaveDetailsPage"
+                        );
+
+                    if (detailsPage) {
+
+                        detailsPage.style.display =
+                            "block";
+
+                        // Restart animation
+                        detailsPage.classList.remove(
+                            "active"
+                        );
+
+                        void detailsPage.offsetWidth;
+
+                        detailsPage.classList.add(
+                            "active"
+                        );
+                    }
+
+
+                    // Scroll to top
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+
+                }
+
+            }
+        );
+
+    });
         }
 
 
@@ -1931,171 +2133,264 @@ content.innerHTML = `
         // SHOW DETAILS
         // =================================================
 
-        function showDetails(request) {
+// =================================================
+// SHOW DETAILS
+// =================================================
 
-            if (!request) {
-                return;
-            }
+function showDetails(request) {
+
+    if (!request) {
+        return;
+    }
 
 
-            const employee =
+    const employee =
+        document.getElementById(
+            "detailEmployee"
+        );
+
+    const email =
+        document.getElementById(
+            "detailEmail"
+        );
+
+    const leaveType =
+        document.getElementById(
+            "detailLeaveType"
+        );
+
+    const start =
+        document.getElementById(
+            "detailStartDate"
+        );
+
+    const end =
+        document.getElementById(
+            "detailEndDate"
+        );
+
+    const days =
+        document.getElementById(
+            "detailDays"
+        );
+
+    const reason =
+        document.getElementById(
+            "detailReason"
+        );
+
+    const statusElement =
+        document.getElementById(
+            "detailsStatus"
+        );
+
+
+    // EMPLOYEE
+
+    if (employee) {
+
+        employee.textContent =
+            request.employeeName ||
+            "Unknown Employee";
+    }
+
+
+    // EMAIL
+
+    if (email) {
+
+        email.textContent =
+            request.employeeEmail ||
+            "-";
+    }
+
+
+    // LEAVE TYPE
+
+    if (leaveType) {
+
+        leaveType.textContent =
+            request.leaveType ||
+            "-";
+    }
+
+
+    // START DATE
+
+    if (start) {
+
+        start.textContent =
+            formatDate(
+                request.startDate
+            );
+    }
+
+
+    // END DATE
+
+    if (end) {
+
+        end.textContent =
+            formatDate(
+                request.endDate
+            );
+    }
+
+
+    // TOTAL DAYS
+
+    if (days) {
+
+        const totalDays =
+            calculateDays(
+                request.startDate,
+                request.endDate
+            );
+
+        days.textContent =
+            totalDays > 0
+                ? `${totalDays} ${
+                    totalDays === 1
+                        ? "day"
+                        : "days"
+                }`
+                : "-";
+    }
+
+
+    // REASON
+
+    if (reason) {
+
+        reason.textContent =
+            request.reason ||
+            "No reason provided.";
+    }
+
+
+    // STATUS
+
+    if (statusElement) {
+
+        const status =
+            request.status ||
+            "Pending";
+
+
+        statusElement.textContent =
+            status;
+
+
+        statusElement.className =
+            `status ${
+                status.toLowerCase()
+            }`;
+    }
+
+
+    // =================================================
+    // BUTTON STATES
+    // =================================================
+
+    const approve =
+        document.getElementById(
+            "approveBtn"
+        );
+
+    const reject =
+        document.getElementById(
+            "rejectBtn"
+        );
+
+
+    if (approve) {
+
+        approve.disabled =
+            request.status ===
+            "Approved";
+    }
+
+
+    if (reject) {
+
+        reject.disabled =
+            request.status ===
+            "Rejected";
+    }
+
+}
+
+
+// =================================================
+// BACK TO REQUESTS
+// =================================================
+
+const backToRequests =
+    document.getElementById(
+        "backToRequests"
+    );
+
+
+if (backToRequests) {
+
+    backToRequests.addEventListener(
+        "click",
+        function () {
+
+            const detailsPage =
                 document.getElementById(
-                    "detailEmployee"
+                    "leaveDetailsPage"
                 );
 
-            const email =
+            const requestsPage =
                 document.getElementById(
-                    "detailEmail"
-                );
-
-            const leaveType =
-                document.getElementById(
-                    "detailLeaveType"
-                );
-
-            const start =
-                document.getElementById(
-                    "detailStartDate"
-                );
-
-            const end =
-                document.getElementById(
-                    "detailEndDate"
-                );
-
-            const days =
-                document.getElementById(
-                    "detailDays"
-                );
-
-            const reason =
-                document.getElementById(
-                    "detailReason"
-                );
-
-            const statusElement =
-                document.getElementById(
-                    "detailsStatus"
+                    "leaveRequestsPage"
                 );
 
 
-            if (employee) {
+            // Hide details
 
-                employee.textContent =
-                    request.employeeName ||
-                    "Unknown Employee";
+            if (detailsPage) {
+
+                detailsPage.style.display =
+                    "none";
+
+                detailsPage.classList.remove(
+                    "active"
+                );
             }
 
 
-            if (email) {
+            // Show table
 
-                email.textContent =
-                    request.employeeEmail ||
-                    "-";
-            }
+            if (requestsPage) {
 
+                requestsPage.style.display =
+                    "block";
 
-            if (leaveType) {
-
-                leaveType.textContent =
-                    request.leaveType ||
-                    "-";
-            }
-
-
-            if (start) {
-
-                start.textContent =
-                    formatDate(
-                        request.startDate
-                    );
-            }
-
-
-            if (end) {
-
-                end.textContent =
-                    formatDate(
-                        request.endDate
-                    );
-            }
-
-
-            if (days) {
-
-                const totalDays =
-                    calculateDays(
-                        request.startDate,
-                        request.endDate
-                    );
-
-                days.textContent =
-                    totalDays > 0
-                        ? `${totalDays} ${
-                            totalDays === 1
-                                ? "day"
-                                : "days"
-                        }`
-                        : "-";
-            }
-
-
-            if (reason) {
-
-                reason.textContent =
-                    request.reason ||
-                    "No reason provided.";
-            }
-
-
-            if (statusElement) {
-
-                const status =
-                    request.status ||
-                    "Pending";
-
-
-                statusElement.textContent =
-                    status;
-
-
-                statusElement.className =
-                    `status ${
-                        status.toLowerCase()
-                    }`;
-            }
-
-
-            // =================================================
-            // BUTTON STATES
-            // =================================================
-
-            const approve =
-                document.getElementById(
-                    "approveBtn"
+                requestsPage.classList.remove(
+                    "page-back"
                 );
 
-            const reject =
-                document.getElementById(
-                    "rejectBtn"
+                void requestsPage.offsetWidth;
+
+                requestsPage.classList.add(
+                    "page-back"
                 );
-
-
-            if (approve) {
-
-                approve.disabled =
-                    request.status ===
-                    "Approved";
             }
 
 
-            if (reject) {
+            // Scroll top
 
-                reject.disabled =
-                    request.status ===
-                    "Rejected";
-            }
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
         }
+    );
+
+}
 
 
         // =================================================
@@ -2353,17 +2648,6 @@ content.innerHTML = `
         );
 
 
-        // =================================================
-        // INITIAL DETAILS
-        // =================================================
-
-        if (allRequests.length > 0) {
-
-            showDetails(
-                allRequests[0]
-            );
-
-        }
 
     }
 

@@ -185,6 +185,103 @@ function displayAddEmployee() {
 
                         </div>
 
+                        <!-- ROW 4 - PERSONAL INFORMATION -->
+
+<div class="form-row">
+
+    <div class="form-group">
+
+        <label>
+            Date of Birth <span>*</span>
+        </label>
+
+        <div class="input-icon">
+
+            <input
+                type="date"
+                id="employeeDateOfBirth"
+                required
+            >
+
+            <i class="bi bi-calendar3"></i>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Gender <span>*</span>
+        </label>
+
+        <div class="select-wrapper">
+
+            <select id="employeeGender" required>
+
+                <option value="">
+                    Select gender
+                </option>
+
+                <option value="Male">
+                    Male
+                </option>
+
+                <option value="Female">
+                    Female
+                </option>
+
+            </select>
+
+            <i class="bi bi-chevron-down"></i>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+                <!-- ROW 5 - ADDRESS & SALARY -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            Address <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="employeeAddress"
+                            placeholder="Enter employee address"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Salary <span>*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="employeeSalary"
+                            placeholder="Enter salary"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
 
                         <!-- ROW 4 -->
 
@@ -280,27 +377,48 @@ function displayAddEmployee() {
         const phone = document.getElementById("employeePhone").value.trim();
         const job = document.getElementById("employeeJob").value.trim();
         const department = document.getElementById("employeeDepartment").value;
-        const joiningDate = document.getElementById("employeeJoiningDate").value;
-        const status = document.getElementById("employeeStatus").value;
-        const password = document.getElementById("password").value;
+        const joiningDate =
+            document.getElementById("employeeJoiningDate").value;
+
+        const dateOfBirth =
+            document.getElementById("employeeDateOfBirth").value;
+
+        const gender =
+            document.getElementById("employeeGender").value;
+
+        const address =
+            document.getElementById("employeeAddress").value.trim();
+
+        const salary =
+            document.getElementById("employeeSalary").value;
+
+        const status =
+            document.getElementById("employeeStatus").value;
+
+        const password =
+            document.getElementById("password").value;
 
 
         // ==========================================
         // VALIDATION
         // ==========================================
 
-        if (
-            !name ||
-            !email ||
-            !phone ||
-            !job ||
-            !department ||
-            !joiningDate ||
-            !password
-        ) {
-            alert("Please fill in all required fields.");
-            return;
-        }
+            if (
+                !name ||
+                !email ||
+                !phone ||
+                !job ||
+                !department ||
+                !joiningDate ||
+                !dateOfBirth ||
+                !gender ||
+                !address ||
+                !salary ||
+                !password
+            ) {
+                alert("Please fill in all required fields.");
+                return;
+            }
 
 
         // Password validation
@@ -362,6 +480,14 @@ function displayAddEmployee() {
             department: department,
 
             joiningDate: joiningDate,
+
+            dateOfBirth: dateOfBirth,
+
+            gender: gender,
+
+            address: address,
+
+            salary: Number(salary),
 
             status: status,
 

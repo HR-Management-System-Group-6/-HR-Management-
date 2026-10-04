@@ -29,12 +29,16 @@ body {
     font-weight: 600;
 
     letter-spacing: 2px;
+
+    
 }
 
 .page-header h1 {
     font-size: 42px;
 
     margin: 10px 0;
+
+    margin-top: 50px;
 }
 
 .page-header p {
@@ -602,3 +606,635 @@ body {
     max-width: 100%;
     overflow-x: hidden;
 }
+
+
+/* =========================================================
+   NAVBAR + FOOTER
+   Crown Financial HR Management
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+:root {
+    --navy: #001022;
+    --dark-blue: #1b3554;
+    --blue: #294f7c;
+    --white: #ffffff;
+    --border: #d9e4ee;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 28px;
+    right: 28px;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 20px;
+    min-height: 75px;
+
+    background: white;
+    border-radius: 14px;
+
+    color: var(--dark-blue);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Navbar when scrolling */
+
+.navbar.scrolled {
+    box-shadow: 0 10px 30px rgba(0, 16, 34, 0.12);
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--dark-blue);
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+
+.brand-logo svg {
+    width: 30px;
+    height: 30px;
+}
+
+
+.brand-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+
+    color: var(--dark-blue);
+
+    margin-bottom: 2px;
+    line-height: 1;
+}
+
+
+.brand-text span {
+    font-size: 8px;
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    color: #55779a;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+   ========================================================= */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 32px;
+
+    margin-left: auto;
+    margin-right: 35px;
+}
+
+
+.nav-links a {
+    position: relative;
+
+    font-size: 13px;
+
+    color: #3c536c;
+
+    transition: 0.2s ease;
+
+    text-decoration: none;
+}
+
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--dark-blue);
+    font-weight: 700;
+}
+
+
+/* Active link dot */
+
+.nav-links a.active::after {
+    content: "";
+
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #3974ae;
+
+    bottom: -12px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.login-btn,
+.dark-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+
+    gap: 30px;
+
+    padding: 13px 17px;
+
+    border-radius: 7px;
+
+    background: var(--dark-blue);
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+
+.login-btn:hover,
+.dark-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+
+.login-btn span,
+.dark-btn span {
+    font-size: 20px;
+
+    display: inline-block;
+
+    transition: transform 0.25s ease;
+}
+
+
+.login-btn:hover span,
+.dark-btn:hover span {
+    transform: translateX(5px);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
+.menu-btn {
+    display: none;
+
+    background: var(--dark-blue);
+    color: white;
+
+    padding: 10px 13px;
+
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu {
+    position: fixed;
+
+    top: 85px;
+    left: 12px;
+    right: 12px;
+
+    z-index: 999;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    background: white;
+
+    border-radius: 14px;
+
+    box-shadow: 0 15px 40px rgba(0, 16, 34, 0.15);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-10px);
+
+    transition: 0.3s ease;
+}
+
+
+.mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+.mobile-menu a {
+    padding: 10px;
+
+    color: var(--dark-blue);
+
+    font-size: 14px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    background: var(--navy);
+
+    color: white;
+
+    padding: 50px 56px 25px;
+}
+
+
+.footer-main {
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.5fr
+        0.7fr
+        0.9fr
+        1fr;
+
+    gap: 50px;
+}
+
+
+/* =========================================================
+   FOOTER BRAND
+   ========================================================= */
+
+.footer-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 28px;
+}
+
+
+.footer-title .brand-logo {
+    background: #1b3554;
+    color: var(--dark-blue);
+}
+
+
+.footer-title h3 {
+    font-size: 14px;
+}
+
+
+.footer-brand h2 {
+    font-size: 17px;
+
+    margin-bottom: 10px;
+}
+
+
+.footer-brand p {
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    color: #7194b7;
+}
+
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.footer-column h4 {
+    font-size: 12px;
+
+    margin-bottom: 6px;
+}
+
+
+.footer-column a,
+.footer-column span {
+    font-size: 10px;
+
+    color: #9ab4ce;
+    text-decoration: none !important;
+}
+
+
+/* =========================================================
+   SOCIAL MEDIA ICONS
+   ========================================================= */
+
+.social-icons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 8px;
+}
+
+
+.social-icons a {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 50%;
+
+    color: #9ab4ce;
+
+    font-size: 17px;
+
+    transition: all 0.3s ease;
+}
+
+
+.social-icons a:hover {
+    color: #ffffff;
+
+    background: #294f7c;
+
+    border-color: #294f7c;
+
+    transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.map-placeholder {
+    position: relative;
+
+    min-height: 130px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #1b3b61;
+}
+
+
+.map-placeholder::before,
+.map-placeholder::after {
+    content: "";
+
+    position: absolute;
+
+    background: rgba(150, 195, 230, 0.4);
+}
+
+
+.map-placeholder::before {
+    width: 100%;
+    height: 4px;
+
+    top: 48px;
+
+    box-shadow:
+        0 35px 0 rgba(150, 195, 230, 0.4);
+}
+
+
+.map-placeholder::after {
+    height: 100%;
+    width: 4px;
+
+    left: 48px;
+
+    box-shadow:
+        55px 0 0 rgba(150, 195, 230, 0.4),
+        110px 0 0 rgba(150, 195, 230, 0.4);
+}
+
+
+.map-pin {
+    position: absolute;
+
+    z-index: 3;
+
+    top: 28px;
+    left: 50%;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50% 50% 50% 0;
+
+    transform:
+        translateX(-50%)
+        rotate(-45deg);
+
+    background: #b9ddf5;
+
+    color: #294d72;
+
+    font-size: 10px;
+}
+
+
+.map-pin::after {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #294d72;
+}
+
+
+.map-placeholder > span {
+    position: absolute;
+
+    z-index: 4;
+
+    bottom: 12px;
+    left: 18px;
+
+    font-size: 7px;
+
+    color: white;
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.footer-bottom {
+    max-width: 1200px;
+
+    margin: 35px auto 0;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 8px;
+
+    color: #6684a3;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        left: 18px;
+        right: 18px;
+    }
+
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 30px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    /* Navbar */
+
+    .navbar {
+        left: 10px;
+        right: 10px;
+
+        padding: 10px 15px;
+
+        min-height: 62px;
+    }
+
+
+    .brand-text,
+    .nav-links,
+    .login-btn {
+        display: none;
+    }
+
+
+    .menu-btn {
+        display: block;
+    }
+
+
+    /* Footer */
+
+    footer {
+        padding: 40px 20px 20px;
+    }
+
+
+    .footer-main {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+}
+

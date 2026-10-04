@@ -659,100 +659,227 @@ textarea {
     box-shadow: 0 0 40px rgba(124, 192, 255, .6);
 }
 
-
+/* ===== User card + logout (sidebar bottom) ===== */
 /* ========================================
-   TEAM
+   SIDEBAR USER PROFILE
 ======================================== */
 
-.team-section {
-    margin-top: 36px;
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.team-section > h2 {
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -.02em;
-    margin-bottom: 18px;
-    color: var(--text);
-}
+/* User Card */
+.sidebar .user-profile {
+    position: relative;
 
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
-}
-
-.team-card {
-    min-height: 315px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    padding: 36px 22px;
-    text-align: center;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    transition: box-shadow .25s var(--ease), border-color .25s var(--ease);
+
+    gap: 12px;
+
+    width: 100%;
+    min-height: 76px;
+
+    padding: 10px 10px 10px 12px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.075),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 8px 25px rgba(0, 0, 0, 0.12);
+
+    transition:
+        background .25s var(--ease),
+        border-color .25s var(--ease),
+        transform .25s var(--ease);
 }
 
-.team-card:hover {
-    border-color: var(--line-strong);
-    box-shadow: var(--shadow-md);
+.sidebar .user-profile:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    border-color: rgba(124, 192, 255, 0.22);
+
+    transform: translateY(-1px);
 }
 
-.member-icon {
-    width: 100px;
-    height: 100px;
+
+/* ========================================
+   AVATAR
+======================================== */
+
+.sidebar .user-avatar {
+    position: relative;
+
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-soft), #cfe3fb);
+
+    background:
+        linear-gradient(
+            135deg,
+            #8bc8ff 0%,
+            #438ee8 55%,
+            #246ac1 100%
+        );
+
+    color: #ffffff;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--accent-strong);
-    margin-bottom: 26px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    letter-spacing: .02em;
+
+    border: 2px solid rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.12),
+        0 5px 16px rgba(47, 125, 225, 0.35);
+
+    flex-shrink: 0;
 }
 
-.member-icon i {
-    font-size: 56px;
+/* Online indicator */
+.sidebar .user-avatar::after {
+    content: "";
+
+    position: absolute;
+
+    right: -1px;
+    bottom: 1px;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: #28d391;
+
+    border: 2px solid #102743;
+
+    box-shadow: 0 0 0 2px rgba(40, 211, 145, 0.12);
 }
 
-.team-card h3 {
-    font-size: 17px;
+
+/* ========================================
+   USER INFORMATION
+======================================== */
+
+.sidebar .user-info {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 5px;
+
+    line-height: 1.2;
+}
+
+.sidebar .user-info strong {
+    display: block;
+
+    max-width: 125px;
+
+    color: #ffffff;
+
+    font-size: 13px;
     font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.role {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent-strong);
+.sidebar .user-info span {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 4px 11px;
+
+    border-radius: 999px;
+
+    background: rgba(124, 192, 255, 0.15);
+
+    border: 1px solid rgba(124, 192, 255, 0.10);
+
+    color: #a9d0ff;
+
+    font-size: 10.5px;
+    font-weight: 700;
+
+    text-transform: lowercase;
+
+    letter-spacing: .01em;
 }
 
-.team-card hr {
-    width: 100%;
-    border: none;
-    border-top: 1px solid var(--line);
-    margin: 20px 0 14px;
+
+/* ========================================
+   LOGOUT BUTTON
+======================================== */
+
+.sidebar .logout-btn {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    color: #8fa9c5;
+
+    font-size: 17px;
+
+    text-decoration: none;
+
+    transition:
+        background .2s var(--ease),
+        color .2s var(--ease),
+        transform .2s var(--ease);
 }
 
-.description {
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--text-soft);
+.sidebar .logout-btn:hover {
+    background: rgba(214, 69, 69, 0.16);
+
+    color: #ff9d9d;
+
+    transform: translateX(2px);
 }
 
-
-
-.burger-menu-btn {
-    display: none; 
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--text);
-    padding: 5px;
+.sidebar .logout-btn:active {
+    transform: scale(.94);
 }
 
 /* ========================================
@@ -823,5 +950,50 @@ textarea {
 
     .dashboard .header .header-greeting h1 {
         font-size: 16px;
+    }
+}
+
+
+/* Burger menu - hidden on desktop */
+.burger-menu-btn {
+    display: none;
+}
+
+/* Show burger only on smaller screens */
+@media (max-width: 768px) {
+    .burger-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+
+        border: 1px solid var(--line);
+        border-radius: 12px;
+
+        background: var(--surface);
+
+        color: var(--text);
+
+        font-size: 24px;
+
+        cursor: pointer;
+
+        box-shadow: var(--shadow-sm);
+
+        transition:
+            background .2s var(--ease),
+            color .2s var(--ease),
+            transform .2s var(--ease);
+    }
+
+    .burger-menu-btn:hover {
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+    }
+
+    .burger-menu-btn:active {
+        transform: scale(.95);
     }
 }

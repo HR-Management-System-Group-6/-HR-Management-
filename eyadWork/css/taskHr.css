@@ -396,6 +396,7 @@ select:focus {
 
 .tasks-card {
     padding: 28px;
+    margin-top: 120px;
 }
 
 .tasks-header {
@@ -1213,5 +1214,1437 @@ select:focus {
     .cancel-edit-btn,
     .save-edit-btn {
         width: 100%;
+    }
+}
+
+
+/* =========================================================
+   EMPLOYEE DROPDOWN
+========================================================= */
+/* =========================================================
+   EMPLOYEE DROPDOWN - MODERN DESIGN
+========================================================= */
+
+.employee-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+
+/* =========================
+   SELECT BUTTON
+========================= */
+
+.employee-dropdown-btn {
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8e3ec;
+    border-radius: 12px;
+
+    color: #315570;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(30, 67, 94, 0.04);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.employee-dropdown-btn:hover {
+    border-color: #9fc3db;
+
+    box-shadow:
+        0 5px 15px rgba(30, 67, 94, 0.07);
+}
+
+
+.employee-dropdown-btn.active {
+    border-color: #4385b5;
+
+    box-shadow:
+        0 0 0 4px rgba(67, 133, 181, 0.10);
+}
+
+
+.employee-dropdown-btn i {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f1f6fa;
+
+    color: #4385b5;
+
+    font-size: 13px;
+
+    transition:
+        transform 0.25s ease,
+        background 0.2s ease;
+}
+
+
+.employee-dropdown-btn.active i {
+    transform: rotate(180deg);
+
+    background: #eaf4fa;
+}
+
+
+/* =========================
+   DROPDOWN MENU
+========================= */
+
+.employee-dropdown-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+
+    max-height: 245px;
+
+    overflow-y: auto;
+
+    padding: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce6ee;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 18px 40px rgba(23, 53, 79, 0.14),
+        0 4px 12px rgba(23, 53, 79, 0.05);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.employee-dropdown-menu.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =========================
+   EMPLOYEE OPTION
+========================= */
+
+.employee-check {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 46px;
+
+    padding: 8px 11px;
+
+    border-radius: 10px;
+
+    color: #315570;
+
+    font-size: 13px;
+
+    font-weight: 550;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.employee-check:hover {
+    background: #f3f8fc;
+
+    color: #1d4869;
+}
+
+
+/* =========================
+   CUSTOM CHECKBOX
+========================= */
+
+.employee-check input {
+    appearance: none;
+
+    -webkit-appearance: none;
+
+    width: 19px;
+    height: 19px;
+
+    flex: 0 0 19px;
+
+    margin: 0;
+
+    border: 1.5px solid #b9cbd9;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    position: relative;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+/* HOVER */
+
+.employee-check input:hover {
+    border-color: #4385b5;
+
+    transform: scale(1.05);
+}
+
+
+/* CHECKED */
+
+.employee-check input:checked {
+    background: #4385b5;
+
+    border-color: #4385b5;
+}
+
+
+/* CHECK ICON */
+
+.employee-check input:checked::after {
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    top: 2px;
+
+    width: 5px;
+    height: 9px;
+
+    border:
+        solid #ffffff;
+
+    border-width:
+        0 2px 2px 0;
+
+    transform: rotate(45deg);
+}
+
+
+/* =========================
+   EMPLOYEE NAME
+========================= */
+
+.employee-check span {
+    flex: 1;
+
+    line-height: 1.3;
+}
+
+
+/* =========================
+   ALL EMPLOYEES
+========================= */
+
+.employee-check.all-employees {
+    margin-bottom: 5px;
+
+    color: #1e4f72;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef7fc,
+            #f6fbfe
+        );
+
+    border:
+        1px solid #e1edf5;
+
+    font-weight: 700;
+}
+
+
+.employee-check.all-employees:hover {
+    background: #e7f3fa;
+}
+
+
+/* ALL CHECKBOX */
+
+.employee-check.all-employees input:checked {
+    background: #2f80ed;
+
+    border-color: #2f80ed;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
+.employee-divider {
+    height: 1px;
+
+    margin: 7px 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #e2eaf0,
+            transparent
+        );
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.employee-dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.employee-dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.employee-dropdown-menu::-webkit-scrollbar-thumb {
+    background: #cbd9e4;
+
+    border-radius: 20px;
+}
+
+
+.employee-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #aebfce;
+}
+
+
+/* =========================
+   SELECTED TEXT
+========================= */
+
+#employeeSelectedText {
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   HELP TEXT
+========================= */
+
+.employee-help {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #8a9bab;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+input {
+    height: 48px;
+    padding: 0 15px;
+}
+
+/* =========================================================
+   FIX EMPLOYEE CHECKBOX
+========================================================= */
+
+.employee-dropdown .employee-check input {
+    width: 19px !important;
+    height: 19px !important;
+
+    min-width: 19px;
+    max-width: 19px;
+
+    min-height: 19px;
+    max-height: 19px;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    flex: 0 0 19px;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    border: 1.5px solid #b9cbd9;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    position: relative;
+
+    cursor: pointer;
+}
+
+
+/* CHECKED */
+
+.employee-dropdown .employee-check input:checked {
+    background: #4385b5;
+
+    border-color: #4385b5;
+}
+
+
+/* CHECK */
+
+.employee-dropdown .employee-check input:checked::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    top: 2px;
+
+    width: 5px;
+    height: 9px;
+
+    border: solid white;
+
+    border-width: 0 2px 2px 0;
+
+    transform: rotate(45deg);
+}
+
+
+/* EMPLOYEE ROW */
+
+.employee-dropdown .employee-check {
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 9px 11px;
+
+    gap: 11px;
+}
+
+
+/* NAME */
+
+.employee-dropdown .employee-check span {
+
+    display: block;
+
+    flex: 1;
+
+    width: auto;
+
+    color: #315570;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TASKS TABLE
+========================================================= */
+
+.tasks-table-wrapper {
+    width: 100%;
+    max-height: 520px;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    border: 1px solid #e1e8ef;
+    border-radius: 14px;
+
+    background: #ffffff;
+}
+
+
+/* Scrollbar */
+
+.tasks-table-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-track {
+    background: #f4f7fa;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-thumb {
+    background: #b8ccdc;
+    border-radius: 10px;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #8faec4;
+}
+
+
+/* TABLE */
+
+.tasks-table {
+    width: 100%;
+    min-width: 900px;
+
+    border-collapse: collapse;
+
+    table-layout: fixed;
+}
+
+
+/* HEADER */
+
+.tasks-table thead {
+    position: sticky;
+    top: 0;
+
+    z-index: 5;
+
+    background: #f5f9fc;
+}
+
+
+.tasks-table th {
+
+    padding: 16px 18px;
+
+    color: #49677f;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    border-bottom: 1px solid #dfe8ef;
+
+    white-space: nowrap;
+}
+
+
+/* COLUMN WIDTHS */
+
+.tasks-table th:nth-child(1) {
+    width: 22%;
+}
+
+.tasks-table th:nth-child(2) {
+    width: 28%;
+}
+
+.tasks-table th:nth-child(3) {
+    width: 18%;
+}
+
+.tasks-table th:nth-child(4) {
+    width: 14%;
+}
+
+.tasks-table th:nth-child(5) {
+    width: 18%;
+}
+
+
+/* BODY */
+
+.tasks-table td {
+
+    padding: 18px;
+
+    border-bottom: 1px solid #edf1f5;
+
+    color: #526d84;
+
+    font-size: 12px;
+
+    vertical-align: middle;
+}
+
+
+.tasks-table tbody tr {
+
+    background: #ffffff;
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.tasks-table tbody tr:hover {
+
+    background: #f8fbfd;
+}
+
+
+.tasks-table tbody tr:last-child td {
+
+    border-bottom: none;
+}
+
+
+/* TASK TITLE */
+
+.table-task-title {
+
+    color: #153a5c;
+
+    font-size: 13px;
+
+    font-weight: 750;
+
+    line-height: 1.4;
+}
+
+
+/* DESCRIPTION */
+
+.table-description {
+
+    color: #71859a;
+
+    line-height: 1.5;
+
+    max-width: 300px;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* EMPLOYEE */
+
+.table-employee {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #5c7890;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+.table-employee i {
+
+    color: #4385b5;
+
+    font-size: 14px;
+}
+
+
+/* STATUS */
+
+.tasks-table .status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 100px;
+
+    white-space: nowrap;
+}
+
+
+/* ACTIONS */
+
+.table-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+.table-actions button {
+
+    height: 34px;
+
+    padding: 0 13px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        all 0.2s ease;
+}
+
+
+/* EDIT */
+
+.table-edit-btn {
+
+    color: #275a7f;
+
+    background: #ffffff;
+
+    border: 1px solid #c8dce9;
+}
+
+
+.table-edit-btn:hover {
+
+    background: #edf6fb;
+
+    border-color: #9fc3db;
+
+    transform: translateY(-1px);
+}
+
+
+/* BLOCK */
+
+.table-block-btn {
+
+    color: #b14e4e;
+
+    background: #fffafa;
+
+    border: 1px solid #f0caca;
+}
+
+
+.table-block-btn:hover {
+
+    background: #fff0f0;
+
+    border-color: #e8aaaa;
+
+    transform: translateY(-1px);
+}
+
+
+/* EMPTY */
+
+.empty-task-table {
+
+    min-height: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #71859a;
+}
+
+
+.empty-task-table i {
+
+    margin-bottom: 12px;
+
+    color: #9bb1c3;
+
+    font-size: 40px;
+}
+
+
+.empty-task-table h3 {
+
+    margin: 0 0 6px;
+
+    color: #153a5c;
+
+    font-size: 16px;
+}
+
+
+.empty-task-table p {
+
+    margin: 0;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   PREMIUM MODERN OVERRIDE
+   Add-on styling for the HR Task Management page
+   ========================================================= */
+
+:root {
+    --hr-navy: #0f2f4f;
+    --hr-blue: #2676b8;
+    --hr-blue-2: #4c9bd1;
+    --hr-sky: #edf7ff;
+    --hr-text: #183b5b;
+    --hr-muted: #71879b;
+    --hr-border: #e3ebf2;
+    --hr-bg: #f5f8fc;
+}
+
+/* PAGE BACKGROUND */
+.content {
+    min-height: calc(100vh - 96px);
+    padding: 42px 42px 60px;
+    background:
+        radial-gradient(circle at 92% 0%, rgba(38,118,184,.11), transparent 28%),
+        radial-gradient(circle at 15% 15%, rgba(76,155,209,.07), transparent 24%),
+        linear-gradient(180deg, #f8fbfe 0%, #f3f7fb 100%);
+}
+
+/* TITLE */
+.title-row {
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.title-row h1 {
+    font-size: clamp(30px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1.1px;
+    color: var(--hr-navy);
+}
+
+.title-row h1::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 4px;
+    margin-top: 11px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--hr-blue), var(--hr-blue-2));
+}
+
+/* MAIN COLUMNS */
+.task-layout {
+    grid-template-columns: minmax(330px, 390px) minmax(0, 1fr);
+    gap: 26px;
+}
+
+/* CARDS */
+.card {
+    border: 1px solid rgba(220,230,239,.95);
+    border-radius: 22px;
+    background: rgba(255,255,255,.92);
+    box-shadow:
+        0 18px 45px rgba(24,59,91,.07),
+        0 3px 10px rgba(24,59,91,.035);
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 24px 55px rgba(24,59,91,.10),
+        0 5px 14px rgba(24,59,91,.04);
+}
+
+/* CREATE CARD */
+.create-card {
+    padding: 30px;
+    overflow: visible;
+}
+
+.create-card::before {
+    left: 24px;
+    right: 24px;
+    height: 4px;
+    background: linear-gradient(90deg, #0f3557, #2676b8, #66b2df);
+}
+
+.create-card::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    right: -35px;
+    top: -35px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(76,155,209,.12), transparent 68%);
+    pointer-events: none;
+}
+
+/* CARD HEADERS */
+.card-header {
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf2f6;
+}
+
+.card-header h2,
+.tasks-header h2 {
+    color: var(--hr-navy);
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.45px;
+}
+
+/* FORM */
+form {
+    margin-top: 24px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label,
+.edit-form-group label {
+    margin-bottom: 8px;
+    color: #365875;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .55px;
+}
+
+input,
+textarea,
+select {
+    border: 1px solid #d7e3ec;
+    border-radius: 13px;
+    background: #fbfdff;
+    color: #234b6b;
+    box-shadow: inset 0 1px 2px rgba(24,59,91,.02);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    border-color: #b7cedf;
+    background: #fff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #3e8bc4;
+    box-shadow: 0 0 0 4px rgba(62,139,196,.11);
+}
+
+input {
+    height: 50px;
+}
+
+textarea {
+    min-height: 118px;
+}
+
+/* EMPLOYEE SELECT */
+.employee-dropdown-btn {
+    height: 52px;
+    border: 1px solid #d5e2eb;
+    border-radius: 13px;
+    background: linear-gradient(180deg, #fff, #fbfdff);
+    box-shadow: 0 4px 14px rgba(24,59,91,.035);
+}
+
+.employee-dropdown-btn:hover {
+    border-color: #94bdd8;
+    box-shadow: 0 7px 18px rgba(24,59,91,.07);
+}
+
+.employee-dropdown-btn.active {
+    border-color: #3e8bc4;
+    box-shadow: 0 0 0 4px rgba(62,139,196,.10);
+}
+
+.employee-dropdown-menu {
+    border: 1px solid #dbe7ef;
+    border-radius: 15px;
+    box-shadow:
+        0 22px 50px rgba(18,53,82,.16),
+        0 5px 14px rgba(18,53,82,.06);
+}
+
+.employee-check {
+    border-radius: 11px;
+}
+
+.employee-check:hover {
+    background: #f0f8fd;
+}
+
+.employee-check.all-employees {
+    border-color: #dcecf7;
+    background: linear-gradient(135deg, #edf7fd, #f8fcff);
+}
+
+/* CREATE BUTTON */
+.create-btn {
+    height: 52px;
+    margin-top: 8px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #0e3557 0%, #17608f 55%, #2784bd 100%);
+    box-shadow: 0 10px 24px rgba(20,78,120,.20);
+    font-size: 13px !important;
+}
+
+.create-btn:hover {
+    background: linear-gradient(135deg, #0b2d4b, #14567f, #2277aa);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(20,78,120,.26);
+}
+
+/* ALL TASKS HEADER */
+.tasks-card {
+    padding: 28px;
+}
+
+.tasks-header {
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 22px;
+    margin-bottom: 20px;
+}
+
+.tasks-header > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+}
+
+.tasks-header h2 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.task-filter select {
+    width: 145px;
+    height: 42px;
+    padding: 0 38px 0 13px;
+    border-radius: 11px;
+    background: #f8fbfd;
+    font-size: 12px !important;
+}
+
+.task-count {
+    min-width: 82px;
+    padding: 9px 14px;
+    border: 1px solid #d7ebf8;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #eef8ff, #f7fbff);
+    color: #2774a9;
+    box-shadow: 0 5px 14px rgba(38,118,184,.06);
+}
+
+/* TABLE CONTAINER */
+.tasks-table-wrapper {
+    max-height: 505px;
+    border: 1px solid #dce7ef;
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+/* IMPORTANT: prevent the table from being unnecessarily wide */
+.tasks-table {
+    min-width: 760px;
+    table-layout: fixed;
+}
+
+.tasks-table thead {
+    background: linear-gradient(180deg, #f5f9fc, #eef5f9);
+}
+
+.tasks-table th {
+    padding: 15px 16px;
+    color: #57738a;
+    font-size: 10px;
+    letter-spacing: .8px;
+    border-bottom: 1px solid #dbe6ee;
+}
+
+.tasks-table th:nth-child(1) { width: 20%; }
+.tasks-table th:nth-child(2) { width: 29%; }
+.tasks-table th:nth-child(3) { width: 20%; }
+.tasks-table th:nth-child(4) { width: 14%; }
+.tasks-table th:nth-child(5) { width: 17%; }
+
+.tasks-table td {
+    padding: 17px 16px;
+    border-bottom: 1px solid #edf2f6;
+    font-size: 12px;
+}
+
+.tasks-table tbody tr {
+    transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.tasks-table tbody tr:hover {
+    background: #f8fbfe;
+    box-shadow: inset 3px 0 0 #4c9bd1;
+}
+
+.table-task-title {
+    color: #163b5b;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.table-description {
+    color: #71879b;
+    line-height: 1.55;
+}
+
+.table-employee {
+    color: #52738c;
+    font-weight: 600;
+}
+
+.table-employee i {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #edf6fc;
+    color: #2d7daf;
+    font-size: 13px;
+}
+
+/* STATUS */
+.tasks-table .status {
+    min-width: 96px;
+    min-height: 30px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+}
+
+/* ACTIONS */
+.table-actions {
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.table-actions button {
+    height: 35px;
+    padding: 0 11px;
+    border-radius: 9px;
+    font-size: 10px;
+}
+
+.table-edit-btn {
+    background: #f7fbfe;
+    border-color: #c7ddea;
+}
+
+.table-edit-btn:hover {
+    background: #eaf5fc;
+    border-color: #8fbdd7;
+}
+
+.table-block-btn {
+    background: #fff9f9;
+}
+
+.table-block-btn:hover {
+    background: #fff0f0;
+}
+
+/* MODALS */
+.edit-modal {
+    background: rgba(7,27,45,.60);
+    backdrop-filter: blur(10px);
+}
+
+.edit-modal-content {
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 24px;
+    box-shadow: 0 35px 90px rgba(0,0,0,.24);
+}
+
+/* SCROLLBARS */
+.tasks-table-wrapper::-webkit-scrollbar,
+.employee-dropdown-menu::-webkit-scrollbar,
+.edit-modal-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-track,
+.employee-dropdown-menu::-webkit-scrollbar-track,
+.edit-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-thumb,
+.employee-dropdown-menu::-webkit-scrollbar-thumb,
+.edit-modal-content::-webkit-scrollbar-thumb {
+    background: #b8ccdc;
+    border-radius: 20px;
+}
+
+.tasks-table-wrapper::-webkit-scrollbar-thumb:hover,
+.employee-dropdown-menu::-webkit-scrollbar-thumb:hover,
+.edit-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #8eafc5;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .content {
+        padding: 32px 28px 50px;
+    }
+
+    .task-layout {
+        grid-template-columns: 330px minmax(0, 1fr);
+    }
+
+    .tasks-table {
+        min-width: 740px;
+    }
+}
+
+@media (max-width: 850px) {
+    .content {
+        padding: 28px 20px 45px;
+    }
+
+    .task-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .tasks-header > div:first-child {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 600px) {
+    .content {
+        padding: 22px 14px 35px;
+    }
+
+    .create-card,
+    .tasks-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .tasks-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tasks-header > div:first-child {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .task-filter {
+        flex: 1;
+    }
+
+    .task-filter select {
+        width: 100%;
+    }
+
+    .task-count {
+        align-self: flex-end;
+    }
+
+    .tasks-table {
+        min-width: 720px;
+    }
+}
+
+
+/* =========================================================
+   STACKED LAYOUT
+   Create Task on top / All Tasks underneath
+   ========================================================= */
+
+.task-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 28px !important;
+    width: 100%;
+}
+
+/* Full width cards */
+.create-card,
+.tasks-card {
+    width: 100%;
+    max-width: none;
+}
+
+/* Create task section */
+.create-card {
+    padding: 32px;
+}
+
+/* Keep the form comfortable instead of stretching too much */
+.create-card form {
+    max-width: 100%;
+}
+
+/* Put form fields in a cleaner 2-column layout on large screens */
+.create-card form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: start;
+}
+
+.create-card form .form-group:nth-child(1),
+.create-card form .form-group:nth-child(2) {
+    grid-column: span 1;
+}
+
+.create-card form .form-group:nth-child(2) textarea {
+    min-height: 112px;
+}
+
+.create-card form .form-group:nth-child(4),
+.create-card form .create-btn {
+    grid-column: 1 / -1;
+}
+
+/* All tasks becomes a large dashboard section */
+.tasks-card {
+    padding: 30px;
+}
+
+.tasks-table-wrapper {
+    width: 100%;
+    max-height: 520px;
+}
+
+/* Better separation between the two sections */
+.create-card,
+.tasks-card {
+    box-shadow:
+        0 16px 40px rgba(24, 59, 91, .07),
+        0 3px 10px rgba(24, 59, 91, .035);
+}
+
+/* Tablet */
+@media (max-width: 850px) {
+
+    .task-layout {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .create-card,
+    .tasks-card {
+        width: 100%;
+    }
+
+    .create-card form {
+        grid-template-columns: 1fr;
+    }
+
+    .create-card form .form-group,
+    .create-card form .create-btn {
+        grid-column: 1;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .task-layout {
+        gap: 20px !important;
+    }
+
+    .create-card,
+    .tasks-card {
+        padding: 20px;
+    }
+
+    .create-card form {
+        display: block;
+    }
+
+    .create-card .form-group {
+        margin-bottom: 18px;
     }
 }

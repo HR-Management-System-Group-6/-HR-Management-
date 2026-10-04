@@ -1,14 +1,23 @@
 /* =========================================================
-   HR MANAGEMENT - VIEW EMPLOYEE
-   ---------------------------------------------------------
-   Supports:
-   1. HR role      -> employee table, search, filters,
-                      pagination, view, delete and PDF export.
-   2. Employee role -> modern employee profile/details page.
+   HR MANAGEMENT - VIEW EMPLOYEES
+   =========================================================
+   HR:
+   - View employees
+   - Search
+   - Department filter
+   - Status filter
+   - Block employee
+   - View employee details
+   - Pagination
+   - Export PDF
 
-   Data source:
-       localStorage.loggedInUser
-       localStorage.employees
+   Employee:
+   - View own profile
+   - Edit profile
+
+   Data:
+   localStorage.employees
+   localStorage.loggedInUser
    ========================================================= */
 
 function displayViewEmployee() {
@@ -20,59 +29,37 @@ function displayViewEmployee() {
         return;
     }
 
-
-    /* ---------------------------------------------------------
-       Read logged-in user safely
-    --------------------------------------------------------- */
-
     let loggedInUser = null;
 
     try {
-
         loggedInUser = JSON.parse(
             localStorage.getItem("loggedInUser") || "null"
         );
-
     } catch (error) {
-
-        console.error(
-            "Invalid loggedInUser data:",
-            error
-        );
+        console.error("Invalid loggedInUser data:", error);
     }
 
-
-    const role = String(
-        loggedInUser?.role || ""
-    )
+    const role = String(loggedInUser?.role || "")
         .trim()
         .toLowerCase();
 
 
     /* =========================================================
        HR PAGE
-    ========================================================= */
+       ========================================================= */
 
     if (role === "hr") {
 
         let employees = [];
 
         try {
-
             employees = JSON.parse(
                 localStorage.getItem("employees") || "[]"
             );
-
         } catch (error) {
-
-            console.error(
-                "Invalid employees data:",
-                error
-            );
-
+            console.error("Invalid employees data:", error);
             employees = [];
         }
-
 
         if (!Array.isArray(employees)) {
             employees = [];
@@ -80,39 +67,38 @@ function displayViewEmployee() {
 
 
         let currentPage = 1;
-
         const employeesPerPage = 100;
 
         let searchValue = "";
-
-        let departmentValue =
-            "All departments";
-
-        let statusValue =
-            "All statuses";
+        let departmentValue = "All departments";
+        let statusValue = "All statuses";
 
 
         /* =====================================================
-           HR HTML
-        ===================================================== */
+           HTML
+           ===================================================== */
 
         content.innerHTML = `
 
             <section class="content">
 
-
                 <div class="title-row">
 
                     <div>
+
+                        <div class="page-label">
+                            Employee Management
+                        </div>
 
                         <h1>
                             Employees
                         </h1>
 
-
+                        <p>
+                            Manage employee accounts and access.
+                        </p>
 
                     </div>
-
 
                     <div class="header-actions">
 
@@ -121,17 +107,9 @@ function displayViewEmployee() {
                             id="exportEmployeesPdfBtn"
                             type="button"
                         >
-
-                            <i
-                                class="bi bi-file-earmark-pdf"
-                            ></i>
-
+                            <i class="bi bi-file-earmark-pdf"></i>
                             Download PDF
-
                         </button>
-
-
- 
 
                     </div>
 
@@ -145,7 +123,6 @@ function displayViewEmployee() {
                         <h2>
                             All employees
                         </h2>
-
 
                         <span
                             class="employee-count"
@@ -161,16 +138,12 @@ function displayViewEmployee() {
 
                         <div class="search-box">
 
-                            <i
-                                class="bi bi-search"
-                            ></i>
-
+                            <i class="bi bi-search"></i>
 
                             <input
                                 type="text"
                                 id="employeeSearch"
                                 placeholder="Search by name or email"
-                               
                             >
 
                         </div>
@@ -178,9 +151,7 @@ function displayViewEmployee() {
 
                         <div class="select-box">
 
-                            <select
-                                id="departmentFilter"
-                            >
+                            <select id="departmentFilter">
 
                                 <option>
                                     All departments
@@ -188,21 +159,14 @@ function displayViewEmployee() {
 
                             </select>
 
-
-                            <i
-                                class="bi bi-chevron-down"
-                            ></i>
+                            <i class="bi bi-chevron-down"></i>
 
                         </div>
 
 
-                        <div
-                            class="select-box status-select"
-                        >
+                        <div class="select-box status-select">
 
-                            <select
-                                id="statusFilter"
-                            >
+                            <select id="statusFilter">
 
                                 <option>
                                     All statuses
@@ -216,12 +180,21 @@ function displayViewEmployee() {
                                     Inactive
                                 </option>
 
+                                <option>
+                                    New
+                                </option>
+
+                                <option>
+                                    Old
+                                </option>
+
+                                <option>
+                                    Blocked
+                                </option>
+
                             </select>
 
-
-                            <i
-                                class="bi bi-chevron-down"
-                            ></i>
+                            <i class="bi bi-chevron-down"></i>
 
                         </div>
 
@@ -229,43 +202,45 @@ function displayViewEmployee() {
 
 
                     <div class="table-wrapper">
+
                         <div class="table-scroll">
-                        <table>
 
-                            <thead>
+                            <table>
 
-                                <tr>
+                                <thead>
 
-                                    <th>
-                                        EMPLOYEE
-                                    </th>
+                                    <tr>
 
-                                    <th>
-                                        DEPARTMENT
-                                    </th>
+                                        <th>
+                                            EMPLOYEE
+                                        </th>
 
-                                    <th>
-                                        POSITION
-                                    </th>
+                                        <th>
+                                            DEPARTMENT
+                                        </th>
 
-                                    <th>
-                                        STATUS
-                                    </th>
+                                        <th>
+                                            POSITION
+                                        </th>
 
-                                    <th>
-                                        ACTIONS
-                                    </th>
+                                        <th>
+                                            STATUS
+                                        </th>
 
-                                </tr>
+                                        <th>
+                                            ACTIONS
+                                        </th>
 
-                            </thead>
+                                    </tr>
 
+                                </thead>
 
-                            <tbody
-                                id="employeesTableBody"
-                            ></tbody>
+                                <tbody
+                                    id="employeesTableBody"
+                                ></tbody>
 
-                        </table>
+                            </table>
+
                         </div>
 
                     </div>
@@ -273,8 +248,12 @@ function displayViewEmployee() {
 
                     <div class="pagination-area">
 
-
-
+                        <div
+                            class="showing"
+                            id="showingEmployees"
+                        >
+                            Showing employees
+                        </div>
 
                         <div
                             class="pagination"
@@ -290,7 +269,7 @@ function displayViewEmployee() {
 
             <!-- =================================================
                  EMPLOYEE DETAILS MODAL
-            ================================================== -->
+                 ================================================= -->
 
             <div
                 class="employee-modal"
@@ -306,7 +285,6 @@ function displayViewEmployee() {
                     class="employee-modal-card"
                 >
 
-
                     <div
                         class="employee-modal-header"
                     >
@@ -318,7 +296,6 @@ function displayViewEmployee() {
                             >
                                 EMPLOYEE INFORMATION
                             </span>
-
 
                             <h2
                                 id="modalEmployeeName"
@@ -333,12 +310,9 @@ function displayViewEmployee() {
                             class="modal-close"
                             id="closeEmployeeModal"
                             type="button"
-                            aria-label="Close"
                         >
 
-                            <i
-                                class="bi bi-x-lg"
-                            ></i>
+                            <i class="bi bi-x-lg"></i>
 
                         </button>
 
@@ -363,13 +337,11 @@ function displayViewEmployee() {
                                 Employee
                             </h3>
 
-
                             <p
                                 id="modalProfileJob"
                             >
                                 Job Title
                             </p>
-
 
                             <span
                                 class="modal-status"
@@ -385,25 +357,14 @@ function displayViewEmployee() {
 
                     <div class="modal-details-grid">
 
-
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-person"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-person"></i>
                                 Full name
-
                             </span>
 
-
-                            <strong
-                                id="detailName"
-                            >
+                            <strong id="detailName">
                                 -
                             </strong>
 
@@ -412,22 +373,12 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-envelope"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-envelope"></i>
                                 Email address
-
                             </span>
 
-
-                            <strong
-                                id="detailEmail"
-                            >
+                            <strong id="detailEmail">
                                 -
                             </strong>
 
@@ -436,22 +387,12 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-telephone"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-telephone"></i>
                                 Phone number
-
                             </span>
 
-
-                            <strong
-                                id="detailPhone"
-                            >
+                            <strong id="detailPhone">
                                 -
                             </strong>
 
@@ -460,22 +401,12 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-briefcase"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-briefcase"></i>
                                 Job title
-
                             </span>
 
-
-                            <strong
-                                id="detailJobTitle"
-                            >
+                            <strong id="detailJobTitle">
                                 -
                             </strong>
 
@@ -484,22 +415,12 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-calendar3"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-calendar3"></i>
                                 Joining date
-
                             </span>
 
-
-                            <strong
-                                id="detailJoiningDate"
-                            >
+                            <strong id="detailJoiningDate">
                                 -
                             </strong>
 
@@ -508,46 +429,90 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-building"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-building"></i>
                                 Department
-
                             </span>
 
-
-                            <strong
-                                id="detailDepartment"
-                            >
+                            <strong id="detailDepartment">
                                 -
                             </strong>
 
                         </div>
 
 
+                        <!-- Date of Birth -->
+
+                    <div class="modal-detail-item">
+
+                        <span class="detail-label">
+                            <i class="bi bi-calendar-heart"></i>
+                            Date of Birth
+                        </span>
+
+                        <strong id="detailDateOfBirth">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div class="modal-detail-item">
+
+                        <span class="detail-label">
+                            <i class="bi bi-gender-ambiguous"></i>
+                            Gender
+                        </span>
+
+                        <strong id="detailGender">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="modal-detail-item">
+
+                        <span class="detail-label">
+                            <i class="bi bi-geo-alt"></i>
+                            Address
+                        </span>
+
+                        <strong id="detailAddress">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Salary -->
+
+                    <div class="modal-detail-item">
+
+                        <span class="detail-label">
+                            <i class="bi bi-cash-stack"></i>
+                            Salary
+                        </span>
+
+                        <strong id="detailSalary">
+                            -
+                        </strong>
+
+                    </div>
+
+
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-people"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-people"></i>
                                 Role
-
                             </span>
 
-
-                            <strong
-                                id="detailRole"
-                            >
+                            <strong id="detailRole">
                                 -
                             </strong>
 
@@ -556,22 +521,12 @@ function displayViewEmployee() {
 
                         <div class="modal-detail-item">
 
-                            <span
-                                class="detail-label"
-                            >
-
-                                <i
-                                    class="bi bi-circle"
-                                ></i>
-
+                            <span class="detail-label">
+                                <i class="bi bi-circle"></i>
                                 Status
-
                             </span>
 
-
-                            <strong
-                                id="detailStatus"
-                            >
+                            <strong id="detailStatus">
                                 -
                             </strong>
 
@@ -580,9 +535,7 @@ function displayViewEmployee() {
                     </div>
 
 
-                    <div
-                        class="employee-modal-footer"
-                    >
+                    <div class="employee-modal-footer">
 
                         <button
                             class="modal-footer-btn"
@@ -598,48 +551,345 @@ function displayViewEmployee() {
 
             </div>
 
+            <div
+    class="employee-modal"
+    id="editEmployeeModal"
+>
+
+    <div
+        class="employee-modal-overlay"
+        id="editEmployeeOverlay"
+    ></div>
+
+
+    <div
+        class="employee-modal-card edit-modal-card"
+    >
+
+        <div
+            class="employee-modal-header"
+        >
+
+            <div>
+
+                <span class="modal-small-title">
+                    EMPLOYEE MANAGEMENT
+                </span>
+
+                <h2>
+                    Edit Employee
+                </h2>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                id="closeEditModal"
+                type="button"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+
+        <form id="editEmployeeForm">
+
+            <input
+                type="hidden"
+                id="editEmployeeId"
+            >
+
+
+            <div class="edit-form-grid">
+
+                <div class="edit-form-group">
+
+                    <label for="editName">
+                        <i class="bi bi-person"></i>
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editEmail">
+                        <i class="bi bi-envelope"></i>
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editEmail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editPhone">
+                        <i class="bi bi-telephone"></i>
+                        Phone number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editPhone"
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editJobTitle">
+                        <i class="bi bi-briefcase"></i>
+                        Job title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editJobTitle"
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editJoiningDate">
+                        <i class="bi bi-calendar3"></i>
+                        Joining date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="editJoiningDate"
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editDepartment">
+                        <i class="bi bi-building"></i>
+                        Department
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editDepartment"
+                    >
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                <label for="editDateOfBirth">
+                    <i class="bi bi-calendar-heart"></i>
+                    Date of Birth
+                </label>
+
+                <input
+                    type="date"
+                    id="editDateOfBirth"
+                >
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label for="editGender">
+                    <i class="bi bi-gender-ambiguous"></i>
+                    Gender
+                </label>
+
+                <select id="editGender">
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option value="Male">
+                        Male
+                    </option>
+
+                    <option value="Female">
+                        Female
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label for="editAddress">
+                    <i class="bi bi-geo-alt"></i>
+                    Address
+                </label>
+
+                <input
+                    type="text"
+                    id="editAddress"
+                    placeholder="Enter address"
+                >
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label for="editSalary">
+                    <i class="bi bi-cash-stack"></i>
+                    Salary
+                </label>
+
+                <input
+                    type="number"
+                    id="editSalary"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter salary"
+                >
+
+            </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editRole">
+                        <i class="bi bi-people"></i>
+                        Role
+                    </label>
+
+                    <select id="editRole">
+
+                        <option value="employee">
+                            Employee
+                        </option>
+
+                        <option value="hr">
+                            HR
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="edit-form-group">
+
+                    <label for="editStatus">
+                        <i class="bi bi-circle"></i>
+                        Status
+                    </label>
+
+                    <select id="editStatus">
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                        <option value="New">
+                            New
+                        </option>
+
+                        <option value="Blocked">
+                            Blocked
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="employee-modal-footer edit-modal-footer"
+            >
+
+                <button
+                    class="modal-footer-btn"
+                    id="cancelEditBtn"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="save-edit-btn"
+                    type="submit"
+                >
+                    <i class="bi bi-check2"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
         `;
 
 
         /* =====================================================
-           HR ELEMENTS
-        ===================================================== */
+           ELEMENTS
+           ===================================================== */
 
         const tableBody =
             document.getElementById(
                 "employeesTableBody"
             );
 
-
         const pagination =
             document.getElementById(
                 "pagination"
             );
-
 
         const employeeCount =
             document.getElementById(
                 "employeeCount"
             );
 
-
         const showingEmployees =
             document.getElementById(
                 "showingEmployees"
             );
-
 
         const searchInput =
             document.getElementById(
                 "employeeSearch"
             );
 
-
         const departmentFilter =
             document.getElementById(
                 "departmentFilter"
             );
-
 
         const statusFilter =
             document.getElementById(
@@ -648,44 +898,32 @@ function displayViewEmployee() {
 
 
         /* =====================================================
-           DEPARTMENTS
-        ===================================================== */
+           DEPARTMENT OPTIONS
+           ===================================================== */
 
         function createDepartmentOptions() {
 
             const departments = [
                 ...new Set(
-
                     employees
-                        .map(
-                            employee =>
-                                employee?.department
+                        .map(employee =>
+                            employee?.department
                         )
-
                         .filter(Boolean)
-
-                        .map(
-                            department =>
-                                String(
-                                    department
-                                ).trim()
+                        .map(department =>
+                            String(department).trim()
                         )
-
                         .filter(Boolean)
-
                 )
-            ].sort(
-                (a, b) =>
-                    a.localeCompare(b)
+            ].sort((a, b) =>
+                a.localeCompare(b)
             );
 
 
             departmentFilter.innerHTML = `
-
                 <option>
                     All departments
                 </option>
-
             `;
 
 
@@ -694,24 +932,22 @@ function displayViewEmployee() {
 
                     departmentFilter.insertAdjacentHTML(
                         "beforeend",
-
                         `
                             <option>
-                                ${escapeHTML(
-                                    department
-                                )}
+                                ${escapeHTML(department)}
                             </option>
                         `
                     );
 
                 }
             );
+
         }
 
 
         /* =====================================================
-           FILTER EMPLOYEES
-        ===================================================== */
+           FILTER
+           ===================================================== */
 
         function getFilteredEmployees() {
 
@@ -774,12 +1010,13 @@ function displayViewEmployee() {
 
                 }
             );
+
         }
 
 
         /* =====================================================
            RENDER EMPLOYEES
-        ===================================================== */
+           ===================================================== */
 
         function renderEmployees() {
 
@@ -806,8 +1043,7 @@ function displayViewEmployee() {
                 currentPage > totalPages
             ) {
 
-                currentPage =
-                    totalPages;
+                currentPage = totalPages;
 
             }
 
@@ -839,22 +1075,13 @@ function displayViewEmployee() {
 
                         <td colspan="5">
 
-                            <div style="
-                                padding:55px 20px;
-                                text-align:center;
-                                color:#8aa0b5;
-                            ">
+                            <div class="empty-employees">
 
-                                <i
-                                    class="bi bi-people"
-                                    style="
-                                        display:block;
-                                        margin-bottom:10px;
-                                        font-size:36px;
-                                    "
-                                ></i>
+                                <i class="bi bi-people"></i>
 
-                                No employees found.
+                                <span>
+                                    No employees found.
+                                </span>
 
                             </div>
 
@@ -868,152 +1095,210 @@ function displayViewEmployee() {
 
                 tableBody.innerHTML =
                     currentEmployees
-                        .map(
-                            employee => {
+                        .map(employee => {
 
-                                const status =
-                                    String(
-                                        employee?.status ||
-                                        "Inactive"
-                                    );
-
-
-                                const statusClass =
-                                    status.toLowerCase() ===
-                                        "active"
-                                        ? "active"
-                                        : "inactive";
+                            const status =
+                                String(
+                                    employee?.status ||
+                                    "Inactive"
+                                );
 
 
-                                return `
-
-                                    <tr>
-
-                                        <td>
-
-                                            <div
-                                                class="employee-info"
-                                            >
-
-                                                <div
-                                                    class="employee-avatar"
-                                                >
-
-                                                    ${escapeHTML(
-                                                        getInitials(
-                                                            employee?.name
-                                                        )
-                                                    )}
-
-                                                </div>
+                            const normalizedStatus =
+                                status.toLowerCase();
 
 
-                                                <div>
-
-                                                    <strong>
-                                                        ${escapeHTML(
-                                                            employee?.name ||
-                                                            "Unknown Employee"
-                                                        )}
-                                                    </strong>
+                            let statusClass =
+                                "inactive";
 
 
-                                                    <span>
-                                                        ${escapeHTML(
-                                                            employee?.email ||
-                                                            "-"
-                                                        )}
-                                                    </span>
+                            if (
+                                normalizedStatus ===
+                                "active"
+                            ) {
 
-                                                </div>
+                                statusClass =
+                                    "active";
 
-                                            </div>
+                            } else if (
+                                normalizedStatus ===
+                                "blocked"
+                            ) {
 
-                                        </td>
+                                statusClass =
+                                    "blocked";
 
+                            } else if (
+                                normalizedStatus ===
+                                "new"
+                            ) {
 
-                                        <td>
-                                            ${escapeHTML(
-                                                employee?.department ||
-                                                "-"
-                                            )}
-                                        </td>
-
-
-                                        <td>
-                                            ${escapeHTML(
-                                                employee?.jobTitle ||
-                                                "-"
-                                            )}
-                                        </td>
-
-
-                                        <td>
-
-                                            <span
-                                                class="status ${statusClass}"
-                                            >
-
-                                                <span
-                                                    class="status-dot"
-                                                ></span>
-
-                                                ${escapeHTML(
-                                                    status
-                                                )}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <div
-                                                class="actions"
-                                            >
-
-                                                <button
-                                                    class="view-btn"
-                                                    type="button"
-                                                    data-action="view"
-                                                    data-id="${escapeHTML(
-                                                        employee?.id ??
-                                                        ""
-                                                    )}"
-                                                >
-                                                    View
-                                                </button>
-
-
-                                                <button
-                                                    class="icon-btn delete"
-                                                    type="button"
-                                                    data-action="delete"
-                                                    data-id="${escapeHTML(
-                                                        employee?.id ??
-                                                        ""
-                                                    )}"
-                                                    title="Delete employee"
-                                                    aria-label="Delete employee"
-                                                >
-
-                                                    <i
-                                                        class="bi bi-trash3"
-                                                    ></i>
-
-                                                </button>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                `;
+                                statusClass =
+                                    "new";
 
                             }
-                        )
+
+
+                            const isBlocked =
+                                normalizedStatus ===
+                                "blocked";
+
+
+                            return `
+
+                                <tr
+                                    class="${
+                                        isBlocked
+                                            ? "blocked-row"
+                                            : ""
+                                    }"
+                                >
+
+                                    <td>
+
+                                        <div
+                                            class="employee-info"
+                                        >
+
+                                            <div
+                                                class="employee-avatar"
+                                            >
+                                                ${escapeHTML(
+                                                    getInitials(
+                                                        employee?.name
+                                                    )
+                                                )}
+                                            </div>
+
+
+                                            <div>
+
+                                                <strong>
+                                                    ${escapeHTML(
+                                                        employee?.name ||
+                                                        "Unknown Employee"
+                                                    )}
+                                                </strong>
+
+                                                <span>
+                                                    ${escapeHTML(
+                                                        employee?.email ||
+                                                        "-"
+                                                    )}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        ${escapeHTML(
+                                            employee?.department ||
+                                            "-"
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        ${escapeHTML(
+                                            employee?.jobTitle ||
+                                            "-"
+                                        )}
+                                    </td>
+
+
+                                    <td>
+
+                                        <span
+                                            class="status ${statusClass}"
+                                        >
+
+                                            <span
+                                                class="status-dot"
+                                            ></span>
+
+                                            ${escapeHTML(status)}
+
+                                        </span>
+
+                                    </td>
+
+
+                                                <td>
+
+                                                    <div class="actions">
+
+                                                        <!-- VIEW -->
+                                                        <button
+                                                            class="view-btn"
+                                                            type="button"
+                                                            data-action="view"
+                                                            data-id="${escapeHTML(
+                                                                employee?.id ?? ""
+                                                            )}"
+                                                        >
+                                                            <i class="bi bi-eye"></i>
+                                                            View
+                                                        </button>
+
+
+                                                        <!-- EDIT -->
+                                                        <button
+                                                            class="icon-btn edit"
+                                                            type="button"
+                                                            data-action="edit"
+                                                            data-id="${escapeHTML(
+                                                                employee?.id ?? ""
+                                                            )}"
+                                                            title="Edit employee"
+                                                        >
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+
+
+                                                        <!-- BLOCK / UNBLOCK -->
+                                                        ${
+                                                            isBlocked
+                                                                ? `
+                                                                    <button
+                                                                        class="icon-btn unblock"
+                                                                        type="button"
+                                                                        data-action="unblock"
+                                                                        data-id="${escapeHTML(
+                                                                            employee?.id ?? ""
+                                                                        )}"
+                                                                        title="Unblock employee"
+                                                                    >
+                                                                        <i class="bi bi-unlock"></i>
+                                                                    </button>
+                                                                `
+                                                                : `
+                                                                    <button
+                                                                        class="icon-btn block"
+                                                                        type="button"
+                                                                        data-action="block"
+                                                                        data-id="${escapeHTML(
+                                                                            employee?.id ?? ""
+                                                                        )}"
+                                                                        title="Block employee"
+                                                                    >
+                                                                        <i class="bi bi-person-slash"></i>
+                                                                    </button>
+                                                                `
+                                                        }
+
+                                                    </div>
+
+                                                </td>
+
+                                </tr>
+
+                            `;
+
+                        })
                         .join("");
 
             }
@@ -1041,22 +1326,20 @@ function displayViewEmployee() {
 
                 showingEmployees.textContent =
                     `Showing ${showingStart}–${showingEnd} of ${filteredEmployees.length} employees`;
+
             }
 
 
-            renderPagination(
-                totalPages
-            );
+            renderPagination(totalPages);
+
         }
 
 
         /* =====================================================
            PAGINATION
-        ===================================================== */
+           ===================================================== */
 
-        function renderPagination(
-            totalPages
-        ) {
+        function renderPagination(totalPages) {
 
             pagination.innerHTML = "";
 
@@ -1071,18 +1354,14 @@ function displayViewEmployee() {
                     "button"
                 );
 
-
             previousButton.className =
                 "page-btn previous";
-
 
             previousButton.type =
                 "button";
 
-
             previousButton.textContent =
                 "Previous";
-
 
             previousButton.disabled =
                 currentPage === 1;
@@ -1092,9 +1371,7 @@ function displayViewEmployee() {
                 "click",
                 function () {
 
-                    if (
-                        currentPage > 1
-                    ) {
+                    if (currentPage > 1) {
 
                         currentPage--;
 
@@ -1122,14 +1399,11 @@ function displayViewEmployee() {
                         "button"
                     );
 
-
                 pageButton.className =
                     "page-number";
 
-
                 pageButton.type =
                     "button";
-
 
                 pageButton.textContent =
                     page;
@@ -1162,6 +1436,7 @@ function displayViewEmployee() {
                 pagination.appendChild(
                     pageButton
                 );
+
             }
 
 
@@ -1170,18 +1445,14 @@ function displayViewEmployee() {
                     "button"
                 );
 
-
             nextButton.className =
                 "page-btn";
-
 
             nextButton.type =
                 "button";
 
-
             nextButton.textContent =
                 "Next";
-
 
             nextButton.disabled =
                 currentPage === totalPages;
@@ -1209,36 +1480,25 @@ function displayViewEmployee() {
             pagination.appendChild(
                 nextButton
             );
+
         }
 
 
         /* =====================================================
            VIEW EMPLOYEE
-        ===================================================== */
+           ===================================================== */
 
-        function viewEmployee(
-            employeeId
-        ) {
+        function viewEmployee(employeeId) {
 
             const employee =
                 employees.find(
                     item =>
-                        String(
-                            item?.id
-                        ) ===
-                        String(
-                            employeeId
-                        )
+                        String(item?.id) ===
+                        String(employeeId)
                 );
 
 
             if (!employee) {
-
-                console.error(
-                    "Employee not found:",
-                    employeeId
-                );
-
                 return;
             }
 
@@ -1249,36 +1509,6 @@ function displayViewEmployee() {
                 );
 
 
-            const modalName =
-                document.getElementById(
-                    "modalEmployeeName"
-                );
-
-
-            const modalProfileName =
-                document.getElementById(
-                    "modalProfileName"
-                );
-
-
-            const modalProfileJob =
-                document.getElementById(
-                    "modalProfileJob"
-                );
-
-
-            const modalAvatar =
-                document.getElementById(
-                    "modalEmployeeAvatar"
-                );
-
-
-            const modalStatus =
-                document.getElementById(
-                    "modalProfileStatus"
-                );
-
-
             const status =
                 String(
                     employee?.status ||
@@ -1286,31 +1516,73 @@ function displayViewEmployee() {
                 );
 
 
-            const statusClass =
-                status.toLowerCase() ===
-                    "active"
-                    ? "active"
-                    : "inactive";
+            const normalizedStatus =
+                status.toLowerCase();
 
 
-            modalName.textContent =
+            let statusClass =
+                "inactive";
+
+
+            if (
+                normalizedStatus ===
+                "active"
+            ) {
+
+                statusClass =
+                    "active";
+
+            } else if (
+                normalizedStatus ===
+                "blocked"
+            ) {
+
+                statusClass =
+                    "blocked";
+
+            } else if (
+                normalizedStatus ===
+                "new"
+            ) {
+
+                statusClass =
+                    "new";
+
+            }
+
+
+            document.getElementById(
+                "modalEmployeeName"
+            ).textContent =
                 employee?.name ||
                 "Employee Details";
 
 
-            modalProfileName.textContent =
+            document.getElementById(
+                "modalProfileName"
+            ).textContent =
                 employee?.name ||
                 "Employee";
 
 
-            modalProfileJob.textContent =
+            document.getElementById(
+                "modalProfileJob"
+            ).textContent =
                 employee?.jobTitle ||
                 "Employee";
 
 
-            modalAvatar.textContent =
+            document.getElementById(
+                "modalEmployeeAvatar"
+            ).textContent =
                 getInitials(
                     employee?.name
+                );
+
+
+            const modalStatus =
+                document.getElementById(
+                    "modalProfileStatus"
                 );
 
 
@@ -1325,29 +1597,25 @@ function displayViewEmployee() {
             document.getElementById(
                 "detailName"
             ).textContent =
-                employee?.name ||
-                "-";
+                employee?.name || "-";
 
 
             document.getElementById(
                 "detailEmail"
             ).textContent =
-                employee?.email ||
-                "-";
+                employee?.email || "-";
 
 
             document.getElementById(
                 "detailPhone"
             ).textContent =
-                employee?.phone ||
-                "-";
+                employee?.phone || "-";
 
 
             document.getElementById(
                 "detailJobTitle"
             ).textContent =
-                employee?.jobTitle ||
-                "-";
+                employee?.jobTitle || "-";
 
 
             document.getElementById(
@@ -1361,8 +1629,40 @@ function displayViewEmployee() {
             document.getElementById(
                 "detailDepartment"
             ).textContent =
-                employee?.department ||
-                "-";
+                employee?.department || "-";
+
+                // Date of Birth
+            document.getElementById(
+                "detailDateOfBirth"
+            ).textContent =
+                formatDate(
+                    employee?.dateOfBirth
+                );
+
+
+            // Gender
+            document.getElementById(
+                "detailGender"
+            ).textContent =
+                employee?.gender || "-";
+
+
+            // Address
+            document.getElementById(
+                "detailAddress"
+            ).textContent =
+                employee?.address || "-";
+
+
+            // Salary
+            document.getElementById(
+                "detailSalary"
+            ).textContent =
+                employee?.salary !== undefined &&
+                employee?.salary !== null &&
+                employee?.salary !== ""
+                    ? `${Number(employee.salary).toLocaleString()}`
+                    : "-";
 
 
             document.getElementById(
@@ -1373,26 +1673,32 @@ function displayViewEmployee() {
                 );
 
 
-            document.getElementById(
-                "detailStatus"
-            ).textContent =
+            const detailStatus =
+                document.getElementById(
+                    "detailStatus"
+                );
+
+
+            detailStatus.textContent =
                 status;
 
 
-            modal.classList.add(
-                "show"
-            );
+            detailStatus.className =
+                `detail-status-text ${statusClass}`;
 
+
+            modal.classList.add("show");
 
             document.body.classList.add(
                 "modal-open"
             );
+
         }
 
 
         /* =====================================================
            CLOSE MODAL
-        ===================================================== */
+           ===================================================== */
 
         function closeEmployeeModal() {
 
@@ -1415,12 +1721,513 @@ function displayViewEmployee() {
             document.body.classList.remove(
                 "modal-open"
             );
+
+        }
+
+
+        /* =====================================================
+   EDIT EMPLOYEE
+   ===================================================== */
+
+function openEditEmployee(employeeId) {
+
+    const employee =
+        employees.find(
+            item =>
+                String(item?.id) ===
+                String(employeeId)
+        );
+
+
+    if (!employee) {
+        return;
+    }
+
+
+    document.getElementById(
+        "editEmployeeId"
+    ).value =
+        employee?.id ?? "";
+
+
+    document.getElementById(
+        "editName"
+    ).value =
+        employee?.name ?? "";
+
+
+    document.getElementById(
+        "editEmail"
+    ).value =
+        employee?.email ?? "";
+
+
+    document.getElementById(
+        "editPhone"
+    ).value =
+        employee?.phone ?? "";
+
+
+    document.getElementById(
+        "editJobTitle"
+    ).value =
+        employee?.jobTitle ?? "";
+
+
+    document.getElementById(
+        "editJoiningDate"
+    ).value =
+        normalizeDateForInput(
+            employee?.joiningDate
+        );
+
+
+    document.getElementById(
+        "editDepartment"
+    ).value =
+        employee?.department ?? "";
+
+        document.getElementById(
+    "editDateOfBirth"
+).value =
+    normalizeDateForInput(
+        employee?.dateOfBirth
+    );
+
+
+document.getElementById(
+    "editGender"
+).value =
+    employee?.gender ?? "";
+
+
+document.getElementById(
+    "editAddress"
+).value =
+    employee?.address ?? "";
+
+
+document.getElementById(
+    "editSalary"
+).value =
+    employee?.salary ?? "";
+
+
+    document.getElementById(
+        "editRole"
+    ).value =
+        String(
+            employee?.role ||
+            "employee"
+        ).toLowerCase();
+
+
+    document.getElementById(
+        "editStatus"
+    ).value =
+        employee?.status ||
+        "Active";
+
+
+    const modal =
+        document.getElementById(
+            "editEmployeeModal"
+        );
+
+
+    modal.classList.add("show");
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE EDIT MODAL
+   ===================================================== */
+
+function closeEditEmployeeModal() {
+
+    const modal =
+        document.getElementById(
+            "editEmployeeModal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.remove(
+        "show"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+/* =====================================================
+   DATE FOR INPUT
+   ===================================================== */
+
+function normalizeDateForInput(value) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return String(value)
+            .slice(0, 10);
+
+    }
+
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+/* =====================================================
+   SAVE EMPLOYEE CHANGES
+   ===================================================== */
+
+function saveEmployeeChanges(event) {
+
+    event.preventDefault();
+
+
+    const employeeId =
+        document.getElementById(
+            "editEmployeeId"
+        ).value;
+
+
+    const employee =
+        employees.find(
+            item =>
+                String(item?.id) ===
+                String(employeeId)
+        );
+
+
+    if (!employee) {
+
+        alert(
+            "Employee not found."
+        );
+
+        return;
+
+    }
+
+
+    const name =
+        document.getElementById(
+            "editName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "editEmail"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "editPhone"
+        ).value.trim();
+
+
+    const jobTitle =
+        document.getElementById(
+            "editJobTitle"
+        ).value.trim();
+
+
+    const joiningDate =
+        document.getElementById(
+            "editJoiningDate"
+        ).value;
+
+
+    const department =
+        document.getElementById(
+            "editDepartment"
+        ).value.trim();
+
+        const dateOfBirth =
+    document.getElementById(
+        "editDateOfBirth"
+    ).value;
+
+
+const gender =
+    document.getElementById(
+        "editGender"
+    ).value;
+
+
+const address =
+    document.getElementById(
+        "editAddress"
+    ).value.trim();
+
+
+const salary =
+    document.getElementById(
+        "editSalary"
+    ).value;
+
+
+    const role =
+        document.getElementById(
+            "editRole"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "editStatus"
+        ).value;
+
+
+    if (
+        !name ||
+        !email
+    ) {
+
+        alert(
+            "Name and email are required."
+        );
+
+        return;
+
+    }
+
+
+    /* Update employee */
+
+    employee.name =
+        name;
+
+    employee.email =
+        email;
+
+    employee.phone =
+        phone;
+
+    employee.jobTitle =
+        jobTitle;
+
+    employee.joiningDate =
+        joiningDate;
+
+    employee.department =
+        department;
+
+employee.dateOfBirth =
+    dateOfBirth;
+
+employee.gender =
+    gender;
+
+employee.address =
+    address;
+
+employee.salary =
+    salary === ""
+        ? ""
+        : Number(salary);
+
+
+    employee.role =
+        role;
+
+    employee.status =
+        status;
+
+
+    /* Save to localStorage */
+
+    localStorage.setItem(
+        "employees",
+        JSON.stringify(
+            employees
+        )
+    );
+
+
+    /* Refresh department filter */
+
+    createDepartmentOptions();
+
+
+    /* Refresh table */
+
+    currentPage = 1;
+
+    renderEmployees();
+
+
+    /* Close modal */
+
+    closeEditEmployeeModal();
+
+
+    alert(
+        `${employee.name} has been updated successfully.`
+    );
+
+}
+
+
+        /* =====================================================
+           BLOCK EMPLOYEE
+           ===================================================== */
+
+        function blockEmployee(employeeId) {
+
+            const employee =
+                employees.find(
+                    item =>
+                        String(item?.id) ===
+                        String(employeeId)
+                );
+
+
+            if (!employee) {
+                return;
+            }
+
+
+            if (
+                String(employee.status || "")
+                    .toLowerCase() ===
+                "blocked"
+            ) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    `Are you sure you want to block ${employee.name || "this employee"}?\n\nThis employee will no longer be able to log in.`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            employee.status =
+                "Blocked";
+
+
+            localStorage.setItem(
+                "employees",
+                JSON.stringify(employees)
+            );
+
+
+            renderEmployees();
+
+
+            alert(
+                `${employee.name || "Employee"} has been blocked successfully.`
+            );
+
+        }
+
+
+        /* =====================================================
+           UNBLOCK EMPLOYEE
+           ===================================================== */
+
+        function unblockEmployee(employeeId) {
+
+            const employee =
+                employees.find(
+                    item =>
+                        String(item?.id) ===
+                        String(employeeId)
+                );
+
+
+            if (!employee) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    `Do you want to unblock ${employee.name || "this employee"}?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            employee.status =
+                "Active";
+
+
+            localStorage.setItem(
+                "employees",
+                JSON.stringify(employees)
+            );
+
+
+            renderEmployees();
+
+
+            alert(
+                `${employee.name || "Employee"} has been unblocked.`
+            );
+
         }
 
 
         /* =====================================================
            TABLE ACTIONS
-        ===================================================== */
+           ===================================================== */
 
         tableBody.addEventListener(
             "click",
@@ -1454,67 +2261,33 @@ function displayViewEmployee() {
                     return;
                 }
 
+                if (
+                action === "edit"
+            ) {
+
+                openEditEmployee(id);
+
+                return;
+            }
+
 
                 if (
-                    action === "delete"
+                    action === "block"
                 ) {
 
-                    const employee =
-                        employees.find(
-                            item =>
-                                String(
-                                    item?.id
-                                ) ===
-                                String(
-                                    id
-                                )
-                        );
+                    blockEmployee(id);
+
+                    return;
+                }
 
 
-                    if (!employee) {
-                        return;
-                    }
+                if (
+                    action === "unblock"
+                ) {
 
+                    unblockEmployee(id);
 
-                    const confirmed =
-                        confirm(
-                            `Are you sure you want to delete ${employee.name || "this employee"}?`
-                        );
-
-
-                    if (!confirmed) {
-                        return;
-                    }
-
-
-                    employees =
-                        employees.filter(
-                            item =>
-                                String(
-                                    item?.id
-                                ) !==
-                                String(
-                                    id
-                                )
-                        );
-
-
-                    localStorage.setItem(
-                        "employees",
-                        JSON.stringify(
-                            employees
-                        )
-                    );
-
-
-                    createDepartmentOptions();
-
-
-                    currentPage = 1;
-
-
-                    renderEmployees();
-
+                    return;
                 }
 
             }
@@ -1523,7 +2296,7 @@ function displayViewEmployee() {
 
         /* =====================================================
            SEARCH
-        ===================================================== */
+           ===================================================== */
 
         searchInput.addEventListener(
             "input",
@@ -1542,7 +2315,7 @@ function displayViewEmployee() {
 
         /* =====================================================
            DEPARTMENT FILTER
-        ===================================================== */
+           ===================================================== */
 
         departmentFilter.addEventListener(
             "change",
@@ -1561,7 +2334,7 @@ function displayViewEmployee() {
 
         /* =====================================================
            STATUS FILTER
-        ===================================================== */
+           ===================================================== */
 
         statusFilter.addEventListener(
             "change",
@@ -1580,7 +2353,7 @@ function displayViewEmployee() {
 
         /* =====================================================
            MODAL EVENTS
-        ===================================================== */
+           ===================================================== */
 
         document
             .getElementById(
@@ -1617,27 +2390,26 @@ function displayViewEmployee() {
             function (event) {
 
                 if (
-                    event.key !==
+                    event.key ===
                     "Escape"
                 ) {
-                    return;
-                }
+
+                    const modal =
+                        document.getElementById(
+                            "employeeDetailsModal"
+                        );
 
 
-                const modal =
-                    document.getElementById(
-                        "employeeDetailsModal"
-                    );
+                    if (
+                        modal &&
+                        modal.classList.contains(
+                            "show"
+                        )
+                    ) {
 
+                        closeEmployeeModal();
 
-                if (
-                    modal &&
-                    modal.classList.contains(
-                        "show"
-                    )
-                ) {
-
-                    closeEmployeeModal();
+                    }
 
                 }
 
@@ -1646,21 +2418,53 @@ function displayViewEmployee() {
 
 
         /* =====================================================
-           ADD EMPLOYEE
-        ===================================================== */
+   EDIT MODAL EVENTS
+   ===================================================== */
+
+document
+    .getElementById(
+        "editEmployeeForm"
+    )
+    .addEventListener(
+        "submit",
+        saveEmployeeChanges
+    );
 
 
+document
+    .getElementById(
+        "closeEditModal"
+    )
+    .addEventListener(
+        "click",
+        closeEditEmployeeModal
+    );
 
+
+document
+    .getElementById(
+        "cancelEditBtn"
+    )
+    .addEventListener(
+        "click",
+        closeEditEmployeeModal
+    );
+
+
+document
+    .getElementById(
+        "editEmployeeOverlay"
+    )
+    .addEventListener(
+        "click",
+        closeEditEmployeeModal
+    );
 
         /* =====================================================
-           EXPORT EMPLOYEES TO PDF
-        ===================================================== */
+           PDF
+           ===================================================== */
 
         async function loadPdfLibraries() {
-
-            /* -------------------------------------------------
-               Load jsPDF
-            ------------------------------------------------- */
 
             if (!window.jspdf) {
 
@@ -1680,7 +2484,6 @@ function displayViewEmployee() {
                         script.onload =
                             resolve;
 
-
                         script.onerror =
                             reject;
 
@@ -1691,12 +2494,9 @@ function displayViewEmployee() {
 
                     }
                 );
+
             }
 
-
-            /* -------------------------------------------------
-               Load AutoTable
-            ------------------------------------------------- */
 
             if (
                 window.jspdf &&
@@ -1719,7 +2519,6 @@ function displayViewEmployee() {
                         script.onload =
                             resolve;
 
-
                         script.onerror =
                             reject;
 
@@ -1730,7 +2529,9 @@ function displayViewEmployee() {
 
                     }
                 );
+
             }
+
         }
 
 
@@ -1744,78 +2545,32 @@ function displayViewEmployee() {
 
             try {
 
-                /* -----------------------------------------
-                   Loading state
-                ----------------------------------------- */
-
                 if (button) {
 
                     button.disabled =
                         true;
 
-
                     button.innerHTML = `
-
-                        <i
-                            class="bi bi-hourglass-split"
-                        ></i>
-
+                        <i class="bi bi-hourglass-split"></i>
                         Generating...
-
                     `;
+
                 }
 
-
-                /* -----------------------------------------
-                   Load PDF libraries
-                ----------------------------------------- */
 
                 await loadPdfLibraries();
 
 
-                /* -----------------------------------------
-                   Read ALL employees
-                   directly from localStorage
-                ----------------------------------------- */
-
-                let allEmployees = [];
-
-
-                try {
-
-                    allEmployees =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "employees"
-                            ) || "[]"
-                        );
-
-                } catch (error) {
-
-                    console.error(
-                        "Error reading employees:",
-                        error
+                const allEmployees =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "employees"
+                        ) || "[]"
                     );
 
-                    allEmployees = [];
-                }
-
 
                 if (
-                    !Array.isArray(
-                        allEmployees
-                    )
-                ) {
-
-                    allEmployees = [];
-                }
-
-
-                /* -----------------------------------------
-                   No employees
-                ----------------------------------------- */
-
-                if (
+                    !Array.isArray(allEmployees) ||
                     allEmployees.length === 0
                 ) {
 
@@ -1827,10 +2582,6 @@ function displayViewEmployee() {
                 }
 
 
-                /* -----------------------------------------
-                   Create PDF
-                ----------------------------------------- */
-
                 const {
                     jsPDF
                 } = window.jspdf;
@@ -1838,27 +2589,13 @@ function displayViewEmployee() {
 
                 const doc =
                     new jsPDF({
-
-                        orientation:
-                            "landscape",
-
-                        unit:
-                            "mm",
-
-                        format:
-                            "a4"
-
+                        orientation: "landscape",
+                        unit: "mm",
+                        format: "a4"
                     });
 
 
-                /* -----------------------------------------
-                   PDF HEADER
-                ----------------------------------------- */
-
-                doc.setFontSize(
-                    20
-                );
-
+                doc.setFontSize(20);
 
                 doc.setTextColor(
                     15,
@@ -1866,12 +2603,10 @@ function displayViewEmployee() {
                     66
                 );
 
-
                 doc.setFont(
                     "helvetica",
                     "bold"
                 );
-
 
                 doc.text(
                     "HR Management - Employees",
@@ -1880,21 +2615,17 @@ function displayViewEmployee() {
                 );
 
 
-                doc.setFontSize(
-                    10
-                );
+                doc.setFontSize(10);
 
+                doc.setFont(
+                    "helvetica",
+                    "normal"
+                );
 
                 doc.setTextColor(
                     100,
                     116,
                     139
-                );
-
-
-                doc.setFont(
-                    "helvetica",
-                    "normal"
                 );
 
 
@@ -1905,276 +2636,104 @@ function displayViewEmployee() {
                 );
 
 
-                const today =
-                    new Date()
-                        .toLocaleDateString(
-                            "en-GB"
-                        );
-
-
                 doc.text(
-                    `Generated: ${today}`,
+                    `Generated: ${new Date().toLocaleDateString("en-GB")}`,
                     14,
                     32
                 );
 
 
-                /* -----------------------------------------
-                   TABLE DATA
-                ----------------------------------------- */
-
                 const tableData =
                     allEmployees.map(
                         employee => [
 
-                            employee?.name ||
-                                "-",
+                            employee?.name || "-",
 
-                            employee?.email ||
-                                "-",
+                            employee?.email || "-",
 
-                            employee?.phone ||
-                                "-",
+                            employee?.phone || "-",
 
-                            employee?.jobTitle ||
-                                "-",
+                            employee?.jobTitle || "-",
 
-                            employee?.department ||
-                                "-",
+                            employee?.department || "-",
 
                             formatRole(
                                 employee?.role
-                            ) || "-",
+                            ),
 
                             formatDate(
                                 employee?.joiningDate
-                            ) || "-",
+                            ),
 
-                            employee?.status ||
-                                "Inactive"
+                            employee?.status || "Inactive"
 
                         ]
                     );
 
 
-                /* -----------------------------------------
-                   CREATE PDF TABLE
-                ----------------------------------------- */
-
                 doc.autoTable({
 
-                    startY:
-                        39,
-
+                    startY: 39,
 
                     head: [[
-
                         "Employee",
-
                         "Email",
-
                         "Phone",
-
                         "Job Title",
-
                         "Department",
-
                         "Role",
-
                         "Joining Date",
-
                         "Status"
-
                     ]],
 
+                    body: tableData,
 
-                    body:
-                        tableData,
-
-
-                    theme:
-                        "grid",
-
+                    theme: "grid",
 
                     styles: {
-
-                        font:
-                            "helvetica",
-
-                        fontSize:
-                            8,
-
-                        cellPadding:
-                            3,
-
+                        font: "helvetica",
+                        fontSize: 8,
+                        cellPadding: 3,
                         textColor: [
                             55,
                             65,
                             81
-                        ],
-
-                        lineColor: [
-                            226,
-                            232,
-                            240
-                        ],
-
-                        lineWidth:
-                            0.2
-
+                        ]
                     },
 
-
                     headStyles: {
-
                         fillColor: [
                             37,
                             99,
                             235
                         ],
-
                         textColor: [
                             255,
                             255,
                             255
                         ],
-
-                        fontStyle:
-                            "bold",
-
-                        fontSize:
-                            8
-
+                        fontStyle: "bold"
                     },
 
-
                     alternateRowStyles: {
-
                         fillColor: [
                             248,
                             250,
                             252
                         ]
-
                     },
-
-
-                    columnStyles: {
-
-                        0: {
-                            cellWidth:
-                                35
-                        },
-
-                        1: {
-                            cellWidth:
-                                45
-                        },
-
-                        2: {
-                            cellWidth:
-                                30
-                        },
-
-                        3: {
-                            cellWidth:
-                                35
-                        },
-
-                        4: {
-                            cellWidth:
-                                30
-                        },
-
-                        5: {
-                            cellWidth:
-                                25
-                        },
-
-                        6: {
-                            cellWidth:
-                                30
-                        },
-
-                        7: {
-                            cellWidth:
-                                25
-                        }
-
-                    },
-
 
                     margin: {
-
-                        left:
-                            14,
-
-                        right:
-                            14
-
-                    },
-
-
-                    /* -------------------------------------
-                       PDF FOOTER
-                    ------------------------------------- */
-
-                    didDrawPage:
-                        function () {
-
-                            const pageCount =
-                                doc.internal
-                                    .getNumberOfPages();
-
-
-                            const currentPage =
-                                doc.internal
-                                    .getCurrentPageInfo()
-                                    .pageNumber;
-
-
-                            doc.setFontSize(
-                                8
-                            );
-
-
-                            doc.setTextColor(
-                                148,
-                                163,
-                                184
-                            );
-
-
-                            doc.text(
-                                "HR Management System",
-                                14,
-                                202
-                            );
-
-
-                            doc.text(
-                                `Page ${currentPage} of ${pageCount}`,
-                                270,
-                                202,
-                                {
-                                    align:
-                                        "right"
-                                }
-                            );
-
-                        }
+                        left: 14,
+                        right: 14
+                    }
 
                 });
 
 
-                /* -----------------------------------------
-                   DOWNLOAD
-                ----------------------------------------- */
-
                 doc.save(
                     "HR_Employees.pdf"
                 );
-
 
             } catch (error) {
 
@@ -2183,11 +2742,9 @@ function displayViewEmployee() {
                     error
                 );
 
-
                 alert(
-                    "Unable to generate PDF. Please try again."
+                    "Unable to generate PDF."
                 );
-
 
             } finally {
 
@@ -2196,36 +2753,27 @@ function displayViewEmployee() {
                     button.disabled =
                         false;
 
-
                     button.innerHTML = `
-
-                        <i
-                            class="bi bi-file-earmark-pdf"
-                        ></i>
-
+                        <i class="bi bi-file-earmark-pdf"></i>
                         Download PDF
-
                     `;
+
                 }
+
             }
+
         }
 
 
-        /* =====================================================
-           PDF BUTTON EVENT
-        ===================================================== */
-
-        const exportEmployeesPdfBtn =
+        const exportButton =
             document.getElementById(
                 "exportEmployeesPdfBtn"
             );
 
 
-        if (
-            exportEmployeesPdfBtn
-        ) {
+        if (exportButton) {
 
-            exportEmployeesPdfBtn.addEventListener(
+            exportButton.addEventListener(
                 "click",
                 exportEmployeesToPDF
             );
@@ -2235,19 +2783,20 @@ function displayViewEmployee() {
 
         /* =====================================================
            INITIALIZE
-        ===================================================== */
+           ===================================================== */
 
         createDepartmentOptions();
 
         renderEmployees();
 
         return;
+
     }
 
 
     /* =========================================================
        EMPLOYEE PAGE
-    ========================================================= */
+       ========================================================= */
 
     if (role === "employee") {
 
@@ -2280,6 +2829,25 @@ function displayViewEmployee() {
             "-";
 
 
+            const employeeDateOfBirth =
+            formatDate(
+                employee.dateOfBirth
+            );
+
+        const employeeGender =
+            employee.gender || "-";
+
+        const employeeAddress =
+            employee.address || "-";
+
+        const employeeSalary =
+            employee.salary !== undefined &&
+            employee.salary !== null &&
+            employee.salary !== ""
+                ? Number(employee.salary).toLocaleString()
+                : "-";
+
+
         const employeeJoiningDate =
             formatDate(
                 employee.joiningDate
@@ -2297,24 +2865,34 @@ function displayViewEmployee() {
             "Active";
 
 
-        const statusClass =
+        const normalizedStatus =
             String(
                 employeeStatus
-            ).toLowerCase() ===
-                "active"
-                ? "active"
-                : "inactive";
+            ).toLowerCase();
 
 
-        const initials =
-            getInitials(
-                employeeName
-            );
+        let statusClass =
+            "inactive";
 
 
-        /* =====================================================
-           MODERN EMPLOYEE PAGE
-        ===================================================== */
+        if (
+            normalizedStatus ===
+            "active"
+        ) {
+
+            statusClass =
+                "active";
+
+        } else if (
+            normalizedStatus ===
+            "blocked"
+        ) {
+
+            statusClass =
+                "blocked";
+
+        }
+
 
         content.innerHTML = `
 
@@ -2322,656 +2900,276 @@ function displayViewEmployee() {
                 class="content employee-page"
             >
 
-
-                <!-- PAGE HEADER -->
-
                 <div
                     class="employee-page-header"
                 >
 
-                    <div
-                        class="employee-heading"
-                    >
+                    <div>
+
+                        <div class="page-label">
+                            My Workspace
+                        </div>
 
                         <h1>
                             Employee Details
                         </h1>
+
+                        <p>
+                            View your employee information.
+                        </p>
 
                     </div>
 
                 </div>
 
 
-                <!-- MAIN AREA -->
-
                 <div
-                    class="employee-details-layout"
+                    class="employee-profile-card"
                 >
 
-
-                    <!-- PROFILE -->
-
-                    <section
-                        class="employee-profile-section"
+                    <div
+                        class="employee-profile-top"
                     >
 
                         <div
-                            class="employee-section-title"
+                            class="large-profile-avatar"
                         >
-
-                            <h3>
-                                Profile
-                            </h3>
-
-
-
+                            ${escapeHTML(
+                                getInitials(
+                                    employeeName
+                                )
+                            )}
                         </div>
 
 
-                        <div
-                            class="modern-profile-card"
-                        >
+                        <div>
 
-
-                            <!-- COVER -->
-
-                            <div
-                                class="profile-cover"
-                            >
-
-                                <div
-                                    class="profile-cover-circle circle-one"
-                                ></div>
-
-
-                                <div
-                                    class="profile-cover-circle circle-two"
-                                ></div>
-
-                            </div>
-
-
-                            <!-- AVATAR -->
-
-                            <div
-                                class="modern-profile-avatar"
-                            >
-
+                            <h2>
                                 ${escapeHTML(
-                                    initials
+                                    employeeName
                                 )}
+                            </h2>
 
-                            </div>
+                            <p>
+                                ${escapeHTML(
+                                    employeeJobTitle
+                                )}
+                            </p>
 
-
-                            <!-- PROFILE INFO -->
-
-                            <div
-                                class="modern-profile-info"
+                            <span
+                                class="modal-status ${statusClass}"
                             >
-
-                                <h2>
-
-                                    ${escapeHTML(
-                                        employeeName
-                                    )}
-
-                                </h2>
-
-
-                                <p>
-
-                                    ${escapeHTML(
-                                        employeeJobTitle
-                                    )}
-
-                                </p>
-
-
-                                <span
-                                    class="profile-status ${statusClass}"
-                                >
-
-                                    <span
-                                        class="profile-status-dot"
-                                    ></span>
-
-
-                                    ${escapeHTML(
-                                        employeeStatus
-                                    )}
-
-                                </span>
-
-                            </div>
-
-
-                            <!-- CONTACT LIST -->
-
-                            <div
-                                class="profile-contact-list"
-                            >
-
-
-                                <div
-                                    class="profile-contact-item"
-                                >
-
-                                    <span
-                                        class="profile-contact-icon"
-                                    >
-
-                                        <i
-                                            class="bi bi-envelope"
-                                        ></i>
-
-                                    </span>
-
-
-                                    <div>
-
-                                        <span>
-                                            Email
-                                        </span>
-
-                                        <strong>
-
-                                            ${escapeHTML(
-                                                employeeEmail
-                                            )}
-
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="profile-contact-item"
-                                >
-
-                                    <span
-                                        class="profile-contact-icon"
-                                    >
-
-                                        <i
-                                            class="bi bi-telephone"
-                                        ></i>
-
-                                    </span>
-
-
-                                    <div>
-
-                                        <span>
-                                            Phone
-                                        </span>
-
-                                        <strong>
-
-                                            ${escapeHTML(
-                                                employeePhone
-                                            )}
-
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="profile-contact-item"
-                                >
-
-                                    <span
-                                        class="profile-contact-icon"
-                                    >
-
-                                        <i
-                                            class="bi bi-calendar3"
-                                        ></i>
-
-                                    </span>
-
-
-                                    <div>
-
-                                        <span>
-                                            Joined
-                                        </span>
-
-                                        <strong>
-
-                                            ${escapeHTML(
-                                                employeeJoiningDate
-                                            )}
-
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="profile-contact-item"
-                                >
-
-                                    <span
-                                        class="profile-contact-icon"
-                                    >
-
-                                        <i
-                                            class="bi bi-building"
-                                        ></i>
-
-                                    </span>
-
-
-                                    <div>
-
-                                        <span>
-                                            Department
-                                        </span>
-
-                                        <strong>
-
-                                            ${escapeHTML(
-                                                employeeDepartment
-                                            )}
-
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
+                                ${escapeHTML(
+                                    employeeStatus
+                                )}
+                            </span>
 
                         </div>
 
-                    </section>
+                    </div>
 
 
-                    <!-- EMPLOYEE DETAILS -->
-
-                    <section
-                        class="employee-information-section"
+                    <div
+                        class="employee-profile-grid"
                     >
 
+                        <div class="profile-field">
 
-                        <div
-                            class="employee-section-title details-title"
-                        >
+                            <span>
+                                <i class="bi bi-person"></i>
+                                Full Name
+                            </span>
 
-                            <div
-                                class="details-title-left"
-                            >
-
-                                <span
-                                    class="details-title-icon"
-                                >
-
-                                    <i
-                                        class="bi bi-person-vcard"
-                                    ></i>
-
-                                </span>
-
-
-                                <h3>
-                                    Employee details
-                                </h3>
-
-                            </div>
+                            <strong>
+                                ${escapeHTML(
+                                    employeeName
+                                )}
+                            </strong>
 
                         </div>
 
 
-                        <div
-                            class="modern-details-card"
-                        >
-
-
-                            <div
-                                class="modern-form-grid"
-                            >
-
-
-                                <!-- FULL NAME -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Full name
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-person"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeName
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- EMAIL -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Email address
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-envelope"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeEmail
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- PHONE -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Phone number
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-telephone"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeePhone
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- JOB TITLE -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Job title
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-briefcase"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeJobTitle
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- JOINING DATE -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Joining date
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-calendar3"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeJoiningDate
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- DEPARTMENT -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Department
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-building"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeDepartment
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- ROLE -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Role
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon"
-                                        >
-
-                                            <i
-                                                class="bi bi-people"
-                                            ></i>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeRole
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- STATUS -->
-
-                                <div
-                                    class="modern-field"
-                                >
-
-                                    <label>
-                                        Status
-                                    </label>
-
-
-                                    <div
-                                        class="modern-input-box"
-                                    >
-
-                                        <span
-                                            class="field-icon status-icon ${statusClass}"
-                                        >
-
-                                            <span></span>
-
-                                        </span>
-
-
-                                        <span
-                                            class="field-value"
-                                        >
-
-                                            ${escapeHTML(
-                                                employeeStatus
-                                            )}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-envelope"></i>
+                                Email
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeeEmail
+                                )}
+                            </strong>
 
                         </div>
 
-                    </section>
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-telephone"></i>
+                                Phone
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeePhone
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-briefcase"></i>
+                                Job Title
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeeJobTitle
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-building"></i>
+                                Department
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeeDepartment
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                        <span>
+                            <i class="bi bi-calendar-heart"></i>
+                            Date of Birth
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                employeeDateOfBirth
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-field">
+
+                        <span>
+                            <i class="bi bi-gender-ambiguous"></i>
+                            Gender
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                employeeGender
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-field">
+
+                        <span>
+                            <i class="bi bi-geo-alt"></i>
+                            Address
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                employeeAddress
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-field">
+
+                        <span>
+                            <i class="bi bi-cash-stack"></i>
+                            Salary
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                employeeSalary
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                Role
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeeRole
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-calendar"></i>
+                                Joining Date
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    employeeJoiningDate
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <span>
+                                <i class="bi bi-shield-check"></i>
+                                Account Status
+                            </span>
+
+                            <strong
+                                class="${statusClass}"
+                            >
+                                ${escapeHTML(
+                                    employeeStatus
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
 
                 </div>
 
@@ -2979,10 +3177,6 @@ function displayViewEmployee() {
 
         `;
 
-
-        /* =====================================================
-           EDIT PROFILE
-        ===================================================== */
 
         const editProfileBtn =
             document.getElementById(
@@ -3028,42 +3222,23 @@ function displayViewEmployee() {
 
     /* =========================================================
        UNKNOWN ROLE
-    ========================================================= */
+       ========================================================= */
 
     content.innerHTML = `
 
         <section class="content">
 
-            <div style="
-                max-width:600px;
-                margin:80px auto;
-                padding:40px;
-                text-align:center;
-                background:#ffffff;
-                border:1px solid #e1eaf2;
-                border-radius:18px;
-                box-shadow:0 10px 30px rgba(20,50,80,.08);
-            ">
+            <div class="error-card">
 
                 <i
                     class="bi bi-person-exclamation"
-                    style="
-                        font-size:42px;
-                        color:#3979b7;
-                    "
                 ></i>
 
-
-                <h2
-                    style="color:#183b5d;"
-                >
+                <h2>
                     Unable to load employee page
                 </h2>
 
-
-                <p
-                    style="color:#71879c;"
-                >
+                <p>
                     Please log in again and try again.
                 </p>
 
@@ -3072,12 +3247,13 @@ function displayViewEmployee() {
         </section>
 
     `;
+
 }
 
 
 /* =========================================================
-   HELPER FUNCTIONS
-========================================================= */
+   HELPERS
+   ========================================================= */
 
 function escapeHTML(value) {
 
@@ -3115,37 +3291,30 @@ function escapeHTML(value) {
             /'/g,
             "&#039;"
         );
+
 }
 
 
-/* =========================================================
-   GET INITIALS
-========================================================= */
-
 function getInitials(name) {
 
-    if (!name) {
+    const value =
+        String(
+            name || ""
+        ).trim();
+
+
+    if (!value) {
         return "EM";
     }
 
 
     const parts =
-        String(name)
-            .trim()
+        value
             .split(/\s+/)
             .filter(Boolean);
 
 
-    if (
-        parts.length === 0
-    ) {
-        return "EM";
-    }
-
-
-    if (
-        parts.length === 1
-    ) {
+    if (parts.length === 1) {
 
         return parts[0]
             .substring(0, 2)
@@ -3155,32 +3324,22 @@ function getInitials(name) {
 
 
     return (
-
-        parts[0].charAt(0) +
-
-        parts[
-            parts.length - 1
-        ].charAt(0)
-
+        parts[0][0] +
+        parts[parts.length - 1][0]
     ).toUpperCase();
+
 }
 
 
-/* =========================================================
-   FORMAT DATE
-========================================================= */
+function formatDate(value) {
 
-function formatDate(
-    dateValue
-) {
-
-    if (!dateValue) {
+    if (!value) {
         return "-";
     }
 
 
     const date =
-        new Date(dateValue);
+        new Date(value);
 
 
     if (
@@ -3189,27 +3348,17 @@ function formatDate(
         )
     ) {
 
-        return String(
-            dateValue
-        );
+        return String(value);
 
     }
 
 
     return date.toLocaleDateString(
-        "en-US",
-        {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-        }
+        "en-GB"
     );
+
 }
 
-
-/* =========================================================
-   FORMAT ROLE
-========================================================= */
 
 function formatRole(role) {
 
@@ -3219,18 +3368,10 @@ function formatRole(role) {
 
 
     const value =
-        String(role).trim();
+        String(role);
 
 
-    if (!value) {
-        return "-";
-    }
+    return value.charAt(0).toUpperCase() +
+        value.slice(1).toLowerCase();
 
-
-    return (
-        value.charAt(0).toUpperCase() +
-        value.slice(1).toLowerCase()
-    );
 }
-
-

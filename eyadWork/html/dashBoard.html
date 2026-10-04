@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="/Haya_Work/css/profile.css">
     <link rel="stylesheet" href="/sara-work/css/feedback.css">
     <link rel="stylesheet" href="/eyadWork/css/meeting.css">
+    <link rel="stylesheet" href="/eyadWork/css/dashboardHome.css">
 </head>
 
 <body>
@@ -54,6 +55,11 @@
         <p class="workspace-title">MY WORKSPACE</p>
 
         <nav class="navigation">
+
+            <a href="#" class="nav-item" onclick="displayDashboardHome()">
+               <i class="bi bi-house-door"></i>
+                <span>Dashboard</span>
+            </a>
 
             <a href="#" class="nav-item" onclick="displayProfile()">
                 <i class="bi bi-person-circle"></i>
@@ -95,10 +101,18 @@
 
         <div class="sidebar-bottom">
 
-            <a href="#" class="nav-item" onclick="logout()">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Logout</span>
-            </a>
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">--</div>
+
+                <div class="user-info">
+                    <strong id="user">Loading...</strong>
+                    <span id="role"></span>
+                </div>
+
+                <a href="#" class="logout-btn" onclick="logout()" title="Logout" aria-label="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
 
         </div>
 
@@ -115,16 +129,7 @@
                 <i class="bi bi-list"></i>
             </button>
 
-            <div class="user-profile">
-                <div class="user-avatar">
-                    LO
-                </div>
 
-                <div class="user-info">
-                    <strong id="user">Lujain Okour</strong>
-                    <span id="role">Employee</span>
-                </div>
-            </div>
 
         </header>
 
@@ -141,6 +146,7 @@
 <script src="/sara-work/js/feedback.js"></script>
 <script src="/eyadWork/js/leave.js"></script>
 <script src="/eyadWork/js/login.js"></script>
+<script src="/eyadWork/js/dashboardHome.js"></script>
 <script src="/eyadWork/js/dashBoard.js"></script>
 <script src="/eyadWork/js/taskManagment.js"></script>
 <script src="/eyadWork/js/addEmployee.js"></script>

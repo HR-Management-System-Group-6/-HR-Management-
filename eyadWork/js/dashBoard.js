@@ -50,3 +50,12 @@ if (user) {
         addEmployeeNav.style.display = "none";
     }
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (typeof displayDashboardHome === "function") {
+        displayDashboardHome();
+    }
+
+});

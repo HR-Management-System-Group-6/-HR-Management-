@@ -140,13 +140,27 @@ function displayEmployeePage(
         getHrTasks();
 
 
+    // Do not show Blocked tasks to employee
+
     const employeeTasks =
         allTasks.filter(
             task => {
 
+                if (
+                    String(task.status || "")
+                        .trim()
+                        .toLowerCase() === "blocked"
+                ) {
+
+                    return false;
+
+                }
+
+
                 if (!task.employee) {
                     return false;
                 }
+
 
                 return (
                     String(task.employee)
@@ -176,8 +190,11 @@ function displayEmployeePage(
                 </div>
 
                 <span class="sample-data">
+
                     ${employeeTasks.length}
+
                     task${employeeTasks.length === 1 ? "" : "s"}
+
                 </span>
 
             </div>
@@ -197,6 +214,7 @@ function displayEmployeePage(
                     All tasks (${employeeTasks.length})
                 </button>
 
+
                 <button
                     type="button"
                     class="tab"
@@ -204,6 +222,7 @@ function displayEmployeePage(
                 >
                     In progress
                 </button>
+
 
                 <button
                     type="button"
@@ -213,6 +232,7 @@ function displayEmployeePage(
                     Pending
                 </button>
 
+
                 <button
                     type="button"
                     class="tab"
@@ -220,6 +240,7 @@ function displayEmployeePage(
                 >
                     Submitted
                 </button>
+
 
                 <button
                     type="button"
@@ -238,10 +259,7 @@ function displayEmployeePage(
 
             <div class="filters">
 
-
-                <select
-                    id="employeeSort"
-                >
+                <select id="employeeSort">
 
                     <option value="newest">
                         Newest
@@ -249,10 +267,6 @@ function displayEmployeePage(
 
                     <option value="oldest">
                         Oldest
-                    </option>
-
-                    <option value="title">
-                        Title
                     </option>
 
                 </select>
@@ -558,44 +572,14 @@ function displayEmployeePage(
     `;
 
 
-    // =========================================================
-    // RENDER TASKS
-    // =========================================================
+    // Render tasks
 
     renderEmployeeTasks(
         employeeTasks
     );
 
 
-    // =========================================================
-    // STATUS SELECT FILTER
-    // =========================================================
-
-    const statusFilter =
-        document.getElementById(
-            "employeeStatusFilter"
-        );
-
-
-    if (statusFilter) {
-
-        statusFilter.addEventListener(
-            "change",
-            function () {
-
-                filterEmployeeTasks(
-                    employeeTasks
-                );
-
-            }
-        );
-
-    }
-
-
-    // =========================================================
-    // SORT
-    // =========================================================
+    // Sort
 
     const sortSelect =
         document.getElementById(
@@ -619,9 +603,7 @@ function displayEmployeePage(
     }
 
 
-    // =========================================================
-    // TABS
-    // =========================================================
+    // Tabs
 
     const tabs =
         document.querySelectorAll(
@@ -638,29 +620,18 @@ function displayEmployeePage(
 
                     tabs.forEach(
                         item => {
+
                             item.classList.remove(
                                 "active"
                             );
+
                         }
                     );
 
 
-                    tab.classList.add(
+                    this.classList.add(
                         "active"
                     );
-
-
-                    const selectedStatus =
-                        tab.dataset.status ||
-                        "All";
-
-
-                    if (statusFilter) {
-
-                        statusFilter.value =
-                            selectedStatus;
-
-                    }
 
 
                     filterEmployeeTasks(
@@ -673,10 +644,6 @@ function displayEmployeePage(
         }
     );
 
-
-    // =========================================================
-    // RESTORE SUBMISSIONS
-    // =========================================================
 
     restoreSubmittedTasks();
 
@@ -691,35 +658,21 @@ function filterEmployeeTasks(
     originalTasks
 ) {
 
-    const searchInput =
-        document.getElementById(
-            "employeeTaskSearch"
-        );
-
-
-    const statusFilter =
-        document.getElementById(
-            "employeeStatusFilter"
-        );
-
-
     const sortSelect =
         document.getElementById(
             "employeeSort"
         );
 
 
-    const search =
-        searchInput
-            ? searchInput.value
-                .trim()
-                .toLowerCase()
-            : "";
+    const activeTab =
+        document.querySelector(
+            ".tabs .tab.active"
+        );
 
 
     const status =
-        statusFilter
-            ? statusFilter.value
+        activeTab
+            ? activeTab.dataset.status
             : "All";
 
 
@@ -733,40 +686,7 @@ function filterEmployeeTasks(
         [...originalTasks];
 
 
-    // SEARCH
-
-    if (search) {
-
-        filtered =
-            filtered.filter(
-                task => {
-
-                    const title =
-                        String(
-                            task.title || ""
-                        )
-                        .toLowerCase();
-
-
-                    const description =
-                        String(
-                            task.description || ""
-                        )
-                        .toLowerCase();
-
-
-                    return (
-                        title.includes(search) ||
-                        description.includes(search)
-                    );
-
-                }
-            );
-
-    }
-
-
-    // STATUS
+    // STATUS FILTER
 
     if (
         status &&
@@ -824,26 +744,6 @@ function filterEmployeeTasks(
                     ) -
                     new Date(
                         b.createdAt || 0
-                    )
-                );
-
-            }
-        );
-
-    }
-
-
-    if (sort === "title") {
-
-        filtered.sort(
-            (a, b) => {
-
-                return String(
-                    a.title || ""
-                )
-                .localeCompare(
-                    String(
-                        b.title || ""
                     )
                 );
 
@@ -959,33 +859,65 @@ function renderEmployeeTasks(
 
 
             // =================================================
-            // COMPLETED
+            // EMPLOYEE STATUS EDITOR
+            // =================================================
+
+            const statusEditor = `
+
+                <div class="employee-status-wrapper">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                        class="task-status-select"
+                        onchange="
+                            changeEmployeeTaskStatus(
+                                '${escapeJs(task.id)}',
+                                this.value
+                            )
+                        "
+                    >
+
+                        <option
+                            value="Pending"
+                            ${status === "Pending" ? "selected" : ""}
+                        >
+                            Pending
+                        </option>
+
+
+                        <option
+                            value="In progress"
+                            ${status === "In progress" ? "selected" : ""}
+                        >
+                            In progress
+                        </option>
+
+
+
+
+
+                        <option
+                            value="Completed"
+                            ${status === "Completed" ? "selected" : ""}
+                        >
+                            Completed
+                        </option>
+
+                    </select>
+
+                </div>
+
+            `;
+
+
+            // =================================================
+            // SUBMIT BUTTON
             // =================================================
 
             if (
-                status === "Completed"
-            ) {
-
-                actionButton = `
-
-                    <button
-                        type="button"
-                        class="btn completed-btn"
-                        disabled
-                    >
-                        Completed
-                    </button>
-
-                `;
-
-            }
-
-
-            // =================================================
-            // SUBMITTED
-            // =================================================
-
-            else if (
                 status === "Submitted"
             ) {
 
@@ -1003,10 +935,23 @@ function renderEmployeeTasks(
 
             }
 
+            else if (
+                status === "Completed"
+            ) {
 
-            // =================================================
-            // OTHER STATUS
-            // =================================================
+                actionButton = `
+
+                    <button
+                        type="button"
+                        class="btn completed-btn"
+                        disabled
+                    >
+                        Completed
+                    </button>
+
+                `;
+
+            }
 
             else {
 
@@ -1015,10 +960,12 @@ function renderEmployeeTasks(
                     <button
                         type="button"
                         class="btn primary submit-task-btn"
-                        onclick="openSubmitModal(
-                            '${escapeJs(task.id)}',
-                            '${escapeJs(task.title)}'
-                        )"
+                        onclick="
+                            openSubmitModal(
+                                '${escapeJs(task.id)}',
+                                '${escapeJs(task.title)}'
+                            )
+                        "
                     >
                         Submit
                     </button>
@@ -1032,11 +979,28 @@ function renderEmployeeTasks(
 
                 <div class="card-header">
 
-                    <span class="priority ${String(task.priority || "Medium").toLowerCase()}">
-                        ${escapeHtml(task.priority || "Medium")}
+                    <span
+                        class="
+                            priority
+                            ${String(
+                                task.priority ||
+                                "Medium"
+                            ).toLowerCase()}
+                        "
+                    >
+                        ${escapeHtml(
+                            task.priority ||
+                            "Medium"
+                        )}
                     </span>
 
-                    <span class="status ${statusClass}">
+
+                    <span
+                        class="
+                            status
+                            ${statusClass}
+                        "
+                    >
                         ${escapeHtml(status)}
                     </span>
 
@@ -1044,19 +1008,25 @@ function renderEmployeeTasks(
 
 
                 <h3>
-                    ${escapeHtml(task.title)}
+                    ${escapeHtml(
+                        task.title
+                    )}
                 </h3>
 
 
                 <p>
-                    ${escapeHtml(task.description)}
+                    ${escapeHtml(
+                        task.description
+                    )}
                 </p>
 
 
                 <div class="card-meta">
 
                     Assigned to:
-                    ${escapeHtml(task.employee)}
+                    ${escapeHtml(
+                        task.employee
+                    )}
 
                     <br>
 
@@ -1066,14 +1036,23 @@ function renderEmployeeTasks(
                 </div>
 
 
+                <div class="employee-status-area">
+
+                    ${statusEditor}
+
+                </div>
+
+
                 <div class="card-actions">
 
                     <button
                         type="button"
                         class="btn secondary"
-                        onclick="openViewTaskModal(
-                            '${escapeJs(task.id)}'
-                        )"
+                        onclick="
+                            openViewTaskModal(
+                                '${escapeJs(task.id)}'
+                            )
+                        "
                     >
                         View Task
                     </button>
@@ -1092,6 +1071,117 @@ function renderEmployeeTasks(
 
         }
     );
+
+}
+
+
+// =============================================================
+// CHANGE EMPLOYEE TASK STATUS
+// =============================================================
+
+function changeEmployeeTaskStatus(
+    taskId,
+    newStatus
+) {
+
+    const allowedStatuses = [
+
+        "Pending",
+
+        "In progress",
+
+        "Submitted",
+
+        "Completed"
+
+    ];
+
+
+    // Employee cannot set Blocked
+
+    if (
+        !allowedStatuses.includes(
+            newStatus
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const tasks =
+        getHrTasks();
+
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(taskId)
+        );
+
+
+    if (!task) {
+
+        alert(
+            "Task not found."
+        );
+
+        return;
+    }
+
+
+    task.status =
+        newStatus;
+
+
+    localStorage.setItem(
+        "hrTasks",
+        JSON.stringify(
+            tasks
+        )
+    );
+
+
+    // Refresh employee page
+
+    const content =
+        document.getElementById(
+            "content"
+        );
+
+
+    let user = null;
+
+
+    try {
+
+        user =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInUser"
+                )
+            );
+
+    } catch (error) {
+
+        user = null;
+
+    }
+
+
+    if (
+        content &&
+        user
+    ) {
+
+        displayEmployeePage(
+            content,
+            user
+        );
+
+    }
 
 }
 
@@ -1133,11 +1223,6 @@ function openViewTaskModal(
 
 
     if (!modal) {
-
-        console.error(
-            "viewTaskModal not found."
-        );
-
         return;
     }
 
@@ -1281,6 +1366,7 @@ function displayHrPage(
 
             <div class="task-layout">
 
+
                 <!-- =================================================
                      CREATE TASK
                 ================================================== -->
@@ -1298,6 +1384,9 @@ function displayHrPage(
 
                     <form id="createTaskForm">
 
+
+                        <!-- TASK TITLE -->
+
                         <div class="form-group">
 
                             <label for="taskTitle">
@@ -1314,6 +1403,8 @@ function displayHrPage(
                         </div>
 
 
+                        <!-- DESCRIPTION -->
+
                         <div class="form-group">
 
                             <label for="description">
@@ -1328,50 +1419,35 @@ function displayHrPage(
 
                         </div>
 
-                <div class="form-group">
 
-                    <label for="priority">
-                        Priority
-                    </label>
-
-                    <div class="select-wrapper">
-
-                        <select id="priority" required>
-
-                            <option value="Low">
-                                Low
-                            </option>
-
-                            <option value="Medium" selected>
-                                Medium
-                            </option>
-
-                            <option value="High">
-                                High
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
+                        <!-- PRIORITY -->
 
                         <div class="form-group">
 
-                            <label for="employee">
-                                Assigned employee
+                            <label for="priority">
+                                Priority
                             </label>
 
                             <div class="select-wrapper">
 
                                 <select
-                                    id="employee"
+                                    id="priority"
                                     required
                                 >
 
-                                    <option value="">
-                                        Select employee
+                                    <option value="Low">
+                                        Low
+                                    </option>
+
+                                    <option
+                                        value="Medium"
+                                        selected
+                                    >
+                                        Medium
+                                    </option>
+
+                                    <option value="High">
+                                        High
                                     </option>
 
                                 </select>
@@ -1379,48 +1455,55 @@ function displayHrPage(
                             </div>
 
                         </div>
+
 
 
                         <div class="form-group">
 
-                            <label for="status">
-                                Status
+                            <label>
+                                Assigned employees
                             </label>
 
-                            <div class="select-wrapper">
+                            <div class="employee-dropdown" id="employee">
 
-                                <select id="status">
+                                <button
+                                    type="button"
+                                    class="employee-dropdown-btn"
+                                    id="employeeDropdownBtn"
+                                >
+                                    <span id="employeeSelectedText">
+                                        Select employees
+                                    </span>
 
-                                    <option value="Pending">
-                                        Pending
-                                    </option>
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
 
-                                    <option value="In progress">
-                                        In progress
-                                    </option>
-
-                                    <option value="Completed">
-                                        Completed
-                                    </option>
-
-                                    <option value="Blocked">
-                                        Blocked
-                                    </option>
-
-                                </select>
+                                <div
+                                    class="employee-dropdown-menu"
+                                    id="employeeDropdownMenu"
+                                >
+                                </div>
 
                             </div>
 
+                            <small class="employee-help">
+                                Select one or more employees.
+                            </small>
+
                         </div>
 
+
+                        <!-- NO STATUS HERE -->
 
                         <button
                             type="submit"
                             class="create-btn"
                         >
+
                             <span>
                                 Create Task
                             </span>
+
                         </button>
 
                     </form>
@@ -1443,17 +1526,42 @@ function displayHrPage(
                             </h2>
 
 
+                            <div class="task-filter">
 
-                    <div class="task-filter">
-                        <select id="taskStatusFilter" onchange="renderHrTasks()">
-                            <option value="All">All Status</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In progress">In progress</option>
-                            <option value="Submitted">Submitted</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Blocked">Blocked</option>
-                        </select>
-                    </div>
+                                <select
+                                    id="taskStatusFilter"
+                                    onchange="
+                                        renderHrTasks()
+                                    "
+                                >
+
+                                    <option value="All">
+                                        All Status
+                                    </option>
+
+                                    <option value="Pending">
+                                        Pending
+                                    </option>
+
+                                    <option value="In progress">
+                                        In progress
+                                    </option>
+
+                                    <option value="Submitted">
+                                        Submitted
+                                    </option>
+
+                                    <option value="Completed">
+                                        Completed
+                                    </option>
+
+                                    <option value="Blocked">
+                                        Blocked
+                                    </option>
+
+                                </select>
+
+                            </div>
 
                         </div>
 
@@ -1510,7 +1618,9 @@ function displayHrPage(
                         <button
                             type="button"
                             class="close-edit-modal"
-                            onclick="closeEditTaskModal()"
+                            onclick="
+                                closeEditTaskModal()
+                            "
                         >
                             ×
                         </button>
@@ -1521,6 +1631,9 @@ function displayHrPage(
                     <form
                         id="editTaskForm"
                     >
+
+
+                        <!-- TITLE -->
 
                         <div class="edit-form-group">
 
@@ -1537,6 +1650,8 @@ function displayHrPage(
                         </div>
 
 
+                        <!-- DESCRIPTION -->
+
                         <div class="edit-form-group">
 
                             <label for="editTaskDescription">
@@ -1550,6 +1665,8 @@ function displayHrPage(
 
                         </div>
 
+
+                        <!-- EMPLOYEE -->
 
                         <div class="edit-form-group">
 
@@ -1569,43 +1686,10 @@ function displayHrPage(
                         </div>
 
 
-                        <div class="edit-form-group">
-
-                            <label for="editTaskStatus">
-                                Status
-                            </label>
-
-                            <div class="edit-select-wrapper">
-
-                                <select
-                                    id="editTaskStatus"
-                                >
-
-                                    <option value="Pending">
-                                        Pending
-                                    </option>
-
-                                    <option value="In progress">
-                                        In progress
-                                    </option>
-
-                                    <option value="Completed">
-                                        Completed
-                                    </option>
-
-                                    <option value="Blocked">
-                                        Blocked
-                                    </option>
-
-                                    <option value="Submitted">
-                                        Submitted
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-                        </div>
+                        <!--
+                            IMPORTANT:
+                            NO STATUS FIELD HERE
+                        -->
 
 
                         <div class="edit-modal-actions">
@@ -1613,7 +1697,9 @@ function displayHrPage(
                             <button
                                 type="button"
                                 class="cancel-edit-btn"
-                                onclick="closeEditTaskModal()"
+                                onclick="
+                                    closeEditTaskModal()
+                                "
                             >
                                 Cancel
                             </button>
@@ -1639,23 +1725,17 @@ function displayHrPage(
     `;
 
 
-    // =========================================================
     // LOAD EMPLOYEES
-    // =========================================================
 
     loadEmployeesForTasks();
 
 
-    // =========================================================
     // DISPLAY TASKS
-    // =========================================================
 
     renderHrTasks();
 
 
-    // =========================================================
-    // CREATE TASK FORM
-    // =========================================================
+    // CREATE TASK
 
     const createForm =
         document.getElementById(
@@ -1690,98 +1770,122 @@ function displayHrPage(
                         .trim();
 
 
-                const employee =
+                const employeeCheckboxes =
+                    document.querySelectorAll(
+                        '#employee input[name="taskEmployees"]:checked'
+                    );
+
+                const selectedEmployees =
+                    Array.from(employeeCheckboxes)
+                        .map(checkbox => checkbox.value)
+                        .filter(name => name);
+
+
+                const priority =
                     document
                         .getElementById(
-                            "employee"
+                            "priority"
                         )
                         .value;
 
 
-                const status =
-                    document
-                        .getElementById(
-                            "status"
+                    if (!title) {
+
+                        alert(
+                            "Please enter task title."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!description) {
+
+                        alert(
+                            "Please enter task description."
+                        );
+
+                        return;
+                    }
+
+
+                    if (selectedEmployees.length === 0) {
+
+                        alert(
+                            "Please select at least one employee."
+                        );
+
+                        return;
+                    }
+
+
+                    const tasks =
+                        getHrTasks();
+
+
+                    // Create one task for each selected employee
+
+                    selectedEmployees.forEach(
+                        (employee, index) => {
+
+                            const newTask = {
+
+                                id:
+                                    (
+                                        Date.now() +
+                                        index
+                                    ).toString(),
+
+                                title:
+                                    title,
+
+                                description:
+                                    description,
+
+                                employee:
+                                    employee,
+
+                                status:
+                                    "Pending",
+
+                                createdAt:
+                                    new Date().toISOString(),
+
+                                priority:
+                                    priority
+
+                            };
+
+
+                            tasks.push(
+                                newTask
+                            );
+
+                        }
+                    );
+
+
+                    // Save all tasks
+
+                    localStorage.setItem(
+                        "hrTasks",
+                        JSON.stringify(
+                            tasks
                         )
-                        .value;
-
-                 const priority =
-                    document
-                        .getElementById("priority")
-                        .value;
-
-
-                if (!title) {
-
-                    alert(
-                        "Please enter task title."
                     );
 
-                    return;
-                }
+
+                    renderHrTasks();
 
 
-                if (!description) {
+                    createForm.reset();
+
 
                     alert(
-                        "Please enter task description."
+                        selectedEmployees.length === 1
+                            ? "Task created successfully."
+                            : `${selectedEmployees.length} tasks created successfully.`
                     );
-
-                    return;
-                }
-
-
-                if (!employee) {
-
-                    alert(
-                        "Please select an employee."
-                    );
-
-                    return;
-                }
-
-
-                const tasks =
-                    getHrTasks();
-
-
-                const newTask = {
-
-                    id:
-                        Date.now().toString(),
-
-                    title:
-                        title,
-
-                    description:
-                        description,
-
-                    employee:
-                        employee,
-
-                    status:
-                        status,
-
-                    createdAt:
-                        new Date().toISOString(),
-
-                    priority:
-                         priority,
-
-                };
-
-
-                tasks.push(
-                    newTask
-                );
-
-
-                localStorage.setItem(
-                    "hrTasks",
-                    JSON.stringify(
-                        tasks
-                    )
-                );
 
 
                 renderHrTasks();
@@ -1899,8 +2003,6 @@ function loadEmployeesForTasks() {
     }
 
 
-    // FALLBACK EMPLOYEES
-
     if (
         employees.length === 0
     ) {
@@ -1937,16 +2039,24 @@ function loadEmployeesForTasks() {
         ) {
 
             return employee;
+
         }
 
 
         return (
+
             employee.name ||
+
             employee.fullName ||
+
             employee.full_name ||
+
             employee.employeeName ||
+
             employee.firstName ||
+
             ""
+
         );
 
     }
@@ -1958,7 +2068,8 @@ function loadEmployeesForTasks() {
                 getEmployeeName
             )
             .filter(
-                name => name
+                name =>
+                    name
             )
             .filter(
                 (
@@ -1973,45 +2084,232 @@ function loadEmployeesForTasks() {
 
 
     // CREATE SELECT
+// CREATE EMPLOYEE CHECKBOXES
 
-    if (employeeSelect) {
+// CREATE EMPLOYEE DROPDOWN
 
-        employeeSelect.innerHTML = `
+// CREATE EMPLOYEE DROPDOWN
 
-            <option value="">
-                Select employee
-            </option>
+// CREATE EMPLOYEE DROPDOWN
 
-        `;
+if (employeeSelect) {
 
+    employeeSelect.innerHTML = `
 
-        names.forEach(
-            name => {
+        <button
+            type="button"
+            class="employee-dropdown-btn"
+            id="employeeDropdownBtn"
+        >
+            <span id="employeeSelectedText">
+                Select employees
+            </span>
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-
-                option.value =
-                    name;
-
-
-                option.textContent =
-                    name;
+            <i class="bi bi-chevron-down"></i>
+        </button>
 
 
-                employeeSelect.appendChild(
-                    option
-                );
+        <div
+            class="employee-dropdown-menu"
+            id="employeeDropdownMenu"
+        >
 
-            }
+            <label class="employee-check all-employees">
+
+                <input
+                    type="checkbox"
+                    id="selectAllEmployees"
+                    value="__ALL__"
+                >
+
+                <span>All Employees</span>
+
+            </label>
+
+
+            <div class="employee-divider"></div>
+
+
+            ${names.map(
+                name => `
+
+                    <label class="employee-check">
+
+                        <input
+                            type="checkbox"
+                            name="taskEmployees"
+                            value="${escapeHtml(name)}"
+                        >
+
+                        <span>
+                            ${escapeHtml(name)}
+                        </span>
+
+                    </label>
+
+                `
+            ).join("")}
+
+        </div>
+    `;
+
+
+    const dropdownBtn =
+        document.getElementById(
+            "employeeDropdownBtn"
         );
+
+    const dropdownMenu =
+        document.getElementById(
+            "employeeDropdownMenu"
+        );
+
+    const selectedText =
+        document.getElementById(
+            "employeeSelectedText"
+        );
+
+    const allCheckbox =
+        document.getElementById(
+            "selectAllEmployees"
+        );
+
+    const employeeCheckboxes =
+        employeeSelect.querySelectorAll(
+            'input[name="taskEmployees"]'
+        );
+
+
+    // OPEN / CLOSE
+
+    dropdownBtn.addEventListener(
+        "click",
+        function (e) {
+
+            e.stopPropagation();
+
+            dropdownMenu.classList.toggle("show");
+
+            dropdownBtn.classList.toggle("active");
+
+        }
+    );
+
+
+    // ALL EMPLOYEES
+
+    allCheckbox.addEventListener(
+        "change",
+        function () {
+
+            employeeCheckboxes.forEach(
+                checkbox => {
+
+                    checkbox.checked =
+                        allCheckbox.checked;
+
+                }
+            );
+
+            updateEmployeeText();
+
+        }
+    );
+
+
+    // INDIVIDUAL EMPLOYEES
+
+    employeeCheckboxes.forEach(
+        checkbox => {
+
+            checkbox.addEventListener(
+                "change",
+                function () {
+
+                    const allSelected =
+                        Array.from(
+                            employeeCheckboxes
+                        ).every(
+                            checkbox =>
+                                checkbox.checked
+                        );
+
+                    allCheckbox.checked =
+                        allSelected;
+
+                    updateEmployeeText();
+
+                }
+            );
+
+        }
+    );
+
+
+    // UPDATE TEXT
+
+    function updateEmployeeText() {
+
+        const selected =
+            Array.from(
+                employeeCheckboxes
+            ).filter(
+                checkbox =>
+                    checkbox.checked
+            );
+
+
+        if (selected.length === 0) {
+
+            selectedText.textContent =
+                "Select employees";
+
+        }
+        else if (
+            selected.length ===
+            employeeCheckboxes.length
+        ) {
+
+            selectedText.textContent =
+                "All employees";
+
+        }
+        else if (selected.length === 1) {
+
+            selectedText.textContent =
+                selected[0].value;
+
+        }
+        else {
+
+            selectedText.textContent =
+                `${selected.length} employees selected`;
+
+        }
 
     }
 
 
+    // CLOSE OUTSIDE
+
+    document.addEventListener(
+        "click",
+        function (e) {
+
+            if (
+                !employeeSelect.contains(e.target)
+            ) {
+
+                dropdownMenu.classList.remove("show");
+
+                dropdownBtn.classList.remove("active");
+
+            }
+
+        }
+    );
+
+}
     // EDIT SELECT
 
     if (editEmployeeSelect) {
@@ -2056,171 +2354,192 @@ function loadEmployeesForTasks() {
 function renderHrTasks() {
 
     const container =
-        document.getElementById(
-            "tasksContainer"
-        );
-
+        document.getElementById("tasksContainer");
 
     const countElement =
-        document.getElementById(
-            "taskCount"
-        );
-
+        document.getElementById("taskCount");
 
     if (!container) {
         return;
     }
 
+    const allTasks =
+        getHrTasks();
 
-const allTasks = getHrTasks();
+    const filter =
+        document.getElementById("taskStatusFilter");
 
-const filter =
-    document.getElementById("taskStatusFilter");
+    const selectedStatus =
+        filter
+            ? filter.value
+            : "All";
 
-const selectedStatus =
-    filter ? filter.value : "All";
-
-const tasks =
-    selectedStatus === "All"
-        ? allTasks
-        : allTasks.filter(task =>
-            String(task.status || "Pending")
-                .toLowerCase() ===
-            selectedStatus.toLowerCase()
-        );
+    const tasks =
+        selectedStatus === "All"
+            ? allTasks
+            : allTasks.filter(task =>
+                String(task.status || "Pending")
+                    .toLowerCase() ===
+                selectedStatus.toLowerCase()
+            );
 
 
-    if (
-        tasks.length === 0
-    ) {
+    /* =========================
+       EMPTY
+    ========================= */
+
+    if (tasks.length === 0) {
 
         container.innerHTML = `
+            <div class="empty-task-table">
+                <i class="bi bi-clipboard-x"></i>
 
-            <div
-                class="task-item"
-                style="
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    min-height:100px;
-                "
-            >
+                <h3>No tasks yet</h3>
 
-                <div class="task-info">
-
-                    <h3>
-                        No tasks yet
-                    </h3>
-
-                    <p>
-                        Create a task using the form.
-                    </p>
-
-                </div>
-
+                <p>
+                    Create a task using the form.
+                </p>
             </div>
-
         `;
 
-
         if (countElement) {
-
-            countElement.textContent =
-                "0 tasks";
-
+            countElement.textContent = "0 tasks";
         }
-
 
         return;
     }
 
 
+    /* =========================
+       COUNT
+    ========================= */
+
     if (countElement) {
 
         countElement.textContent =
             tasks.length +
-            (
-                tasks.length === 1
-                    ? " task"
-                    : " tasks"
-            );
-
+            (tasks.length === 1
+                ? " task"
+                : " tasks");
     }
 
 
-    container.innerHTML =
-        "";
+    /* =========================
+       TABLE
+    ========================= */
+
+    container.innerHTML = `
+
+        <div class="tasks-table-wrapper">
+
+            <table class="tasks-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Task</th>
+
+                        <th>Description</th>
+
+                        <th>Assigned To</th>
+
+                        <th>Status</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tasksTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
 
 
-    tasks.forEach(
-        task => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
+    const tbody =
+        document.getElementById("tasksTableBody");
 
 
-            item.className =
-                "task-item";
+    tasks.forEach(task => {
+
+        const status =
+            task.status || "Pending";
+
+        const statusClass =
+            getStatusClass(status);
 
 
-            const status =
-                task.status ||
-                "Pending";
+        const row =
+            document.createElement("tr");
 
 
-            const statusClass =
-                getStatusClass(
-                    status
-                );
+        row.innerHTML = `
 
+            <td>
 
-            item.innerHTML = `
+                <div class="table-task-title">
 
-                <div class="task-info">
-
-                    <h3>
-                        ${escapeHtml(
-                            task.title
-                        )}
-                    </h3>
-
-
-                    <p>
-                        ${escapeHtml(
-                            task.description
-                        )}
-                    </p>
-
-
-                    <span class="assigned">
-                        Assigned to:
-                        ${escapeHtml(
-                            task.employee
-                        )}
-                    </span>
-
-
-                    <span
-                        class="status ${statusClass}"
-                    >
-                        ${escapeHtml(
-                            status
-                        )}
-                    </span>
+                    ${escapeHtml(task.title)}
 
                 </div>
 
+            </td>
 
-                <div class="task-actions">
+
+            <td>
+
+                <div class="table-description">
+
+                    ${escapeHtml(task.description)}
+
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <div class="table-employee">
+
+                    <i class="bi bi-person"></i>
+
+                    ${escapeHtml(task.employee)}
+
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <span class="status ${statusClass}">
+
+                    ${escapeHtml(status)}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <div class="table-actions">
 
                     <button
                         type="button"
-                        class="edit-btn"
-                        onclick="openEditTaskModal(
-                            '${escapeJs(task.id)}'
-                        )"
+                        class="table-edit-btn"
+                        onclick="
+                            openEditTaskModal(
+                                '${escapeJs(task.id)}'
+                            )
+                        "
                     >
                         Edit
                     </button>
@@ -2228,32 +2547,34 @@ const tasks =
 
                     <button
                         type="button"
-                        class="edit-btn"
-                        onclick="blockTask(
-                            '${escapeJs(task.id)}'
-                        )"
+                        class="table-block-btn"
+                        onclick="
+                            blockTask(
+                                '${escapeJs(task.id)}'
+                            )
+                        "
                     >
+
                         ${
                             status === "Blocked"
                                 ? "Unblock"
                                 : "Block"
                         }
+
                     </button>
 
                 </div>
 
-            `;
+            </td>
+
+        `;
 
 
-            container.appendChild(
-                item
-            );
+        tbody.appendChild(row);
 
-        }
-    );
+    });
 
 }
-
 
 // =============================================================
 // GET STATUS CLASS
@@ -2370,18 +2691,24 @@ function openEditTaskModal(
         );
 
 
+    const description =
+        document.getElementById(
+            "editTaskDescription"
+        );
+
+
+    const employee =
+        document.getElementById(
+            "editTaskEmployee"
+        );
+
+
     if (title) {
 
         title.value =
             task.title || "";
 
     }
-
-
-    const description =
-        document.getElementById(
-            "editTaskDescription"
-        );
 
 
     if (description) {
@@ -2392,12 +2719,6 @@ function openEditTaskModal(
     }
 
 
-    const employee =
-        document.getElementById(
-            "editTaskEmployee"
-        );
-
-
     if (employee) {
 
         employee.value =
@@ -2406,18 +2727,8 @@ function openEditTaskModal(
     }
 
 
-    const status =
-        document.getElementById(
-            "editTaskStatus"
-        );
-
-
-    if (status) {
-
-        status.value =
-            task.status || "Pending";
-
-    }
+    // IMPORTANT:
+    // There is NO status here.
 
 
     modal.classList.add(
@@ -2471,14 +2782,6 @@ function saveEditedTask() {
             ?.value;
 
 
-    const status =
-        document
-            .getElementById(
-                "editTaskStatus"
-            )
-            ?.value;
-
-
     if (!title) {
 
         alert(
@@ -2503,16 +2806,6 @@ function saveEditedTask() {
 
         alert(
             "Please select an employee."
-        );
-
-        return;
-    }
-
-
-    if (!status) {
-
-        alert(
-            "Please select a status."
         );
 
         return;
@@ -2557,8 +2850,7 @@ function saveEditedTask() {
         employee;
 
 
-    tasks[index].status =
-        status;
+    // DO NOT CHANGE STATUS HERE
 
 
     localStorage.setItem(
@@ -2675,13 +2967,16 @@ function blockTask(
 
 
     if (
-        task.status === "Blocked"
+        task.status ===
+        "Blocked"
     ) {
 
         task.status =
             "Pending";
 
-    } else {
+    }
+
+    else {
 
         task.status =
             "Blocked";
@@ -2865,7 +3160,9 @@ function showSelectedFile() {
         fileName.textContent =
             fileInput.files[0].name;
 
-    } else {
+    }
+
+    else {
 
         fileName.textContent =
             "Click to upload your file";
@@ -2913,10 +3210,6 @@ document.addEventListener(
                 : "";
 
 
-        // =====================================================
-        // VALIDATION
-        // =====================================================
-
         if (
             !fileInput ||
             fileInput.files.length === 0
@@ -2954,17 +3247,9 @@ document.addEventListener(
             fileInput.files[0];
 
 
-        // =====================================================
-        // GET TASKS
-        // =====================================================
-
         let tasks =
             getHrTasks();
 
-
-        // =====================================================
-        // FIND TASK BY ID
-        // =====================================================
 
         const taskIndex =
             tasks.findIndex(
@@ -2986,10 +3271,6 @@ document.addEventListener(
         }
 
 
-        // =====================================================
-        // CHECK TASK STATUS
-        // =====================================================
-
         if (
             tasks[taskIndex].status ===
             "Submitted"
@@ -3005,20 +3286,12 @@ document.addEventListener(
         }
 
 
-        // =====================================================
-        // READ FILE
-        // =====================================================
-
         const reader =
             new FileReader();
 
 
         reader.onload =
             function () {
-
-                // =============================================
-                // CREATE SUBMISSION
-                // =============================================
 
                 const submission = {
 
@@ -3053,10 +3326,6 @@ document.addEventListener(
                 };
 
 
-                // =============================================
-                // GET OLD SUBMISSIONS
-                // =============================================
-
                 let submissions = [];
 
 
@@ -3069,16 +3338,14 @@ document.addEventListener(
                             )
                         ) || [];
 
-                } catch (error) {
+                }
+
+                catch (error) {
 
                     submissions = [];
 
                 }
 
-
-                // =============================================
-                // CHECK DUPLICATE BY TASK ID
-                // =============================================
 
                 const alreadySubmitted =
                     submissions.some(
@@ -3106,10 +3373,6 @@ document.addEventListener(
                 }
 
 
-                // =============================================
-                // SAVE SUBMISSION
-                // =============================================
-
                 submissions.push(
                     submission
                 );
@@ -3124,26 +3387,25 @@ document.addEventListener(
                         )
                     );
 
-                } catch (error) {
+                }
+
+                catch (error) {
 
                     console.error(
                         "Could not save submission:",
                         error
                     );
 
-
                     alert(
                         "The file is too large to save in localStorage."
                     );
 
                     return;
+
                 }
 
 
-                // =============================================
-                // IMPORTANT:
-                // UPDATE THE REAL TASK STATUS
-                // =============================================
+                // Update real task
 
                 tasks[taskIndex].status =
                     "Submitted";
@@ -3152,10 +3414,6 @@ document.addEventListener(
                 tasks[taskIndex].submittedAt =
                     submission.submittedAt;
 
-
-                // =============================================
-                // SAVE UPDATED TASKS
-                // =============================================
 
                 try {
 
@@ -3166,7 +3424,9 @@ document.addEventListener(
                         )
                     );
 
-                } catch (error) {
+                }
+
+                catch (error) {
 
                     console.error(
                         "Could not update hrTasks:",
@@ -3174,19 +3434,12 @@ document.addEventListener(
                     );
 
                     return;
+
                 }
 
 
-                // =============================================
-                // CLOSE MODAL
-                // =============================================
-
                 closeSubmitModal();
 
-
-                // =============================================
-                // REFRESH EMPLOYEE PAGE
-                // =============================================
 
                 const content =
                     document.getElementById(
@@ -3206,7 +3459,9 @@ document.addEventListener(
                             )
                         );
 
-                } catch (error) {
+                }
+
+                catch (error) {
 
                     user = null;
 
@@ -3226,20 +3481,12 @@ document.addEventListener(
                 }
 
 
-                // =============================================
-                // SUCCESS
-                // =============================================
-
                 alert(
                     "Your work has been submitted successfully."
                 );
 
             };
 
-
-        // =====================================================
-        // FILE READER ERROR
-        // =====================================================
 
         reader.onerror =
             function () {
@@ -3251,10 +3498,6 @@ document.addEventListener(
             };
 
 
-        // =====================================================
-        // READ FILE AS BASE64
-        // =====================================================
-
         reader.readAsDataURL(
             file
         );
@@ -3264,113 +3507,50 @@ document.addEventListener(
 
 
 // =============================================================
-// UPDATE EMPLOYEE TASK STATUS
-// =============================================================
-
-function updateTaskStatus(
-    taskId
-) {
-
-    const cards =
-        document.querySelectorAll(
-            ".task-card"
-        );
-
-
-    cards.forEach(
-        card => {
-
-            const button =
-                card.querySelector(
-                    ".submit-task-btn"
-                );
-
-
-            if (!button) {
-                return;
-            }
-
-
-            // This function is mainly kept for compatibility.
-            // The real task status is now saved in hrTasks.
-
-            button.textContent =
-                "Submitted";
-
-
-            button.className =
-                "btn completed-btn";
-
-
-            button.disabled =
-                true;
-
-
-            button.removeAttribute(
-                "onclick"
-            );
-
-
-            const status =
-                card.querySelector(
-                    ".status"
-                );
-
-
-            if (status) {
-
-                status.textContent =
-                    "Submitted";
-
-
-                status.className =
-                    "status submitted";
-
-            }
-
-        }
-    );
-
-}
-
-
-// =============================================================
 // RESTORE SUBMITTED TASKS
 // =============================================================
 
 function restoreSubmittedTasks() {
 
-    /*
-        The task status is now stored directly inside hrTasks.
+    // Status is stored directly in hrTasks.
+    // Nothing else is required here.
 
-        So we do not need to change only the visual card.
-        displayEmployeePage() reads the updated hrTasks
-        and automatically displays Submitted.
-    */
+    return;
 
-    const tasks =
-        getHrTasks();
-
-
-    const submittedTasks =
-        tasks.filter(
-            task =>
-                task.status ===
-                "Submitted"
-        );
-
-
-    if (
-        submittedTasks.length === 0
-    ) {
-
-        return;
-    }
-
-
-    // Nothing else is required here because
-    // renderEmployeeTasks() reads task.status.
 }
+
+
+// =============================================================
+// REFRESH HR PAGE WHEN EMPLOYEE CHANGES STATUS
+// =============================================================
+
+window.addEventListener(
+    "storage",
+    function (event) {
+
+        if (
+            event.key !==
+            "hrTasks"
+        ) {
+
+            return;
+        }
+
+
+        const tasksContainer =
+            document.getElementById(
+                "tasksContainer"
+            );
+
+
+        if (tasksContainer) {
+
+            renderHrTasks();
+
+        }
+
+    }
+);
 
 
 // =============================================================
@@ -3384,6 +3564,7 @@ function formatTaskDate(
     if (!dateValue) {
 
         return "-";
+
     }
 
 
@@ -3409,6 +3590,7 @@ function formatTaskDate(
     return date.toLocaleDateString(
         "en-US",
         {
+
             year:
                 "numeric",
 
@@ -3417,6 +3599,7 @@ function formatTaskDate(
 
             day:
                 "numeric"
+
         }
     );
 
@@ -3457,22 +3640,27 @@ function escapeJs(
     return String(
         value || ""
     )
+
     .replace(
         /\\/g,
         "\\\\"
     )
+
     .replace(
         /'/g,
         "\\'"
     )
+
     .replace(
         /"/g,
         '\\"'
     )
+
     .replace(
         /\n/g,
         "\\n"
     )
+
     .replace(
         /\r/g,
         "\\r"
@@ -3581,8 +3769,6 @@ document.addEventListener(
             );
 
 
-        // EDIT
-
         if (
             editModal &&
             editModal.classList.contains(
@@ -3595,8 +3781,6 @@ document.addEventListener(
         }
 
 
-        // VIEW
-
         if (
             viewModal &&
             viewModal.classList.contains(
@@ -3608,8 +3792,6 @@ document.addEventListener(
 
         }
 
-
-        // SUBMIT
 
         if (
             submitModal &&

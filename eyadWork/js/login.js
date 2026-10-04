@@ -1,5 +1,8 @@
+
+
+
 // =====================================
-// Global Variables
+// GLOBAL VARIABLES
 // =====================================
 
 let pendingNewEmployee = null;
@@ -11,28 +14,55 @@ let pendingNewEmployee = null;
 
 async function handleLogin() {
 
-    const emailInput = document
-        .getElementById("email")
-        .value
-        .trim()
-        .toLowerCase();
+    const emailInput =
+        document
+            .getElementById("email")
+            .value
+            .trim()
+            .toLowerCase();
 
-    const passwordInput = document
-        .getElementById("password")
-        .value
-        .trim();
+
+    const passwordInput =
+        document
+            .getElementById("password")
+            .value
+            .trim();
+
+
+    const selectedAccount =
+        document.querySelector(
+            'input[name="account"]:checked'
+        );
+
+
+    if (!selectedAccount) {
+
+        alert(
+            "Please select account type."
+        );
+
+        return;
+
+    }
+
 
     const selectedRoleInput =
-        document.querySelector('input[name="account"]:checked').value;
+        selectedAccount.value;
 
 
     // =====================================
     // VALIDATION
     // =====================================
 
-    if (!emailInput || !passwordInput) {
+    if (
+        !emailInput ||
+        !passwordInput
+    ) {
 
-        alert("Please enter email and password");
+        alert(
+            "Please enter email and password"
+        );
+
         return;
 
     }
@@ -42,26 +72,68 @@ async function handleLogin() {
     // EMPLOYEE LOGIN
     // =====================================
 
-    if (selectedRoleInput === "Employee") {
+    if (
+        selectedRoleInput ===
+        "Employee"
+    ) {
 
-        // Get employees from localStorage
-        const employees = JSON.parse(
-            localStorage.getItem("employees")
-        ) || [];
+        let employees = [];
 
 
-        // Search employee
-        const matchedEmployee = employees.find(employee => {
+        try {
 
-            return (
-                employee.email &&
-                employee.email.toLowerCase() === emailInput &&
-                employee.password === passwordInput &&
-                employee.role &&
-                employee.role.toLowerCase() === "employee"
+            employees =
+                JSON.parse(
+                    localStorage.getItem(
+                        "employees"
+                    ) || "[]"
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Employees data error:",
+                error
             );
 
-        });
+            alert(
+                "Unable to read employee data."
+            );
+
+            return;
+
+        }
+
+
+        // =====================================
+        // FIND EMPLOYEE
+        // =====================================
+
+        const matchedEmployee =
+            employees.find(
+                employee => {
+
+                    return (
+
+                        employee.email &&
+
+                        employee.email
+                            .toLowerCase() ===
+                            emailInput &&
+
+                        employee.password ===
+                            passwordInput &&
+
+                        employee.role &&
+
+                        employee.role
+                            .toLowerCase() ===
+                            "employee"
+
+                    );
+
+                }
+            );
 
 
         // =====================================
@@ -70,46 +142,81 @@ async function handleLogin() {
 
         if (matchedEmployee) {
 
-            // Check if this is a NEW employee
-            const isNewEmployee =
-                matchedEmployee.status &&
-                matchedEmployee.status.toLowerCase() === "new";
+
+            // =====================================
+            // BLOCKED EMPLOYEE
+            // =====================================
+
+            const employeeStatus =
+                String(
+                    matchedEmployee.status ||
+                    ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                employeeStatus ===
+                "blocked"
+            ) {
+
+                showAlert(
+                    "Your account has been blocked. Please contact HR.",
+                    "error"
+                );
+
+                return;
+
+            }
 
 
             // =====================================
             // NEW EMPLOYEE
             // =====================================
 
+            const isNewEmployee =
+                employeeStatus ===
+                "new";
+
+
             if (isNewEmployee) {
 
-                // Save employee temporarily
-                pendingNewEmployee = matchedEmployee;
+                pendingNewEmployee =
+                    matchedEmployee;
 
-                // Show change password modal
+
                 showChangePasswordModal();
 
                 return;
+
             }
 
 
             // =====================================
-            // OLD EMPLOYEE
+            // NORMAL EMPLOYEE
             // =====================================
 
             localStorage.setItem(
                 "loggedInUser",
-                JSON.stringify(matchedEmployee)
+                JSON.stringify(
+                    matchedEmployee
+                )
             );
 
 
-            alert("تم تسجيل دخول الموظف بنجاح!");
+            showAlert(
+                "تم تسجيل دخول الموظف بنجاح!",
+                "success"
+            );
 
 
-            // Go to dashboard
             window.location.href =
-                "../../eyadWork/html/dashBoard.html";
+                window.location.href = "dashBoard.html";
+
 
             return;
+
         }
 
 
@@ -121,138 +228,158 @@ async function handleLogin() {
             "Employee not found. Please check your email and password."
         );
 
+
+        return;
+
+    }
+
+
+// =====================================
+// HR LOGIN
+// =====================================
+
+if (selectedRoleInput === "HR") {
+
+    // =====================================
+    // FIXED HR ACCOUNT
+    // =====================================
+
+    const fixedHR = {
+        id: 1,
+        name: "Eyad Mansur",
+        email: "hr@gmail.com",
+        password: "Ey@dmansur2003",
+        role: "HR",
+        status: "Active"
+    };
+
+
+    // =====================================
+    // CHECK HR LOGIN
+    // =====================================
+
+    if (
+        emailInput === fixedHR.email.toLowerCase() &&
+        passwordInput === fixedHR.password
+    ) {
+
+        // Save logged in HR
+        localStorage.setItem(
+            "loggedInUser",
+            JSON.stringify(fixedHR)
+        );
+
+
+        // Save HR account
+        localStorage.setItem(
+            "hrUser",
+            JSON.stringify(fixedHR)
+        );
+
+
+            showAlert(
+        "تم تسجيل دخول HR بنجاح!",
+        "success"
+    );
+
+
+        // Redirect to dashboard
+        window.location.href =
+            window.location.href = "dashBoard.html";
+
         return;
     }
 
 
     // =====================================
-    // HR LOGIN
+    // HR LOGIN FAILED
     // =====================================
 
-    if (selectedRoleInput === "HR") {
+    showAlert(
+    "HR email or password is incorrect.",
+    "error"
+);
 
-        try {
-
-            // HR users come from JSON
-            const response =
-                await fetch("../data/user.json");
-
-            const users =
-                await response.json();
-
-
-            const matchedUser = users.find(user => {
-
-                return (
-                    user.email &&
-                    user.email.toLowerCase() === emailInput &&
-                    user.password === passwordInput &&
-                    user.role &&
-                    user.role.toLowerCase() === "hr"
-                );
-
-            });
-
-
-            // =====================================
-            // HR FOUND
-            // =====================================
-
-            if (matchedUser) {
-
-                localStorage.setItem(
-                    "loggedInUser",
-                    JSON.stringify(matchedUser)
-                );
-
-
-                alert("تم تسجيل دخول HR بنجاح!");
-
-
-                window.location.href =
-                    "../../eyadWork/html/dashBoard.html";
-
-                return;
-            }
-
-
-            // =====================================
-            // HR NOT FOUND
-            // =====================================
-
-            alert(
-                "HR email or password is incorrect."
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            alert(
-                "حدث خطأ أثناء قراءة بيانات HR."
-            );
-
-        }
-
-        return;
-    }
-
+    return;
+}
 
     // =====================================
     // INVALID ROLE
     // =====================================
 
-    alert("Invalid account type.");
+    alert(
+        "Invalid account type."
+    );
 
 }
 
 
-
 // =====================================
-// SHOW CHANGE PASSWORD MODAL
+// CHANGE PASSWORD MODAL
 // =====================================
 
 function showChangePasswordModal() {
 
-    // Remove any old/empty modal
     const existingModal =
-        document.getElementById("changePasswordModal");
+        document.getElementById(
+            "changePasswordModal"
+        );
+
 
     if (existingModal) {
+
         existingModal.remove();
+
     }
 
 
-    // Create modal
     const modal =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
-    modal.id = "changePasswordModal";
 
-    modal.className = "password-modal";
+    modal.id =
+        "changePasswordModal";
+
+
+    modal.className =
+        "password-modal";
 
 
     modal.innerHTML = `
 
-        <div class="password-modal-overlay"></div>
+        <div
+            class="password-modal-overlay"
+        ></div>
 
-        <div class="password-modal-card">
 
-            <div class="password-modal-icon">
+        <div
+            class="password-modal-card"
+        >
+
+            <div
+                class="password-modal-icon"
+            >
                 <i class="fa-solid fa-lock"></i>
             </div>
 
-            <div class="password-modal-content">
 
-                <span class="password-modal-label">
+            <div
+                class="password-modal-content"
+            >
+
+                <span
+                    class="password-modal-label"
+                >
                     FIRST LOGIN
                 </span>
+
 
                 <h2>
                     Change your password
                 </h2>
+
 
                 <p>
                     For security reasons, you need to
@@ -268,15 +395,25 @@ function showChangePasswordModal() {
                 class="change-password-form"
             >
 
-                <div class="modal-input-group">
+                <div
+                    class="modal-input-group"
+                >
 
-                    <label for="newPassword">
+                    <label
+                        for="newPassword"
+                    >
                         New Password
                     </label>
 
-                    <div class="modal-input-wrapper">
 
-                        <i class="fa-solid fa-lock"></i>
+                    <div
+                        class="modal-input-wrapper"
+                    >
+
+                        <i
+                            class="fa-solid fa-lock"
+                        ></i>
+
 
                         <input
                             type="password"
@@ -286,15 +423,18 @@ function showChangePasswordModal() {
                             required
                         >
 
+
                         <button
                             type="button"
                             class="modal-password-toggle"
                             onclick="toggleNewPassword()"
                         >
+
                             <i
                                 id="newPasswordIcon"
                                 class="fa-regular fa-eye"
                             ></i>
+
                         </button>
 
                     </div>
@@ -302,15 +442,25 @@ function showChangePasswordModal() {
                 </div>
 
 
-                <div class="modal-input-group">
+                <div
+                    class="modal-input-group"
+                >
 
-                    <label for="confirmPassword">
+                    <label
+                        for="confirmPassword"
+                    >
                         Confirm Password
                     </label>
 
-                    <div class="modal-input-wrapper">
 
-                        <i class="fa-solid fa-shield-halved"></i>
+                    <div
+                        class="modal-input-wrapper"
+                    >
+
+                        <i
+                            class="fa-solid fa-shield-halved"
+                        ></i>
+
 
                         <input
                             type="password"
@@ -320,15 +470,18 @@ function showChangePasswordModal() {
                             required
                         >
 
+
                         <button
                             type="button"
                             class="modal-password-toggle"
                             onclick="toggleConfirmPassword()"
                         >
+
                             <i
                                 id="confirmPasswordIcon"
                                 class="fa-regular fa-eye"
                             ></i>
+
                         </button>
 
                     </div>
@@ -351,14 +504,20 @@ function showChangePasswordModal() {
                         Update Password
                     </span>
 
-                    <i class="fa-solid fa-arrow-right"></i>
+                    <i
+                        class="fa-solid fa-arrow-right"
+                    ></i>
 
                 </button>
 
 
-                <div class="password-security-note">
+                <div
+                    class="password-security-note"
+                >
 
-                    <i class="fa-solid fa-circle-check"></i>
+                    <i
+                        class="fa-solid fa-circle-check"
+                    ></i>
 
                     <span>
                         Your password will be securely updated.
@@ -369,23 +528,30 @@ function showChangePasswordModal() {
             </form>
 
         </div>
+
     `;
 
 
-    document.body.appendChild(modal);
+    document.body.appendChild(
+        modal
+    );
 
 
-    // Show modal
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-        modal.classList.add("show");
+            modal.classList.add(
+                "show"
+            );
 
-    });
+        }
+    );
 
 
-    // Form submit
     document
-        .getElementById("changePasswordForm")
+        .getElementById(
+            "changePasswordForm"
+        )
         .addEventListener(
             "submit",
             function (event) {
@@ -398,16 +564,20 @@ function showChangePasswordModal() {
         );
 
 
-    // Focus
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        document
-            .getElementById("newPassword")
-            ?.focus();
+            document
+                .getElementById(
+                    "newPassword"
+                )
+                ?.focus();
 
-    }, 300);
+        },
+        300
+    );
+
 }
-
 
 
 // =====================================
@@ -417,86 +587,107 @@ function showChangePasswordModal() {
 function updateEmployeePassword() {
 
     if (!pendingNewEmployee) {
-
         return;
     }
 
 
     const newPassword =
         document
-            .getElementById("newPassword")
+            .getElementById(
+                "newPassword"
+            )
             .value
             .trim();
+
 
     const confirmPassword =
         document
-            .getElementById("confirmPassword")
+            .getElementById(
+                "confirmPassword"
+            )
             .value
             .trim();
 
+
     const errorElement =
-        document.getElementById("passwordError");
+        document.getElementById(
+            "passwordError"
+        );
 
 
-    // Clear old error
-    errorElement.textContent = "";
-
+    errorElement.textContent =
+        "";
 
 
     // =====================================
     // VALIDATION
     // =====================================
 
-    if (!newPassword || !confirmPassword) {
+    if (
+        !newPassword ||
+        !confirmPassword
+    ) {
 
         showPasswordError(
             "Please enter and confirm your new password."
         );
 
         return;
+
     }
 
 
-    if (newPassword.length < 6) {
+    if (
+        newPassword.length < 6
+    ) {
 
         showPasswordError(
             "Password must contain at least 6 characters."
         );
 
         return;
+
     }
 
 
-    if (newPassword !== confirmPassword) {
+    if (
+        newPassword !==
+        confirmPassword
+    ) {
 
         showPasswordError(
             "Passwords do not match."
         );
 
         return;
+
     }
 
 
-    // Prevent using the same temporary password
-    if (newPassword === pendingNewEmployee.password) {
+    if (
+        newPassword ===
+        pendingNewEmployee.password
+    ) {
 
         showPasswordError(
             "New password must be different from your temporary password."
         );
 
         return;
-    }
 
+    }
 
 
     // =====================================
     // GET EMPLOYEES
     // =====================================
 
-    const employees =
+    let employees =
         JSON.parse(
-            localStorage.getItem("employees")
-        ) || [];
+            localStorage.getItem(
+                "employees"
+            ) || "[]"
+        );
 
 
     // =====================================
@@ -504,63 +695,79 @@ function updateEmployeePassword() {
     // =====================================
 
     const employeeIndex =
-        employees.findIndex(employee => {
+        employees.findIndex(
+            employee => {
 
-            return (
-                employee.email &&
-                pendingNewEmployee.email &&
-                employee.email.toLowerCase() ===
-                pendingNewEmployee.email.toLowerCase()
-            );
+                return (
 
-        });
+                    employee.email &&
+
+                    pendingNewEmployee.email &&
+
+                    employee.email
+                        .toLowerCase() ===
+                        pendingNewEmployee.email
+                            .toLowerCase()
+
+                );
+
+            }
+        );
 
 
-    if (employeeIndex === -1) {
+    if (
+        employeeIndex ===
+        -1
+    ) {
 
         showPasswordError(
             "Employee data could not be found."
         );
 
         return;
+
     }
 
 
-
     // =====================================
-    // UPDATE EMPLOYEE
+    // UPDATE
     // =====================================
 
-    employees[employeeIndex].password =
+    employees[
+        employeeIndex
+    ].password =
         newPassword;
 
 
-    // Change status
-    employees[employeeIndex].status =
+    employees[
+        employeeIndex
+    ].status =
         "Old";
 
 
     // =====================================
-    // SAVE EMPLOYEES
+    // SAVE
     // =====================================
 
     localStorage.setItem(
         "employees",
-        JSON.stringify(employees)
+        JSON.stringify(
+            employees
+        )
     );
 
 
-    // =====================================
-    // UPDATE LOGGED IN USER
-    // =====================================
-
     const updatedEmployee =
-        employees[employeeIndex];
+        employees[
+            employeeIndex
+        ];
 
 
     localStorage.setItem(
         "loggedInUser",
-        JSON.stringify(updatedEmployee)
+        JSON.stringify(
+            updatedEmployee
+        )
     );
 
 
@@ -582,24 +789,36 @@ function updateEmployeePassword() {
 
     card.innerHTML = `
 
-        <div class="password-success">
+        <div
+            class="password-success"
+        >
 
-            <div class="success-icon">
-                <i class="fa-solid fa-check"></i>
+            <div
+                class="success-icon"
+            >
+                <i
+                    class="fa-solid fa-check"
+                ></i>
             </div>
+
 
             <h2>
                 Password updated!
             </h2>
+
 
             <p>
                 Your password has been changed successfully.
                 You can now access your workspace.
             </p>
 
-            <div class="success-loading">
+
+            <div
+                class="success-loading"
+            >
 
                 <span></span>
+
                 Redirecting to your workspace...
 
             </div>
@@ -609,35 +828,55 @@ function updateEmployeePassword() {
     `;
 
 
-    // Redirect
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        window.location.href =
-            "../../eyadWork/html/dashBoard.html";
+            window.location.href =
+                window.location.href = "dashBoard.html";
 
-    }, 1500);
+        },
+        1500
+    );
+
 }
 
 
-
 // =====================================
-// SHOW PASSWORD ERROR
+// PASSWORD ERROR
 // =====================================
 
-function showPasswordError(message) {
+function showPasswordError(
+    message
+) {
 
     const errorElement =
-        document.getElementById("passwordError");
+        document.getElementById(
+            "passwordError"
+        );
 
-    errorElement.textContent = message;
 
-    errorElement.classList.remove("shake");
+    if (!errorElement) {
+        return;
+    }
+
+
+    errorElement.textContent =
+        message;
+
+
+    errorElement.classList.remove(
+        "shake"
+    );
+
 
     void errorElement.offsetWidth;
 
-    errorElement.classList.add("shake");
-}
 
+    errorElement.classList.add(
+        "shake"
+    );
+
+}
 
 
 // =====================================
@@ -647,29 +886,41 @@ function showPasswordError(message) {
 function toggleNewPassword() {
 
     const input =
-        document.getElementById("newPassword");
+        document.getElementById(
+            "newPassword"
+        );
+
 
     const icon =
-        document.getElementById("newPasswordIcon");
+        document.getElementById(
+            "newPasswordIcon"
+        );
 
 
-    if (input.type === "password") {
+    if (
+        input.type ===
+        "password"
+    ) {
 
-        input.type = "text";
+        input.type =
+            "text";
+
 
         icon.className =
             "fa-regular fa-eye-slash";
 
     } else {
 
-        input.type = "password";
+        input.type =
+            "password";
+
 
         icon.className =
             "fa-regular fa-eye";
 
     }
-}
 
+}
 
 
 // =====================================
@@ -679,29 +930,41 @@ function toggleNewPassword() {
 function toggleConfirmPassword() {
 
     const input =
-        document.getElementById("confirmPassword");
+        document.getElementById(
+            "confirmPassword"
+        );
+
 
     const icon =
-        document.getElementById("confirmPasswordIcon");
+        document.getElementById(
+            "confirmPasswordIcon"
+        );
 
 
-    if (input.type === "password") {
+    if (
+        input.type ===
+        "password"
+    ) {
 
-        input.type = "text";
+        input.type =
+            "text";
+
 
         icon.className =
             "fa-regular fa-eye-slash";
 
     } else {
 
-        input.type = "password";
+        input.type =
+            "password";
+
 
         icon.className =
             "fa-regular fa-eye";
 
     }
-}
 
+}
 
 
 // =====================================
@@ -710,7 +973,6 @@ function toggleConfirmPassword() {
 
 const GOOGLE_CLIENT_ID =
     "313291642700-7iojaon2vp390g5ii57789n0bif4c47d.apps.googleusercontent.com";
-
 
 
 function initializeGoogleLogin() {
@@ -727,14 +989,17 @@ function initializeGoogleLogin() {
         );
 
         return;
+
     }
 
 
     google.accounts.id.initialize({
 
-        client_id: GOOGLE_CLIENT_ID,
+        client_id:
+            GOOGLE_CLIENT_ID,
 
-        callback: handleGoogleLogin
+        callback:
+            handleGoogleLogin
 
     });
 
@@ -746,120 +1011,31 @@ function initializeGoogleLogin() {
         ),
 
         {
-            theme: "outline",
-            size: "large",
-            text: "continue_with",
-            shape: "rectangular",
-            logo_alignment: "left",
-            width: 270
+
+            theme:
+                "outline",
+
+            size:
+                "large",
+
+            text:
+                "continue_with",
+
+            shape:
+                "rectangular",
+
+            logo_alignment:
+                "left",
+
+            width:
+                270
+
         }
 
     );
+
 }
 
-
-
-// =====================================
-// HANDLE GOOGLE RESPONSE
-// =====================================
-
-function handleGoogleLogin(response) {
-
-    try {
-
-        const base64Url =
-            response.credential
-                .split(".")[1];
-
-
-        const base64 =
-            base64Url
-                .replace(/-/g, "+")
-                .replace(/_/g, "/");
-
-
-        const payload =
-            JSON.parse(
-                atob(base64)
-            );
-
-
-        // Get selected account type
-        const selectedRole =
-            document.querySelector(
-                'input[name="account"]:checked'
-            ).value;
-
-
-        // Create Google user
-        const googleUser = {
-
-            name:
-                payload.name ||
-                "Google User",
-
-            email:
-                payload.email,
-
-            picture:
-                payload.picture ||
-                "",
-
-            googleId:
-                payload.sub,
-
-            role:
-                selectedRole,
-
-            provider:
-                "google"
-
-        };
-
-
-        // Save user
-        localStorage.setItem(
-            "loggedInUser",
-            JSON.stringify(googleUser)
-        );
-
-
-        alert(
-            "تم تسجيل الدخول باستخدام Google بنجاح!"
-        );
-
-
-        window.location.href =
-            "../../eyadWork/html/dashBoard.html";
-
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Google Login Error:",
-            error
-        );
-
-
-        alert(
-            "حدث خطأ أثناء تسجيل الدخول باستخدام Google."
-        );
-
-    }
-}
-
-
-
-// =====================================
-// START GOOGLE LOGIN
-// =====================================
-
-window.addEventListener(
-    "load",
-    initializeGoogleLogin
-);
 
 
 
@@ -876,4 +1052,97 @@ function logout() {
 
     window.location.href =
         "../../sara-work/html/index.html";
+
+}
+
+
+// =====================================
+// CUSTOM ALERT
+// =====================================
+
+function showAlert(message, type = "success") {
+
+    // Remove existing alert
+    const oldAlert = document.querySelector(".custom-alert");
+
+    if (oldAlert) {
+        oldAlert.remove();
+    }
+
+    const alertBox = document.createElement("div");
+
+    alertBox.className = `custom-alert ${type}`;
+
+    let icon = "fa-circle-check";
+
+    if (type === "error") {
+        icon = "fa-circle-exclamation";
+    } else if (type === "warning") {
+        icon = "fa-triangle-exclamation";
+    }
+
+    alertBox.innerHTML = `
+        <div class="custom-alert-icon">
+            <i class="fa-solid ${icon}"></i>
+        </div>
+
+        <div class="custom-alert-content">
+            <strong>
+                ${
+                    type === "success"
+                        ? "Success"
+                        : type === "error"
+                        ? "Error"
+                        : "Warning"
+                }
+            </strong>
+
+            <span>${message}</span>
+        </div>
+
+        <button
+            class="custom-alert-close"
+            onclick="closeAlert(this)"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    `;
+
+    document.body.appendChild(alertBox);
+
+    // Show animation
+    requestAnimationFrame(() => {
+        alertBox.classList.add("show");
+    });
+
+    // Auto close after 3 seconds
+    setTimeout(() => {
+
+        if (alertBox) {
+            alertBox.classList.remove("show");
+
+            setTimeout(() => {
+                alertBox.remove();
+            }, 300);
+        }
+
+    }, 3000);
+}
+
+
+// =====================================
+// CLOSE ALERT
+// =====================================
+
+function closeAlert(button) {
+
+    const alertBox = button.closest(".custom-alert");
+
+    if (!alertBox) return;
+
+    alertBox.classList.remove("show");
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 300);
 }

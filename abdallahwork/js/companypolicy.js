@@ -21,7 +21,7 @@ fetch("../data/companypolicy.json")
 
                     <div class="policy-top">
                         <span class="policy-id">#${data[index].id}</span>
-                        <span class="status">${data[index].status}</span>
+                        
                     </div>
 
                     <div class="policy-icon">
