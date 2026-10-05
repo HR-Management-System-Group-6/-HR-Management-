@@ -1871,3 +1871,595 @@
 
 }
 
+/* =========================================================
+   FINAL EMPLOYEE DROPDOWN FIX
+   ========================================================= */
+
+.meeting-employee-selector {
+    position: relative;
+    width: 100%;
+}
+
+
+/* =========================================================
+   SELECT BUTTON
+   ========================================================= */
+
+.meeting-employee-select {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px 0 22px;
+
+    border: 1px solid #d4dfed;
+    border-radius: 14px;
+
+    background: #fbfcfe;
+
+    color: #355777 !important;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition: all .2s ease;
+}
+
+.meeting-employee-select:hover {
+    border-color: #9fc6ec;
+    background: #fff;
+}
+
+.meeting-employee-select.open {
+    border-color: #3c91ed;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 4px rgba(47, 125, 225, .09);
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.meeting-employee-select i {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #edf5fc;
+
+    color: #5795cc !important;
+
+    font-size: 14px;
+
+    transition: transform .25s ease;
+}
+
+.meeting-employee-select i.rotate {
+    transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.meeting-employee-dropdown {
+
+    position: absolute;
+
+    top: calc(100% + 7px);
+    left: 0;
+    right: 0;
+
+    z-index: 9999;
+
+    width: 100%;
+
+    max-height: 245px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+
+    padding: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce7f2;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 16px 35px rgba(29, 62, 94, .18);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-6px);
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
+}
+
+
+.meeting-employee-dropdown.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   ALL / EMPLOYEE OPTION
+   ========================================================= */
+
+.meeting-employee-option {
+
+    position: relative;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 7px 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    transition:
+        background .18s ease;
+}
+
+
+.meeting-employee-option:hover {
+    background: #f5f9fd;
+}
+
+
+/* =========================================================
+   ALL EMPLOYEES
+   ========================================================= */
+
+.meeting-all-option {
+
+    min-height: 50px;
+
+    margin-bottom: 5px;
+
+    background: #f3f9fd;
+
+    border: 1px solid #d9eaf5;
+
+    border-radius: 12px;
+}
+
+
+.meeting-all-option:hover {
+    background: #edf7fc;
+}
+
+
+/* =========================================================
+   HIDE REAL CHECKBOX
+   ========================================================= */
+
+.meeting-employee-option input {
+
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CUSTOM CHECKBOX
+   ========================================================= */
+
+.meeting-custom-checkbox {
+
+    width: 22px;
+    height: 22px;
+
+    min-width: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1.5px solid #b9d9d0;
+
+    border-radius: 7px;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+/* CHECKED */
+
+.meeting-employee-option
+input:checked
++ .meeting-custom-checkbox {
+
+    background: #2f9e71;
+
+    border-color: #2f9e71;
+
+    box-shadow:
+        0 3px 8px rgba(47, 158, 113, .20);
+}
+
+
+/* CHECK MARK */
+
+.meeting-employee-option
+input:checked
++ .meeting-custom-checkbox::after {
+
+    content: "";
+
+    width: 5px;
+    height: 10px;
+
+    border:
+        solid #ffffff;
+
+    border-width:
+        0 2px 2px 0;
+
+    transform:
+        rotate(45deg)
+        translate(-1px, -1px);
+}
+
+
+/* =========================================================
+   EMPLOYEE TEXT
+   ========================================================= */
+
+.meeting-employee-name {
+
+    display: block;
+
+    flex: 1;
+
+    min-width: 0;
+
+    color: #365a78 !important;
+
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 1.2;
+
+    letter-spacing: .2px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* ALL EMPLOYEES */
+
+.meeting-all-option
+.meeting-employee-name {
+
+    color: #365a78 !important;
+
+    font-size: 13px !important;
+
+    font-weight: 800 !important;
+}
+
+
+/* SELECTED ROW */
+
+.meeting-employee-option:has(
+    input:checked
+) {
+
+    background: #f3f9fc;
+}
+
+
+/* =========================================================
+   EMPLOYEE LIST
+   ========================================================= */
+
+.meeting-recipient-list {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    padding: 2px 0;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.meeting-employee-dropdown::-webkit-scrollbar {
+
+    width: 6px;
+}
+
+
+.meeting-employee-dropdown::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+.meeting-employee-dropdown::-webkit-scrollbar-thumb {
+
+    background: #cbd9e8;
+
+    border-radius: 10px;
+}
+
+
+.meeting-employee-dropdown::-webkit-scrollbar-thumb:hover {
+
+    background: #aebfd2;
+}
+
+/* Employee option: checkbox beside the name */
+.meeting-employee-option {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100%;
+}
+
+/* Checkbox */
+.meeting-custom-checkbox {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Employee name */
+.meeting-employee-name {
+    display: inline-block !important;
+    color: #365a78 !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+/* =========================================================
+   EMPLOYEES / RECIPIENTS
+   ========================================================= */
+
+.meeting-recipients-display {
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    background: #f8fbff;
+    border: 1px solid #e2ebf5;
+    border-radius: 14px;
+
+    box-shadow: 0 4px 12px rgba(35, 75, 115, 0.05);
+}
+
+/* Header */
+.meeting-recipients-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    color: #365a78;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.meeting-recipients-title i {
+    font-size: 16px;
+    color: #2f7de1;
+}
+
+/* List */
+.meeting-recipients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Employee row */
+.meeting-recipient-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 11px;
+
+    transition: all 0.2s ease;
+}
+
+.meeting-recipient-row:hover {
+    border-color: #c9ddf3;
+    background: #fbfdff;
+    transform: translateY(-1px);
+}
+
+/* Employee information */
+.meeting-recipient-user {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    min-width: 0;
+}
+
+/* Avatar */
+.meeting-recipient-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #e4f0ff,
+        #d4e7fb
+    );
+
+    color: #2f72bd;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    border: 1px solid #cfe1f4;
+}
+
+/* Name + email container */
+.meeting-recipient-user > div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+/* Name */
+.meeting-recipient-user strong {
+    color: #294968;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Email */
+.meeting-recipient-user small {
+    color: #8a9eb4;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Status */
+.meeting-recipient-row .meeting-status {
+    flex-shrink: 0;
+
+    padding: 5px 9px;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* Pending */
+.meeting-recipient-row .meeting-status.pending {
+    color: #b9770e;
+    background: #fff7e6;
+    border: 1px solid #f5dca8;
+}
+
+/* Accepted */
+.meeting-recipient-row .meeting-status.accepted {
+    color: #168052;
+    background: #eaf8f1;
+    border: 1px solid #c9ead9;
+}
+
+/* Rejected */
+.meeting-recipient-row .meeting-status.rejected {
+    color: #c24141;
+    background: #fff0f0;
+    border: 1px solid #f1cccc;
+}

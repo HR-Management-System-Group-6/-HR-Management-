@@ -2,6 +2,7 @@
    MEETING MANAGEMENT
    ========================================================= */
 
+
 /* =========================================================
    DISPLAY MEETING PAGE
    ========================================================= */
@@ -27,7 +28,9 @@ function displayMeeting() {
         return;
     }
 
+
     initializeMeetings();
+
 
     const isHR =
         String(currentUser.role || "")
@@ -45,10 +48,7 @@ function displayMeeting() {
 
                 <div>
 
-
-
                     <h1>Meetings</h1>
-
 
                 </div>
 
@@ -164,7 +164,7 @@ function displayMeeting() {
                                     </h2>
 
                                     <p>
-                                        Send a meeting invitation to an employee.
+                                        Send a meeting invitation to employees.
                                     </p>
 
                                 </div>
@@ -185,7 +185,7 @@ function displayMeeting() {
                                 onsubmit="createMeeting(event)"
                             >
 
-                                <!-- TITLE -->
+                                <!-- ================= TITLE ================= -->
 
                                 <div class="meeting-form-group full">
 
@@ -195,8 +195,6 @@ function displayMeeting() {
                                     </label>
 
                                     <div class="meeting-input-wrapper">
-
-                                        
 
                                         <input
                                             type="text"
@@ -210,36 +208,89 @@ function displayMeeting() {
                                 </div>
 
 
-                                <!-- EMPLOYEE -->
+                               
+
+                                <!-- ================= EMPLOYEES ================= -->
 
                                 <div class="meeting-form-group full">
 
                                     <label>
-                                        Employee
+                                        Assigned Employees
                                         <span>*</span>
                                     </label>
 
-                                    <div class="meeting-input-wrapper">
 
-                                        
+                                    <div class="meeting-employee-selector">
 
-                                        <select
-                                            id="meetingRecipient"
-                                            required
+                                        <!-- SELECT BOX -->
+
+                                        <button
+                                            type="button"
+                                            class="meeting-employee-select"
+                                            id="meetingEmployeeSelect"
+                                            onclick="toggleEmployeeDropdown()"
                                         >
 
-                                            <option value="">
-                                                Select employee
-                                            </option>
+                                            <span id="meetingEmployeeSelectText">
+                                                Select employees
+                                            </span>
 
-                                        </select>
+                                            <i
+                                                class="bi bi-chevron-down"
+                                                id="meetingEmployeeArrow"
+                                            ></i>
+
+                                        </button>
+
+
+                                        <!-- DROPDOWN -->
+
+                                        <div
+                                            class="meeting-employee-dropdown"
+                                            id="meetingEmployeeDropdown"
+                                        >
+
+                                            <!-- ALL EMPLOYEES -->
+
+                                            <label
+                                                class="meeting-employee-option meeting-all-option"
+                                            >
+
+                                                <input
+                                                    type="checkbox"
+                                                    id="meetingSelectAll"
+                                                    onchange="toggleAllMeetingRecipients(this)"
+                                                >
+
+                                                <span class="meeting-custom-checkbox"></span>
+
+                                                <span class="meeting-employee-name">
+                                                    ALL EMPLOYEES
+                                                </span>
+
+                                            </label>
+
+
+                                            <!-- EMPLOYEES -->
+
+                                            <div
+                                                id="meetingRecipientList"
+                                                class="meeting-recipient-list"
+                                            ></div>
+
+                                        </div>
 
                                     </div>
+
+
+                                    <small class="meeting-recipient-hint">
+                                        Select one or more employees
+                                    </small>
 
                                 </div>
 
 
-                                <!-- DATE / TIME -->
+                                <!-- ================= DATE / TIME ================= -->
 
                                 <div class="meeting-form-row">
 
@@ -289,7 +340,7 @@ function displayMeeting() {
                                 </div>
 
 
-                                <!-- DURATION -->
+                                <!-- ================= DURATION ================= -->
 
                                 <div class="meeting-form-group full">
 
@@ -299,15 +350,18 @@ function displayMeeting() {
 
                                     <div class="meeting-input-wrapper">
 
-                                        
-
-                                        <select id="meetingDuration">
+                                        <select
+                                            id="meetingDuration"
+                                        >
 
                                             <option value="15">
                                                 15 minutes
                                             </option>
 
-                                            <option value="30" selected>
+                                            <option
+                                                value="30"
+                                                selected
+                                            >
                                                 30 minutes
                                             </option>
 
@@ -334,7 +388,7 @@ function displayMeeting() {
                                 </div>
 
 
-                                <!-- LINK -->
+                                <!-- ================= LINK ================= -->
 
                                 <div class="meeting-form-group full">
 
@@ -359,7 +413,7 @@ function displayMeeting() {
                                 </div>
 
 
-                                <!-- DESCRIPTION -->
+                                <!-- ================= DESCRIPTION ================= -->
 
                                 <div class="meeting-form-group full">
 
@@ -382,7 +436,7 @@ function displayMeeting() {
                                 </div>
 
 
-                                <!-- SUBMIT -->
+                                <!-- ================= SUBMIT ================= -->
 
                                 <button
                                     type="submit"
@@ -608,8 +662,6 @@ function displayMeeting() {
     `;
 
 
-    /* Initialize page */
-
     setMinimumDate();
 
     populateRecipients();
@@ -628,15 +680,10 @@ function displayMeeting() {
 function getCurrentUser() {
 
     const possibleKeys = [
-
         "currentUser",
-
         "loggedInUser",
-
         "user",
-
         "userInfo"
-
     ];
 
 
@@ -678,8 +725,6 @@ function getCurrentUser() {
     }
 
 
-    /* Fallback */
-
     const nameElement =
         document.getElementById("user");
 
@@ -715,9 +760,7 @@ function getCurrentUser() {
 
 function initializeMeetings() {
 
-    if (
-        !localStorage.getItem("meetings")
-    ) {
+    if (!localStorage.getItem("meetings")) {
 
         localStorage.setItem(
             "meetings",
@@ -764,13 +807,9 @@ function saveMeetings(meetings) {
 function getEmployees() {
 
     const possibleKeys = [
-
         "employees",
-
         "employeeData",
-
         "users"
-
     ];
 
 
@@ -812,24 +851,21 @@ function getEmployees() {
 
 
 /* =========================================================
-   POPULATE EMPLOYEE DROPDOWN
-   HR ONLY
+   POPULATE EMPLOYEES
    ========================================================= */
 
 function populateRecipients() {
 
-    const select =
+    const list =
         document.getElementById(
-            "meetingRecipient"
+            "meetingRecipientList"
         );
 
-
-    if (!select) return;
+    if (!list) return;
 
 
     const currentUser =
         getCurrentUser();
-
 
     if (!currentUser) return;
 
@@ -839,16 +875,6 @@ function populateRecipients() {
             .trim()
             .toLowerCase() === "hr";
 
-
-    /*
-       VERY IMPORTANT:
-
-       If current user is Employee,
-       stop here.
-
-       Employee should never get
-       a recipient dropdown.
-    */
 
     if (!isHR) return;
 
@@ -865,50 +891,664 @@ function populateRecipients() {
         });
 
 
-    employees.forEach(user => {
+    if (employees.length === 0) {
 
-        const option =
-            document.createElement("option");
+        list.innerHTML = `
+            <div class="meeting-no-employees">
+                No employees found
+            </div>
+        `;
 
+        return;
 
-        option.value =
-            user.email ||
-            user.id ||
-            user.name;
-
-
-        option.textContent =
-            `${user.name || "Unknown User"}${
-                user.email
-                    ? ` — ${user.email}`
-                    : ""
-            }`;
+    }
 
 
-        select.appendChild(option);
+    list.innerHTML =
+        employees
+            .map(user => {
+
+                const key =
+                    user.email ||
+                    user.id ||
+                    user.name;
+
+
+                const name =
+                    user.name ||
+                    "Unknown User";
+
+
+                const email =
+                    user.email ||
+                    "";
+
+
+                return `
+
+                    <label
+                        class="meeting-employee-option"
+                    >
+
+                        <input
+                            type="checkbox"
+                            class="meeting-recipient-checkbox"
+                            value="${escapeHtml(String(key))}"
+                            data-name="${escapeHtml(String(name))}"
+                            data-email="${escapeHtml(String(email))}"
+                            onchange="updateMeetingSelectAllState()"
+                        >
+
+
+                        <span
+                            class="meeting-custom-checkbox"
+                        ></span>
+
+
+                        <span
+                            class="meeting-employee-name"
+                        >
+                            ${escapeHtml(
+                                String(name)
+                            ).toUpperCase()}
+                        </span>
+
+                    </label>
+
+                `;
+
+            })
+            .join("");
+
+}
+
+/* =========================================================
+   EMPLOYEE DROPDOWN
+   ========================================================= */
+
+function toggleEmployeeDropdown() {
+
+    const dropdown =
+        document.getElementById(
+            "meetingEmployeeDropdown"
+        );
+
+
+    const select =
+        document.getElementById(
+            "meetingEmployeeSelect"
+        );
+
+
+    const arrow =
+        document.getElementById(
+            "meetingEmployeeArrow"
+        );
+
+
+    if (!dropdown) return;
+
+
+    const isOpen =
+        dropdown.classList.contains("show");
+
+
+    if (isOpen) {
+
+        dropdown.classList.remove(
+            "show"
+        );
+
+        select.classList.remove(
+            "open"
+        );
+
+        arrow.classList.remove(
+            "rotate"
+        );
+
+    }
+    else {
+
+        dropdown.classList.add(
+            "show"
+        );
+
+        select.classList.add(
+            "open"
+        );
+
+        arrow.classList.add(
+            "rotate"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE SELECTED EMPLOYEES TEXT
+   ========================================================= */
+
+function updateMeetingSelectText() {
+
+    const text =
+        document.getElementById(
+            "meetingEmployeeSelectText"
+        );
+
+
+    if (!text) return;
+
+
+    const selected =
+        Array.from(
+            document.querySelectorAll(
+                ".meeting-recipient-checkbox:checked"
+            )
+        );
+
+
+    if (selected.length === 0) {
+
+        text.textContent =
+            "Select employees";
+
+        return;
+
+    }
+
+
+    const allEmployees =
+        document.querySelectorAll(
+            ".meeting-recipient-checkbox"
+        );
+
+
+    /*
+        If ALL employees are selected
+    */
+
+    if (
+        selected.length ===
+        allEmployees.length
+    ) {
+
+        text.textContent =
+            "All employees";
+
+        return;
+
+    }
+
+
+    /*
+        Get selected names
+    */
+
+    const names =
+        selected.map(
+            checkbox =>
+                checkbox.dataset.name
+        );
+
+
+    if (names.length <= 2) {
+
+        text.textContent =
+            names.join(", ");
+
+    }
+    else {
+
+        text.textContent =
+            `${names[0]}, ${names[1]} +${names.length - 2}`;
+
+    }
+
+}
+
+
+/* =========================================================
+   SELECT ALL
+   ========================================================= */
+
+function toggleAllMeetingRecipients(
+    selectAllCheckbox
+) {
+
+    const checkboxes =
+        document.querySelectorAll(
+            ".meeting-recipient-checkbox"
+        );
+
+
+    checkboxes.forEach(
+        checkbox => {
+
+            checkbox.checked =
+                selectAllCheckbox.checked;
+
+        }
+    );
+
+
+    updateMeetingSelectText();
+
+}
+
+
+/* =========================================================
+   UPDATE SELECT ALL STATE
+   ========================================================= */
+
+function updateMeetingSelectAllState() {
+
+    const allCheckbox =
+        document.getElementById(
+            "meetingSelectAll"
+        );
+
+
+    const checkboxes =
+        Array.from(
+            document.querySelectorAll(
+                ".meeting-recipient-checkbox"
+            )
+        );
+
+
+    if (!allCheckbox) return;
+
+
+    if (!checkboxes.length) {
+
+        allCheckbox.checked = false;
+
+        updateMeetingSelectText();
+
+        return;
+
+    }
+
+
+    allCheckbox.checked =
+        checkboxes.every(
+            checkbox =>
+                checkbox.checked
+        );
+
+
+    updateMeetingSelectText();
+
+}
+
+
+/* =========================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const selector =
+            document.querySelector(
+                ".meeting-employee-selector"
+            );
+
+
+        if (!selector) return;
+
+
+        if (
+            !selector.contains(
+                event.target
+            )
+        ) {
+
+            const dropdown =
+                document.getElementById(
+                    "meetingEmployeeDropdown"
+                );
+
+
+            const select =
+                document.getElementById(
+                    "meetingEmployeeSelect"
+                );
+
+
+            const arrow =
+                document.getElementById(
+                    "meetingEmployeeArrow"
+                );
+
+
+            if (dropdown) {
+
+                dropdown.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            if (select) {
+
+                select.classList.remove(
+                    "open"
+                );
+
+            }
+
+
+            if (arrow) {
+
+                arrow.classList.remove(
+                    "rotate"
+                );
+
+            }
+
+        }
+
+    }
+);
+/* =========================================================
+   SELECT ALL
+   ========================================================= */
+
+function toggleAllMeetingRecipients(
+    selectAllCheckbox
+) {
+
+    const checkboxes =
+        document.querySelectorAll(
+            ".meeting-recipient-checkbox"
+        );
+
+
+    checkboxes.forEach(checkbox => {
+
+        checkbox.checked =
+            selectAllCheckbox.checked;
 
     });
 
-
-    if (employees.length === 0) {
-
-        const option =
-            document.createElement("option");
+}
 
 
-        option.value = "";
+/* =========================================================
+   UPDATE SELECT ALL STATE
+   ========================================================= */
+
+function updateMeetingSelectAllState() {
+
+    const allCheckbox =
+        document.getElementById(
+            "meetingSelectAll"
+        );
 
 
-        option.textContent =
-            "No employees found";
+    const checkboxes =
+        Array.from(
+            document.querySelectorAll(
+                ".meeting-recipient-checkbox"
+            )
+        );
 
 
-        option.disabled = true;
+    if (!allCheckbox) return;
 
 
-        select.appendChild(option);
+    if (!checkboxes.length) {
+
+        allCheckbox.checked = false;
+
+        return;
 
     }
+
+
+    allCheckbox.checked =
+        checkboxes.every(
+            checkbox =>
+                checkbox.checked
+        );
+
+}
+
+
+/* =========================================================
+   GET SELECTED EMPLOYEES
+   ========================================================= */
+
+function getMeetingRecipientsFromForm() {
+
+    return Array.from(
+        document.querySelectorAll(
+            ".meeting-recipient-checkbox:checked"
+        )
+    )
+    .map(checkbox => {
+
+        return {
+
+            key:
+                checkbox.value,
+
+            name:
+                checkbox.dataset.name ||
+                checkbox.value,
+
+            email:
+                checkbox.dataset.email ||
+                checkbox.value,
+
+            status:
+                "pending",
+
+            responseNote:
+                "",
+
+            changeRequestedDate:
+                "",
+
+            changeRequestedTime:
+                ""
+
+        };
+
+    });
+
+}
+
+
+/* =========================================================
+   GET MEETING RECIPIENTS
+   Supports old meetings
+   ========================================================= */
+
+function getMeetingRecipients(meeting) {
+
+    /*
+        New structure:
+
+        recipients: [
+            {
+                key,
+                name,
+                email,
+                status
+            }
+        ]
+    */
+
+    if (
+        Array.isArray(
+            meeting.recipients
+        )
+    ) {
+
+        return meeting.recipients;
+
+    }
+
+
+    /*
+        Old structure:
+
+        recipient: "email"
+    */
+
+    if (meeting.recipient) {
+
+        return [
+
+            {
+
+                key:
+                    meeting.recipient,
+
+                name:
+                    meeting.recipient,
+
+                email:
+                    meeting.recipient,
+
+                status:
+                    meeting.status ||
+                    "pending",
+
+                responseNote:
+                    meeting.responseNote ||
+                    "",
+
+                changeRequestedDate:
+                    meeting.changeRequestedDate ||
+                    "",
+
+                changeRequestedTime:
+                    meeting.changeRequestedTime ||
+                    ""
+
+            }
+
+        ];
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
+   GET RECIPIENT FOR CURRENT USER
+   ========================================================= */
+
+function getRecipientForUser(
+    meeting,
+    userKey
+) {
+
+    return getMeetingRecipients(meeting)
+        .find(
+            recipient =>
+                String(recipient.key) ===
+                String(userKey)
+        ) || null;
+
+}
+
+
+/* =========================================================
+   GET OVERALL MEETING STATUS
+   ========================================================= */
+
+function getMeetingOverallStatus(meeting) {
+
+    const recipients =
+        getMeetingRecipients(meeting);
+
+
+    if (!recipients.length) {
+
+        return meeting.status || "pending";
+
+    }
+
+
+    /*
+        If at least one employee
+        is still pending,
+        meeting remains pending.
+    */
+
+    if (
+        recipients.some(
+            r =>
+                r.status === "pending"
+        )
+    ) {
+
+        return "pending";
+
+    }
+
+
+    /*
+        If someone requested a change.
+    */
+
+    if (
+        recipients.some(
+            r =>
+                r.status === "change_requested"
+        )
+    ) {
+
+        return "change_requested";
+
+    }
+
+
+    /*
+        Everyone accepted.
+    */
+
+    if (
+        recipients.every(
+            r =>
+                r.status === "accepted"
+        )
+    ) {
+
+        return "accepted";
+
+    }
+
+
+    /*
+        Everyone rejected.
+    */
+
+    if (
+        recipients.every(
+            r =>
+                r.status === "rejected"
+        )
+    ) {
+
+        return "rejected";
+
+    }
+
+
+    return "pending";
 
 }
 
@@ -939,12 +1579,6 @@ function createMeeting(event) {
     }
 
 
-    /*
-       SECURITY CHECK
-
-       Only HR can create meetings.
-    */
-
     const isHR =
         String(currentUser.role || "")
             .trim()
@@ -965,59 +1599,77 @@ function createMeeting(event) {
 
     const title =
         document
-            .getElementById("meetingTitle")
+            .getElementById(
+                "meetingTitle"
+            )
             .value
             .trim();
 
 
-    const recipient =
-        document
-            .getElementById("meetingRecipient")
-            .value;
+    /*
+        Get multiple selected employees.
+    */
+
+    const recipients =
+        getMeetingRecipientsFromForm();
 
 
     const date =
         document
-            .getElementById("meetingDate")
+            .getElementById(
+                "meetingDate"
+            )
             .value;
 
 
     const time =
         document
-            .getElementById("meetingTime")
+            .getElementById(
+                "meetingTime"
+            )
             .value;
 
 
     const duration =
         document
-            .getElementById("meetingDuration")
+            .getElementById(
+                "meetingDuration"
+            )
             .value;
 
 
     const link =
         document
-            .getElementById("meetingLink")
+            .getElementById(
+                "meetingLink"
+            )
             .value
             .trim();
 
 
     const description =
         document
-            .getElementById("meetingDescription")
+            .getElementById(
+                "meetingDescription"
+            )
             .value
             .trim();
 
 
+    /*
+        Validation
+    */
+
     if (
         !title ||
-        !recipient ||
+        !recipients.length ||
         !date ||
         !time ||
         !link
     ) {
 
         showMeetingToast(
-            "Please complete all required fields.",
+            "Please complete all required fields and select at least one employee.",
             "error"
         );
 
@@ -1026,28 +1678,36 @@ function createMeeting(event) {
     }
 
 
+    /*
+        Create ONE meeting
+        for MANY employees.
+    */
+
     const meeting = {
 
-        id: Date.now(),
+        id:
+            Date.now(),
 
-        title: title,
+        title:
+            title,
 
-        description: description,
+        description:
+            description,
 
-        date: date,
+        date:
+            date,
 
-        time: time,
+        time:
+            time,
 
-        duration: duration,
+        duration:
+            duration,
 
-        link: link,
+        link:
+            link,
 
-        /*
-           New meeting always starts
-           as pending.
-        */
-
-        status: "pending",
+        status:
+            "pending",
 
         createdBy:
             currentUser.email ||
@@ -1057,18 +1717,42 @@ function createMeeting(event) {
             currentUser.name ||
             "HR",
 
-        creatorRole: "HR",
+        creatorRole:
+            "HR",
 
-        recipient: recipient,
+
+        /*
+            IMPORTANT:
+
+            Multiple recipients.
+        */
+
+        recipients:
+            recipients,
+
+
+        /*
+            Keep old recipient
+            for compatibility.
+        */
+
+        recipient:
+            recipients[0]
+                ? recipients[0].key
+                : "",
+
 
         createdAt:
             new Date().toISOString(),
 
-        responseNote: "",
+        responseNote:
+            "",
 
-        changeRequestedDate: "",
+        changeRequestedDate:
+            "",
 
-        changeRequestedTime: ""
+        changeRequestedTime:
+            ""
 
     };
 
@@ -1077,10 +1761,14 @@ function createMeeting(event) {
         getMeetings();
 
 
-    meetings.unshift(meeting);
+    meetings.unshift(
+        meeting
+    );
 
 
-    saveMeetings(meetings);
+    saveMeetings(
+        meetings
+    );
 
 
     const form =
@@ -1090,12 +1778,30 @@ function createMeeting(event) {
 
 
     if (form) {
+
         form.reset();
+
+    }
+
+
+    /*
+        Reset Select All
+    */
+
+    const selectAll =
+        document.getElementById(
+            "meetingSelectAll"
+        );
+
+    if (selectAll) {
+
+        selectAll.checked = false;
+
     }
 
 
     showMeetingToast(
-        "Meeting request sent successfully.",
+        `Meeting request sent to ${recipients.length} employee${recipients.length > 1 ? "s" : ""}.`,
         "success"
     );
 
@@ -1111,7 +1817,8 @@ function createMeeting(event) {
    RENDER MEETINGS
    ========================================================= */
 
-let currentMeetingFilter = "all";
+let currentMeetingFilter =
+    "all";
 
 
 function renderMeetings(
@@ -1147,35 +1854,81 @@ function renderMeetings(
         currentUser.name;
 
 
+    const isHR =
+        String(currentUser.role || "")
+            .trim()
+            .toLowerCase() === "hr";
+
+
     /*
-       Show only:
+        HR:
+        Show meetings created by HR.
 
-       HR:
-       meetings created by HR
-
-       Employee:
-       meetings sent to employee
+        Employee:
+        Show only meetings
+        sent to this employee.
     */
 
     let meetings =
-        allMeetings.filter(meeting => {
+        allMeetings.filter(
+            meeting => {
 
-            return (
-                meeting.createdBy === currentUserKey ||
-                meeting.recipient === currentUserKey
-            );
+                if (isHR) {
 
-        });
+                    return (
+                        meeting.createdBy ===
+                        currentUserKey
+                    );
+
+                }
 
 
-    /* Filter */
+                return (
+                    getRecipientForUser(
+                        meeting,
+                        currentUserKey
+                    ) !== null
+                );
+
+            }
+        );
+
+
+    /*
+        Filter
+    */
 
     if (filter !== "all") {
 
         meetings =
             meetings.filter(
-                meeting =>
-                    meeting.status === filter
+                meeting => {
+
+                    if (isHR) {
+
+                        return (
+                            getMeetingOverallStatus(
+                                meeting
+                            ) === filter
+                        );
+
+                    }
+
+
+                    const recipient =
+                        getRecipientForUser(
+                            meeting,
+                            currentUserKey
+                        );
+
+
+                    return (
+                        recipient &&
+                        recipient.status ===
+                        filter
+                    );
+
+                }
             );
 
     }
@@ -1199,9 +1952,7 @@ function renderMeetings(
     }
 
 
-    /* Empty */
-
-    if (meetings.length === 0) {
+    if (!meetings.length) {
 
         container.innerHTML = `
 
@@ -1218,13 +1969,11 @@ function renderMeetings(
                 </h3>
 
                 <p>
-
                     ${
                         filter === "all"
                         ? "You don't have any meetings yet."
                         : "There are no meetings with this status."
                     }
-
                 </p>
 
             </div>
@@ -1238,11 +1987,12 @@ function renderMeetings(
 
     container.innerHTML =
         meetings
-            .map(meeting =>
-                createMeetingCard(
-                    meeting,
-                    currentUser
-                )
+            .map(
+                meeting =>
+                    createMeetingCard(
+                        meeting,
+                        currentUser
+                    )
             )
             .join("");
 
@@ -1268,9 +2018,15 @@ function createMeetingCard(
         currentUserKey;
 
 
+    const recipientForUser =
+        getRecipientForUser(
+            meeting,
+            currentUserKey
+        );
+
+
     const isReceiver =
-        meeting.recipient ===
-        currentUserKey;
+        recipientForUser !== null;
 
 
     const isHR =
@@ -1279,9 +2035,25 @@ function createMeetingCard(
             .toLowerCase() === "hr";
 
 
+    /*
+        HR sees overall status.
+
+        Employee sees his own status.
+    */
+
+    const displayStatus =
+        isHR
+            ? getMeetingOverallStatus(
+                meeting
+            )
+            : recipientForUser
+                ? recipientForUser.status
+                : "pending";
+
+
     const statusInfo =
         getStatusInfo(
-            meeting.status
+            displayStatus
         );
 
 
@@ -1295,10 +2067,17 @@ function createMeetingCard(
         dateObject.toLocaleDateString(
             "en-US",
             {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-                year: "numeric"
+                weekday:
+                    "short",
+
+                month:
+                    "short",
+
+                day:
+                    "numeric",
+
+                year:
+                    "numeric"
             }
         );
 
@@ -1307,26 +2086,27 @@ function createMeetingCard(
         dateObject.toLocaleTimeString(
             "en-US",
             {
-                hour: "numeric",
-                minute: "2-digit"
+                hour:
+                    "numeric",
+
+                minute:
+                    "2-digit"
             }
         );
 
 
+    /*
+        Employee action buttons
+    */
+
     let actionButtons = "";
 
-
-    /*
-       EMPLOYEE ACTIONS ONLY
-
-       HR cannot Accept / Reject /
-       Request Change.
-    */
 
     if (
         !isHR &&
         isReceiver &&
-        meeting.status === "pending"
+        recipientForUser &&
+        recipientForUser.status === "pending"
     ) {
 
         actionButtons = `
@@ -1376,47 +2156,308 @@ function createMeetingCard(
 
 
     /*
-       Join button only after employee
-       accepts the meeting.
+        Join button
+        Only employee who accepted
+        can join.
     */
 
-    const linkButton = `
+    const linkButton =
 
-        <a
-            href="${escapeHtml(meeting.link)}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="meeting-join-btn"
-        >
+        !isHR &&
+        recipientForUser &&
+        recipientForUser.status === "accepted"
 
-            <i class="bi bi-camera-video"></i>
+        ? `
 
-            Join Meeting
+            <a
+                href="${escapeHtml(meeting.link)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="meeting-join-btn"
+            >
 
-        </a>
+                <i class="bi bi-camera-video"></i>
 
-    `;
+                Join Meeting
+
+            </a>
+
+        `
+
+        : "";
+
+
+    /*
+        HR recipient list
+    */
+
+    let recipientsHTML = "";
+
+
+    if (isHR) {
+
+        const recipients =
+            getMeetingRecipients(
+                meeting
+            );
+
+
+        recipientsHTML = `
+
+            <div class="meeting-recipients-display">
+
+                <div class="meeting-recipients-title">
+
+                    <i class="bi bi-people"></i>
+
+                    <span>
+                        Employees
+                    </span>
+
+                </div>
+
+
+                <div class="meeting-recipients-list">
+
+                    ${
+                        recipients
+                            .map(
+                                recipient => {
+
+                                    const recipientStatus =
+                                        getStatusInfo(
+                                            recipient.status
+                                        );
+
+
+                                    return `
+
+                                        <div
+                                            class="meeting-recipient-row"
+                                        >
+
+                                            <div
+                                                class="meeting-recipient-user"
+                                            >
+
+                                                <div
+                                                    class="meeting-recipient-avatar"
+                                                >
+                                                    ${
+                                                        escapeHtml(
+                                                            getInitials(
+                                                                recipient.name ||
+                                                                recipient.email
+                                                            )
+                                                        )
+                                                    }
+                                                </div>
+
+
+                                                <div>
+
+                                                    <strong>
+                                                        ${
+                                                            escapeHtml(
+                                                                recipient.name ||
+                                                                recipient.email
+                                                            )
+                                                        }
+                                                    </strong>
+
+                                                    <small>
+                                                        ${
+                                                            escapeHtml(
+                                                                recipient.email ||
+                                                                ""
+                                                            )
+                                                        }
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <span
+                                                class="
+                                                    meeting-status
+                                                    ${recipientStatus.class}
+                                                "
+                                            >
+
+                                                <span></span>
+
+                                                ${
+                                                    recipientStatus.text
+                                                }
+
+                                            </span>
+
+                                        </div>
+
+                                    `;
+
+                                }
+                            )
+                            .join("")
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        Employee response note
+    */
+
+    let responseHTML = "";
+
+
+    if (
+        !isHR &&
+        recipientForUser &&
+        recipientForUser.status ===
+            "change_requested"
+    ) {
+
+        responseHTML = `
+
+            <div class="meeting-change-note">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                <div>
+
+                    <strong>
+                        Change requested
+                    </strong>
+
+                    <p>
+                        ${
+                            escapeHtml(
+                                recipientForUser.responseNote ||
+                                "The employee requested a different meeting time."
+                            )
+                        }
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    if (
+        !isHR &&
+        recipientForUser &&
+        recipientForUser.status ===
+            "rejected"
+    ) {
+
+        responseHTML = `
+
+            <div class="meeting-rejected-note">
+
+                <i class="bi bi-x-circle"></i>
+
+                <span>
+                    This meeting was rejected.
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        Description
+    */
+
+    const descriptionHTML =
+        meeting.description
+
+        ? `
+
+            <div class="meeting-description">
+
+                <i class="bi bi-info-circle"></i>
+
+                <p>
+                    ${escapeHtml(
+                        meeting.description
+                    )}
+                </p>
+
+            </div>
+
+        `
+
+        : "";
+
+
+    /*
+        Sent to text
+    */
+
+    const sentToText =
+        isHR
+
+        ? getMeetingRecipients(meeting)
+            .map(
+                recipient =>
+                    recipient.name ||
+                    recipient.email ||
+                    recipient.key
+            )
+            .join(", ")
+
+        : meeting.creatorName;
 
 
     return `
 
-        <article class="meeting-item">
+        <article
+            class="meeting-item"
+        >
 
-            <div class="meeting-item-accent"></div>
+            <div
+                class="meeting-item-accent"
+            ></div>
 
 
-            <div class="meeting-item-content">
+            <div
+                class="meeting-item-content"
+            >
 
 
                 <!-- ================= TOP ================= -->
 
-                <div class="meeting-item-top">
+                <div
+                    class="meeting-item-top"
+                >
 
-                    <div class="meeting-title-area">
+                    <div
+                        class="meeting-title-area"
+                    >
 
-                        <div class="meeting-small-icon">
+                        <div
+                            class="meeting-small-icon"
+                        >
 
-                            <i class="bi bi-camera-video"></i>
+                            <i
+                                class="bi bi-camera-video"
+                            ></i>
 
                         </div>
 
@@ -1424,18 +2465,22 @@ function createMeetingCard(
                         <div>
 
                             <h3>
-                                ${escapeHtml(meeting.title)}
+                                ${escapeHtml(
+                                    meeting.title
+                                )}
                             </h3>
 
 
-                            <span class="meeting-created-by">
+                            <span
+                                class="meeting-created-by"
+                            >
 
                                 ${
                                     isCreator
-                                    ? "Created by you"
-                                    : `From ${escapeHtml(
-                                        meeting.creatorName
-                                      )}`
+                                        ? "Created by you"
+                                        : `From ${escapeHtml(
+                                            meeting.creatorName
+                                        )}`
                                 }
 
                             </span>
@@ -1463,14 +2508,22 @@ function createMeetingCard(
 
                 <!-- ================= INFO ================= -->
 
-                <div class="meeting-info-grid">
+                <div
+                    class="meeting-info-grid"
+                >
 
 
-                    <div class="meeting-info">
+                    <div
+                        class="meeting-info"
+                    >
 
-                        <div class="meeting-info-icon">
+                        <div
+                            class="meeting-info-icon"
+                        >
 
-                            <i class="bi bi-calendar3"></i>
+                            <i
+                                class="bi bi-calendar3"
+                            ></i>
 
                         </div>
 
@@ -1491,11 +2544,17 @@ function createMeetingCard(
 
 
 
-                    <div class="meeting-info">
+                    <div
+                        class="meeting-info"
+                    >
 
-                        <div class="meeting-info-icon">
+                        <div
+                            class="meeting-info-icon"
+                        >
 
-                            <i class="bi bi-clock"></i>
+                            <i
+                                class="bi bi-clock"
+                            ></i>
 
                         </div>
 
@@ -1516,11 +2575,17 @@ function createMeetingCard(
 
 
 
-                    <div class="meeting-info">
+                    <div
+                        class="meeting-info"
+                    >
 
-                        <div class="meeting-info-icon">
+                        <div
+                            class="meeting-info-icon"
+                        >
 
-                            <i class="bi bi-hourglass"></i>
+                            <i
+                                class="bi bi-hourglass"
+                            ></i>
 
                         </div>
 
@@ -1532,7 +2597,9 @@ function createMeetingCard(
                             </span>
 
                             <strong>
-                                ${meeting.duration} min
+                                ${escapeHtml(
+                                    meeting.duration
+                                )} min
                             </strong>
 
                         </div>
@@ -1541,11 +2608,17 @@ function createMeetingCard(
 
 
 
-                    <div class="meeting-info">
+                    <div
+                        class="meeting-info"
+                    >
 
-                        <div class="meeting-info-icon">
+                        <div
+                            class="meeting-info-icon"
+                        >
 
-                            <i class="bi bi-person"></i>
+                            <i
+                                class="bi bi-person"
+                            ></i>
 
                         </div>
 
@@ -1555,9 +2628,9 @@ function createMeetingCard(
                             <span>
 
                                 ${
-                                    isCreator
-                                    ? "Sent to"
-                                    : "From"
+                                    isHR
+                                        ? "Sent to"
+                                        : "From"
                                 }
 
                             </span>
@@ -1565,15 +2638,9 @@ function createMeetingCard(
 
                             <strong>
 
-                                ${
-                                    isCreator
-                                    ? escapeHtml(
-                                        meeting.recipient
-                                      )
-                                    : escapeHtml(
-                                        meeting.creatorName
-                                      )
-                                }
+                                ${escapeHtml(
+                                    sentToText
+                                )}
 
                             </strong>
 
@@ -1585,103 +2652,34 @@ function createMeetingCard(
                 </div>
 
 
+                <!-- ================= RECIPIENTS ================= -->
+
+                ${recipientsHTML}
+
+
                 <!-- ================= DESCRIPTION ================= -->
 
-                ${
-                    meeting.description
-
-                    ? `
-
-                        <div class="meeting-description">
-
-                            <i class="bi bi-info-circle"></i>
-
-                            <p>
-                                ${escapeHtml(
-                                    meeting.description
-                                )}
-                            </p>
-
-                        </div>
-
-                    `
-
-                    : ""
-                }
+                ${descriptionHTML}
 
 
-                <!-- ================= CHANGE REQUEST ================= -->
+                <!-- ================= RESPONSE ================= -->
 
-                ${
-                    meeting.status === "change_requested"
-
-                    ? `
-
-                        <div class="meeting-change-note">
-
-                            <i class="bi bi-arrow-repeat"></i>
-
-
-                            <div>
-
-                                <strong>
-                                    Change requested
-                                </strong>
-
-
-                                <p>
-
-                                    ${
-                                        meeting.responseNote
-                                        ? escapeHtml(
-                                            meeting.responseNote
-                                          )
-                                        : "The employee requested a different meeting time."
-                                    }
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    `
-
-                    : ""
-                }
-
-
-                <!-- ================= REJECTED ================= -->
-
-                ${
-                    meeting.status === "rejected"
-
-                    ? `
-
-                        <div class="meeting-rejected-note">
-
-                            <i class="bi bi-x-circle"></i>
-
-                            <span>
-                                This meeting was rejected.
-                            </span>
-
-                        </div>
-
-                    `
-
-                    : ""
-                }
+                ${responseHTML}
 
 
                 <!-- ================= FOOTER ================= -->
 
-                <div class="meeting-item-footer">
+                <div
+                    class="meeting-item-footer"
+                >
 
+                    <div
+                        class="meeting-created-date"
+                    >
 
-                    <div class="meeting-created-date">
-
-                        <i class="bi bi-calendar-check"></i>
+                        <i
+                            class="bi bi-calendar-check"
+                        ></i>
 
                         Created
 
@@ -1692,14 +2690,11 @@ function createMeetingCard(
                     </div>
 
 
-                    <div class="meeting-card-actions">
+                    <div
+                        class="meeting-card-actions"
+                    >
 
-                        ${
-                            meeting.status === "accepted"
-                            ? linkButton
-                            : ""
-                        }
-
+                        ${linkButton}
 
                         ${actionButtons}
 
@@ -1727,36 +2722,44 @@ function getStatusInfo(status) {
 
         pending: {
 
-            text: "Pending",
+            text:
+                "Pending",
 
-            class: "pending"
+            class:
+                "pending"
 
         },
 
 
         accepted: {
 
-            text: "Accepted",
+            text:
+                "Accepted",
 
-            class: "accepted"
+            class:
+                "accepted"
 
         },
 
 
         rejected: {
 
-            text: "Rejected",
+            text:
+                "Rejected",
 
-            class: "rejected"
+            class:
+                "rejected"
 
         },
 
 
         change_requested: {
 
-            text: "Change Requested",
+            text:
+                "Change Requested",
 
-            class: "change-requested"
+            class:
+                "change-requested"
 
         }
 
@@ -1773,7 +2776,6 @@ function getStatusInfo(status) {
 
 /* =========================================================
    ACCEPT MEETING
-   EMPLOYEE ONLY
    ========================================================= */
 
 function acceptMeeting(id) {
@@ -1791,10 +2793,6 @@ function acceptMeeting(id) {
             .toLowerCase() === "hr";
 
 
-    /*
-       HR cannot accept.
-    */
-
     if (isHR) {
 
         showMeetingToast(
@@ -1825,14 +2823,16 @@ function acceptMeeting(id) {
         currentUser.name;
 
 
-    /*
-       Employee can only respond
-       to a meeting sent to them.
-    */
+    const recipient =
+        getRecipientForUser(
+            meeting,
+            currentUserKey
+        );
+
 
     if (
-        meeting.recipient !== currentUserKey ||
-        meeting.status !== "pending"
+        !recipient ||
+        recipient.status !== "pending"
     ) {
 
         showMeetingToast(
@@ -1845,15 +2845,23 @@ function acceptMeeting(id) {
     }
 
 
-    meeting.status =
+    recipient.status =
         "accepted";
 
 
-    meeting.responseNote =
+    recipient.responseNote =
         "Meeting accepted.";
 
 
-    saveMeetings(meetings);
+    meeting.status =
+        getMeetingOverallStatus(
+            meeting
+        );
+
+
+    saveMeetings(
+        meetings
+    );
 
 
     showMeetingToast(
@@ -1871,7 +2879,6 @@ function acceptMeeting(id) {
 
 /* =========================================================
    REJECT MEETING
-   EMPLOYEE ONLY
    ========================================================= */
 
 function rejectMeeting(id) {
@@ -1888,10 +2895,6 @@ function rejectMeeting(id) {
             .trim()
             .toLowerCase() === "hr";
 
-
-    /*
-       HR cannot reject.
-    */
 
     if (isHR) {
 
@@ -1923,9 +2926,16 @@ function rejectMeeting(id) {
         currentUser.name;
 
 
+    const recipient =
+        getRecipientForUser(
+            meeting,
+            currentUserKey
+        );
+
+
     if (
-        meeting.recipient !== currentUserKey ||
-        meeting.status !== "pending"
+        !recipient ||
+        recipient.status !== "pending"
     ) {
 
         showMeetingToast(
@@ -1938,15 +2948,23 @@ function rejectMeeting(id) {
     }
 
 
-    meeting.status =
+    recipient.status =
         "rejected";
 
 
-    meeting.responseNote =
+    recipient.responseNote =
         "Meeting rejected.";
 
 
-    saveMeetings(meetings);
+    meeting.status =
+        getMeetingOverallStatus(
+            meeting
+        );
+
+
+    saveMeetings(
+        meetings
+    );
 
 
     showMeetingToast(
@@ -1964,7 +2982,6 @@ function rejectMeeting(id) {
 
 /* =========================================================
    OPEN CHANGE MODAL
-   EMPLOYEE ONLY
    ========================================================= */
 
 function openChangeModal(id) {
@@ -1981,10 +2998,6 @@ function openChangeModal(id) {
             .trim()
             .toLowerCase() === "hr";
 
-
-    /*
-       HR cannot request a change.
-    */
 
     if (isHR) {
 
@@ -2016,9 +3029,16 @@ function openChangeModal(id) {
         currentUser.name;
 
 
+    const recipient =
+        getRecipientForUser(
+            meeting,
+            currentUserKey
+        );
+
+
     if (
-        meeting.recipient !== currentUserKey ||
-        meeting.status !== "pending"
+        !recipient ||
+        recipient.status !== "pending"
     ) {
 
         showMeetingToast(
@@ -2038,12 +3058,16 @@ function openChangeModal(id) {
 
 
     if (oldModal) {
+
         oldModal.remove();
+
     }
 
 
     const modal =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     modal.id =
@@ -2056,22 +3080,29 @@ function openChangeModal(id) {
 
     modal.innerHTML = `
 
-        <div class="meeting-modal">
-
+        <div
+            class="meeting-modal"
+        >
 
             <button
                 class="meeting-modal-close"
                 onclick="closeChangeModal()"
             >
 
-                <i class="bi bi-x-lg"></i>
+                <i
+                    class="bi bi-x-lg"
+                ></i>
 
             </button>
 
 
-            <div class="meeting-modal-icon">
+            <div
+                class="meeting-modal-icon"
+            >
 
-                <i class="bi bi-calendar2-event"></i>
+                <i
+                    class="bi bi-calendar2-event"
+                ></i>
 
             </div>
 
@@ -2087,27 +3118,36 @@ function openChangeModal(id) {
             </p>
 
 
-            <div class="meeting-modal-form">
-
+            <div
+                class="meeting-modal-form"
+            >
 
                 <!-- DATE -->
 
-                <div class="meeting-form-group">
+                <div
+                    class="meeting-form-group"
+                >
 
                     <label>
                         New date
                     </label>
 
 
-                    <div class="meeting-input-wrapper">
+                    <div
+                        class="meeting-input-wrapper"
+                    >
 
-                        <i class="bi bi-calendar3"></i>
+                        <i
+                            class="bi bi-calendar3"
+                        ></i>
 
 
                         <input
                             type="date"
                             id="changeMeetingDate"
-                            value="${meeting.date}"
+                            value="${escapeHtml(
+                                meeting.date
+                            )}"
                             required
                         >
 
@@ -2118,22 +3158,30 @@ function openChangeModal(id) {
 
                 <!-- TIME -->
 
-                <div class="meeting-form-group">
+                <div
+                    class="meeting-form-group"
+                >
 
                     <label>
                         New time
                     </label>
 
 
-                    <div class="meeting-input-wrapper">
+                    <div
+                        class="meeting-input-wrapper"
+                    >
 
-                        <i class="bi bi-clock"></i>
+                        <i
+                            class="bi bi-clock"
+                        ></i>
 
 
                         <input
                             type="time"
                             id="changeMeetingTime"
-                            value="${meeting.time}"
+                            value="${escapeHtml(
+                                meeting.time
+                            )}"
                             required
                         >
 
@@ -2144,16 +3192,22 @@ function openChangeModal(id) {
 
                 <!-- NOTE -->
 
-                <div class="meeting-form-group">
+                <div
+                    class="meeting-form-group"
+                >
 
                     <label>
                         Note
                     </label>
 
 
-                    <div class="meeting-textarea-wrapper">
+                    <div
+                        class="meeting-textarea-wrapper"
+                    >
 
-                        <i class="bi bi-chat-left-text"></i>
+                        <i
+                            class="bi bi-chat-left-text"
+                        ></i>
 
 
                         <textarea
@@ -2166,20 +3220,18 @@ function openChangeModal(id) {
 
                 </div>
 
-
             </div>
 
 
-            <div class="meeting-modal-actions">
-
+            <div
+                class="meeting-modal-actions"
+            >
 
                 <button
                     class="meeting-modal-cancel"
                     onclick="closeChangeModal()"
                 >
-
                     Cancel
-
                 </button>
 
 
@@ -2188,27 +3240,31 @@ function openChangeModal(id) {
                     onclick="submitChangeRequest(${id})"
                 >
 
-                    <i class="bi bi-send"></i>
+                    <i
+                        class="bi bi-send"
+                    ></i>
 
                     Send Request
 
                 </button>
 
-
             </div>
-
 
         </div>
 
     `;
 
 
-    document.body.appendChild(modal);
+    document.body.appendChild(
+        modal
+    );
 
 
     setTimeout(() => {
 
-        modal.classList.add("show");
+        modal.classList.add(
+            "show"
+        );
 
     }, 10);
 
@@ -2217,7 +3273,6 @@ function openChangeModal(id) {
 
 /* =========================================================
    SUBMIT CHANGE REQUEST
-   EMPLOYEE ONLY
    ========================================================= */
 
 function submitChangeRequest(id) {
@@ -2316,14 +3371,16 @@ function submitChangeRequest(id) {
         currentUser.name;
 
 
-    /*
-       Employee can only change
-       meetings sent to them.
-    */
+    const recipient =
+        getRecipientForUser(
+            meeting,
+            currentUserKey
+        );
+
 
     if (
-        meeting.recipient !== currentUserKey ||
-        meeting.status !== "pending"
+        !recipient ||
+        recipient.status !== "pending"
     ) {
 
         showMeetingToast(
@@ -2336,24 +3393,32 @@ function submitChangeRequest(id) {
     }
 
 
-    meeting.status =
+    recipient.status =
         "change_requested";
 
 
-    meeting.changeRequestedDate =
+    recipient.changeRequestedDate =
         newDate;
 
 
-    meeting.changeRequestedTime =
+    recipient.changeRequestedTime =
         newTime;
 
 
-    meeting.responseNote =
+    recipient.responseNote =
         note ||
         `Requested new time: ${newDate} at ${newTime}`;
 
 
-    saveMeetings(meetings);
+    meeting.status =
+        getMeetingOverallStatus(
+            meeting
+        );
+
+
+    saveMeetings(
+        meetings
+    );
 
 
     closeChangeModal();
@@ -2403,7 +3468,9 @@ function filterMeetings(
     }
 
 
-    renderMeetings(filter);
+    renderMeetings(
+        filter
+    );
 
 }
 
@@ -2426,20 +3493,60 @@ function updateMeetingStats() {
         currentUser.name;
 
 
+    const isHR =
+        String(currentUser.role || "")
+            .trim()
+            .toLowerCase() === "hr";
+
+
     const meetings =
-        getMeetings().filter(meeting => {
+        getMeetings().filter(
+            meeting => {
 
-            return (
-                meeting.createdBy ===
-                    currentUserKey
+                if (isHR) {
 
-                ||
+                    return (
+                        meeting.createdBy ===
+                        currentUserKey
+                    );
 
-                meeting.recipient ===
-                    currentUserKey
-            );
+                }
 
-        });
+
+                return (
+                    getRecipientForUser(
+                        meeting,
+                        currentUserKey
+                    ) !== null
+                );
+
+            }
+        );
+
+
+    const statuses =
+        meetings.map(
+            meeting => {
+
+                if (isHR) {
+
+                    return getMeetingOverallStatus(
+                        meeting
+                    );
+
+                }
+
+
+                return (
+                    getRecipientForUser(
+                        meeting,
+                        currentUserKey
+                    )?.status ||
+                    "pending"
+                );
+
+            }
+        );
 
 
     const total =
@@ -2447,16 +3554,16 @@ function updateMeetingStats() {
 
 
     const pending =
-        meetings.filter(
-            meeting =>
-                meeting.status === "pending"
+        statuses.filter(
+            status =>
+                status === "pending"
         ).length;
 
 
     const accepted =
-        meetings.filter(
-            meeting =>
-                meeting.status === "accepted"
+        statuses.filter(
+            status =>
+                status === "accepted"
         ).length;
 
 
@@ -2465,65 +3572,72 @@ function updateMeetingStats() {
 
 
     const upcoming =
-        meetings.filter(meeting => {
+        meetings.filter(
+            meeting => {
 
-            const date =
-                new Date(
-                    `${meeting.date}T${meeting.time}`
-                );
+                const date =
+                    new Date(
+                        `${meeting.date}T${meeting.time}`
+                    );
 
+                return date >= now;
 
-            return (
-                date >= now &&
-                meeting.status === "accepted"
-            );
-
-        }).length;
+            }
+        ).length;
 
 
-    setText(
-        "meetingTotal",
-        total
-    );
+    const totalElement =
+        document.getElementById(
+            "meetingTotal"
+        );
 
 
-    setText(
-        "meetingPending",
-        pending
-    );
+    const pendingElement =
+        document.getElementById(
+            "meetingPending"
+        );
 
 
-    setText(
-        "meetingAccepted",
-        accepted
-    );
+    const acceptedElement =
+        document.getElementById(
+            "meetingAccepted"
+        );
 
 
-    setText(
-        "meetingUpcoming",
-        upcoming
-    );
-
-}
+    const upcomingElement =
+        document.getElementById(
+            "meetingUpcoming"
+        );
 
 
-/* =========================================================
-   SET TEXT
-   ========================================================= */
+    if (totalElement) {
 
-function setText(
-    id,
-    value
-) {
+        totalElement.textContent =
+            total;
 
-    const element =
-        document.getElementById(id);
+    }
 
 
-    if (element) {
+    if (pendingElement) {
 
-        element.textContent =
-            value;
+        pendingElement.textContent =
+            pending;
+
+    }
+
+
+    if (acceptedElement) {
+
+        acceptedElement.textContent =
+            accepted;
+
+    }
+
+
+    if (upcomingElement) {
+
+        upcomingElement.textContent =
+            upcoming;
 
     }
 
@@ -2579,7 +3693,6 @@ function setMinimumDate() {
 
 /* =========================================================
    SCROLL TO FORM
-   HR ONLY
    ========================================================= */
 
 function scrollToMeetingForm() {
@@ -2620,9 +3733,11 @@ function scrollToMeetingForm() {
 
     card.scrollIntoView({
 
-        behavior: "smooth",
+        behavior:
+            "smooth",
 
-        block: "start"
+        block:
+            "start"
 
     });
 
@@ -2652,7 +3767,9 @@ function closeChangeModal() {
     setTimeout(() => {
 
         if (modal) {
+
             modal.remove();
+
         }
 
     }, 250);
@@ -2676,7 +3793,9 @@ function showMeetingToast(
 
 
     if (old) {
+
         old.remove();
+
     }
 
 
@@ -2692,13 +3811,17 @@ function showMeetingToast(
 
     toast.innerHTML = `
 
-        <div class="meeting-toast-icon">
+        <div
+            class="meeting-toast-icon"
+        >
 
-            <i class="bi ${
-                type === "success"
-                ? "bi-check-lg"
-                : "bi-exclamation-lg"
-            }"></i>
+            <i
+                class="bi ${
+                    type === "success"
+                        ? "bi-check-lg"
+                        : "bi-exclamation-lg"
+                }"
+            ></i>
 
         </div>
 
@@ -2746,7 +3869,9 @@ function showMeetingToast(
    FORMAT CREATED DATE
    ========================================================= */
 
-function formatCreatedDate(date) {
+function formatCreatedDate(
+    date
+) {
 
     if (!date) return "";
 
@@ -2758,10 +3883,51 @@ function formatCreatedDate(date) {
     return d.toLocaleDateString(
         "en-US",
         {
-            month: "short",
-            day: "numeric"
+            month:
+                "short",
+
+            day:
+                "numeric"
         }
     );
+
+}
+
+
+/* =========================================================
+   GET INITIALS
+   ========================================================= */
+
+function getInitials(
+    name
+) {
+
+    if (!name) return "--";
+
+
+    const parts =
+        String(name)
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
+
+
+    if (!parts.length) return "--";
+
+
+    if (parts.length === 1) {
+
+        return parts[0]
+            .substring(0, 2)
+            .toUpperCase();
+
+    }
+
+
+    return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+    ).toUpperCase();
 
 }
 
@@ -2770,7 +3936,9 @@ function formatCreatedDate(date) {
    ESCAPE HTML
    ========================================================= */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     if (
         value === undefined ||

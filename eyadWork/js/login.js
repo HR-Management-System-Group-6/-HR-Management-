@@ -967,74 +967,7 @@ function toggleConfirmPassword() {
 }
 
 
-// =====================================
-// GOOGLE LOGIN
-// =====================================
 
-const GOOGLE_CLIENT_ID =
-    "313291642700-7iojaon2vp390g5ii57789n0bif4c47d.apps.googleusercontent.com";
-
-
-function initializeGoogleLogin() {
-
-    if (
-        !window.google ||
-        !window.google.accounts ||
-        !window.google.accounts.id
-    ) {
-
-        setTimeout(
-            initializeGoogleLogin,
-            300
-        );
-
-        return;
-
-    }
-
-
-    google.accounts.id.initialize({
-
-        client_id:
-            GOOGLE_CLIENT_ID,
-
-        callback:
-            handleGoogleLogin
-
-    });
-
-
-    google.accounts.id.renderButton(
-
-        document.getElementById(
-            "google-login"
-        ),
-
-        {
-
-            theme:
-                "outline",
-
-            size:
-                "large",
-
-            text:
-                "continue_with",
-
-            shape:
-                "rectangular",
-
-            logo_alignment:
-                "left",
-
-            width:
-                270
-
-        }
-
-    );
-
-}
 
 
 
